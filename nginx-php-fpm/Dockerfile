@@ -22,7 +22,8 @@ COPY php-fpm/ext-mailcatcher.ini /etc/php5/fpm/conf.d/22-mailcatcher.ini
 # Make sure the volume mount point is empty
 RUN rm -rf /var/www/*
 
-COPY php-fpm/local.xml.phpunit /var/www/htdocs/app/etc/local.xml.phpunit
+COPY magento/local.xml.phpunit /var/www/htdocs/app/etc/local.xml.phpunit
+COPY magento/phpunit.xml.dist /var/www/htdocs/phpunit.xml.dist
 
 # Copy php config
 COPY php-fpm/php.ini /etc/php5/fpm/php.ini
