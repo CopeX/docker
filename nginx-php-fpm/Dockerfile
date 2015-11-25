@@ -1,65 +1,31 @@
-FROM phusion/baseimage
-
-RUN rm -rf /etc/nginx/conf.d/*
-
-# Build packages first
-
-COPY nginx/nginx.list /etc/apt/sources.list.d/nginx.list
-COPY nginx/nginx_signing.key /etc/apt/nginx_signing.key
-RUN apt-key add /etc/apt/nginx_signing.key
-RUN export DEBIAN_FRONTEND=noninteractive && \
-    echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/02apt-speedup  && \
-    add-apt-repository -y ppa:ondrej/php5-5.6 && \
-    add-apt-repository -y ppa:nginx/stable && \
-    apt-get update && \
-    apt-get --no-install-recommends -y --force-yes install nginx \
-        php5-fpm \
-        php5-mysql \
-        php5-imagick \
-        php5-mcrypt \
-        php5-curl \
-        php5-cli \
-        php5-memcache \
-        php5-intl \
-        php5-gd \
-        php5-xdebug \
-        php5-redis \
-        curl
-
-# Cleanup
-RUN apt-get clean && \
-    rm -f /etc/dpkg/dpkg.cfg.d/02apt-speedup && \
-    find /var/lib/apt/lists -mindepth 1 -delete -print && \
-    find /tmp /var/tmp -mindepth 2 -delete && \
-    apt-get purge -y --auto-remove
-
-# Setup nginx service
-COPY ./nginx/*.sh /build/nginx/
-RUN /build/nginx/setup.sh
+FROM copex/nginx-php-fpm
 
 
-# Setup php-fpm service
-COPY ./php-fpm/*.sh /build/php-fpm/
-RUN /build/php-fpm/setup.sh
+# Install magerun
+RUN apt-get update && \
+    apt-get install -qy mysql-client php5-xdebug && \
+    curl -sS https://getcomposer.org/installer | php -- --filename=composer --install-dir=/usr/local/bin && \
+    apt-get install -y build-essential rubygems-integration ruby-dev libsqlite3-dev && \
+    gem install mailcatcher --no-ri --no-rdoc && \
+    apt-get remove -y build-essential && \
+    apt-get autoremove -y && \
+    apt-get remove --purge -y build-essential ruby-dev  rubygems-integration  libsqlite3-dev && apt-get autoclean && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN rm -rf /build
+# Configure
+COPY php-fpm/ext-xdebug.ini /etc/php5/fpm/conf.d/21-xdebug.ini
+COPY php-fpm/ext-mailcatcher.ini /etc/php5/fpm/conf.d/22-mailcatcher.ini
 
-# Copy custom init script
-COPY bin/ /usr/sbin/
-COPY init /etc/my_init.d
+# Make sure the volume mount point is empty
+RUN rm -rf /var/www/*
 
-# Prepare configuration
-COPY nginx/sites-templates/ /etc/nginx/sites-templates/
-COPY nginx/includes/ /etc/nginx/conf.d/includes/
-COPY nginx/ssl/ /etc/nginx/ssl/
-COPY nginx/nginx.conf /etc/nginx/nginx.conf
+COPY php-fpm/local.xml.phpunit /var/www/htdocs/app/etc/local.xml.phpunit
 
 # Copy php config
 COPY php-fpm/php.ini /etc/php5/fpm/php.ini
 COPY php-fpm/php-fpm.conf /etc/php5/fpm/pool.d/www.conf
 
-RUN usermod -u 1000 www-data
+EXPOSE 1080 9000
 
-WORKDIR /var/www/htdocs
-
-EXPOSE 80 443
+CMD ["sh", "-c", "/usr/bin/env $(which mailcatcher) --ip=0.0.0.0 -f > /dev/null 2>&1 & /sbin/my_init"]
