@@ -1,11 +1,21 @@
-FROM copex/php
+FROM phusion/baseimage
 
 # Build packages first
 RUN export DEBIAN_FRONTEND=noninteractive && \
     echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/02apt-speedup  && \
+    add-apt-repository -y ppa:ondrej/php5-5.6 && \
     apt-get update && \
     apt-get --no-install-recommends -y --force-yes install \
-        php5-fpm
+        php5-mysql \
+        php5-imagick \
+        php5-mcrypt \
+        php5-curl \
+        php5-cli \
+        php5-memcache \
+        php5-intl \
+        php5-gd \
+        php5-redis \
+        curl
 
 # Cleanup
 RUN apt-get clean && \
@@ -16,8 +26,10 @@ RUN apt-get clean && \
 
 
 # Copy php config
-COPY php-fpm.conf /etc/php5/fpm/pool.d/www.conf
+COPY php.ini /etc/php5/fpm/php.ini
 
-EXPOSE 9000
+RUN usermod -u 1000 www-data
 
-CMD ["php-fpm"]
+RUN rm -rf /var/www/*
+
+WORKDIR /var/www/htdocs
