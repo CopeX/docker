@@ -35,3 +35,7 @@ RUN usermod -u 1000 www-data
 RUN rm -rf /var/www/*
 
 WORKDIR /var/www/htdocs
+
+EXPOSE 9000
+
+CMD ["php-fpm"]
