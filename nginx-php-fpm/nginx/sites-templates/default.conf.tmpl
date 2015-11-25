@@ -9,6 +9,10 @@ server {
     root                        ${MAGENTO_ROOT};
     index                       index.php;
 
+    location = /js/index.php/x.js {
+       rewrite ^(.*\.php)/ $1 last;
+       }
+
     location / {
         index index.html index.php;
         try_files /maintenance.html $uri $uri/ @handler;
@@ -47,19 +51,27 @@ server {
         fastcgi_pass                    unix:/var/run/php5-fpm.sock;
         fastcgi_index                   index.php;
 
+        ## Disable cache for php files
+        expires        off;
+
         include fastcgi_params;
         fastcgi_param                   SCRIPT_FILENAME $document_root$fastcgi_script_name;
-
         fastcgi_param                   MAGENTO_ROOT ${MAGENTO_ROOT};
-        fastcgi_param                   MAGE_IS_DEVELOPER_MODE ${MAGENTO_DEVELOPERMODE};
 
-        # fastcgi_param                   REMOTE_ADDR $http_x_real_ip;
-        fastcgi_connect_timeout         300;
-        fastcgi_send_timeout            300;
-        fastcgi_read_timeout            300;
+        ## Tweak fastcgi buffers, just in case.
+        fastcgi_buffer_size 128k;
+        fastcgi_buffers 256 4k;
+        fastcgi_busy_buffers_size 256k;
+        fastcgi_temp_file_write_size 256k;
 
-        ## Disable cache for php files
-        expires                         off;
+        proxy_read_timeout 300;
+
+        add_header X-Config-By 'CopeX.io';
+        add_header X-Frame-Options SAMEORIGIN;
+        add_header X-Content-Type-Options nosniff;
+        add_header X-XSS-Protection "1; mode=block";
+        add_header X-UA-Compatible 'IE=Edge,chrome=1';
+        add_header X-Processing-Time $request_time;
     }
 
 }
