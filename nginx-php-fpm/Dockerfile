@@ -13,6 +13,8 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+COPY sites-templates/ /etc/nginx/sites-templates/
+
 # Configure
 COPY php-fpm/ext-xdebug.ini /etc/php5/fpm/conf.d/21-xdebug.ini
 COPY php-fpm/ext-mailcatcher.ini /etc/php5/fpm/conf.d/22-mailcatcher.ini
