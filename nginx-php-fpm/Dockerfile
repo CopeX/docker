@@ -1,4 +1,4 @@
-FROM phusion/baseimage
+FROM copex/php-fpm
 
 RUN rm -rf /etc/nginx/conf.d/*
 
@@ -9,22 +9,9 @@ COPY nginx/nginx_signing.key /etc/apt/nginx_signing.key
 RUN apt-key add /etc/apt/nginx_signing.key
 RUN export DEBIAN_FRONTEND=noninteractive && \
     echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/02apt-speedup  && \
-    add-apt-repository -y ppa:ondrej/php5-5.6 && \
     add-apt-repository -y ppa:nginx/stable && \
     apt-get update && \
-    apt-get --no-install-recommends -y --force-yes install nginx \
-        php5-fpm \
-        php5-mysql \
-        php5-imagick \
-        php5-mcrypt \
-        php5-curl \
-        php5-cli \
-        php5-memcache \
-        php5-intl \
-        php5-gd \
-        php5-xdebug \
-        php5-redis \
-        curl
+    apt-get --no-install-recommends -y --force-yes install nginx
 
 # Cleanup
 RUN apt-get clean && \
@@ -55,11 +42,6 @@ COPY nginx/ssl/ /etc/nginx/ssl/
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 
 # Copy php config
-COPY php-fpm/php.ini /etc/php5/fpm/php.ini
 COPY php-fpm/php-fpm.conf /etc/php5/fpm/pool.d/www.conf
-
-RUN usermod -u 1000 www-data
-
-WORKDIR /var/www/htdocs
 
 EXPOSE 80 443
