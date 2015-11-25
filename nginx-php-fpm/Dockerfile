@@ -45,3 +45,5 @@ COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY php-fpm/php-fpm.conf /etc/php5/fpm/pool.d/www.conf
 
 EXPOSE 80 443
+
+CMD ["/sbin/my_init"]
