@@ -3,7 +3,7 @@ FROM copex/nginx-php-fpm
 
 # Install magerun
 RUN apt-get update && \
-    apt-get install -qy mysql-client php5-xdebug && \
+    apt-get --no-install-recommends -y --force-yes install mysql-client php5-xdebug && \
     curl -sS https://getcomposer.org/installer | php -- --filename=composer --install-dir=/usr/local/bin && \
     apt-get install -y build-essential rubygems-integration ruby-dev libsqlite3-dev && \
     gem install mailcatcher --no-ri --no-rdoc && \
