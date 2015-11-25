@@ -58,12 +58,6 @@ server {
         fastcgi_send_timeout            300;
         fastcgi_read_timeout            300;
 
-        ## Tweak fastcgi buffers, just in case.
-        fastcgi_buffer_size             1024k;
-        fastcgi_buffers                 500 512k;
-        fastcgi_busy_buffers_size       256k;
-        fastcgi_temp_file_write_size    256k;
-
         ## Disable cache for php files
         expires                         off;
     }
