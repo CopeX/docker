@@ -16,6 +16,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php5-memcache \
         php5-intl \
         php5-gd \
+        php5-xdebug \
         php5-redis \
         curl
 
