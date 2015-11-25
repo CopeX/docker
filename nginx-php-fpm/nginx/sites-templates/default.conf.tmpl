@@ -51,15 +51,6 @@ server {
         fastcgi_param                   SCRIPT_FILENAME $document_root$fastcgi_script_name;
 
         fastcgi_param                   MAGENTO_ROOT ${MAGENTO_ROOT};
-        fastcgi_param                   MAGE_IS_DEVELOPER_MODE ${MAGENTO_DEVELOPERMODE};
-
-        # fastcgi_param                   REMOTE_ADDR $http_x_real_ip;
-        fastcgi_buffer_size             1024k;
-        fastcgi_buffers                 500 512k;
-        fastcgi_connect_timeout         1200;
-        fastcgi_send_timeout            1200;
-        fastcgi_read_timeout            1200;
-
     }
 
 }
