@@ -9,6 +9,10 @@ server {
     root                        ${MAGENTO_ROOT};
     index                       index.php;
 
+    location = /js/index.php/x.js {
+       rewrite ^(.*\.php)/ $1 last;
+       }
+
     location / {
         index index.html index.php;
         try_files /maintenance.html $uri $uri/ @handler;
@@ -49,8 +53,14 @@ server {
 
         include fastcgi_params;
         fastcgi_param                   SCRIPT_FILENAME $document_root$fastcgi_script_name;
-
         fastcgi_param                   MAGENTO_ROOT ${MAGENTO_ROOT};
+
+        add_header X-Config-By 'CopeX.io';
+        add_header X-Frame-Options SAMEORIGIN;
+        add_header X-Content-Type-Options nosniff;
+        add_header X-XSS-Protection "1; mode=block";
+        add_header X-UA-Compatible 'IE=Edge,chrome=1';
+        add_header X-Processing-Time $request_time;
     }
 
 }
