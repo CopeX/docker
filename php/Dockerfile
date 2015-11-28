@@ -28,8 +28,6 @@ RUN apt-get clean && \
 # Copy php config
 COPY php.ini /etc/php5/fpm/php.ini
 
-RUN usermod -u 1000 www-data
-
 RUN rm -rf /var/www/*
 
 WORKDIR /var/www/htdocs

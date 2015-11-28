@@ -1,4 +1,4 @@
-FROM copex/php-fpm
+FROM copex/php
 
 RUN rm -rf /etc/nginx/conf.d/*
 
@@ -11,7 +11,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/02apt-speedup  && \
     add-apt-repository -y ppa:nginx/stable && \
     apt-get update && \
-    apt-get --no-install-recommends -y --force-yes install nginx
+    apt-get --no-install-recommends -y --force-yes install nginx php5-fpm
 
 # Cleanup
 RUN apt-get clean && \
