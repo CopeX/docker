@@ -24,7 +24,7 @@ function non_template_files() {
 }
 
 #clean
-find "${outdir}" -maxdepth 1 -type f -exec rm -iv {} \;
+find "${outdir}" -maxdepth 1 -type f -exec rm -v {} \;
 
 template_files | xargs -0 substitute-env-vars.sh "${outdir}"
 non_template_files | xargs -0 -I{} ln -s {} "${outdir}"

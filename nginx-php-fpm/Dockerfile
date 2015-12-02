@@ -4,8 +4,8 @@ RUN rm -rf /etc/nginx/conf.d/*
 
 # Build packages first
 
-COPY nginx/nginx.list /etc/apt/sources.list.d/nginx.list
-COPY nginx/nginx_signing.key /etc/apt/nginx_signing.key
+COPY nginx/install/nginx.list /etc/apt/sources.list.d/nginx.list
+COPY nginx/install/nginx_signing.key /etc/apt/nginx_signing.key
 RUN apt-key add /etc/apt/nginx_signing.key
 RUN export DEBIAN_FRONTEND=noninteractive && \
     echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/02apt-speedup  && \
@@ -20,20 +20,21 @@ RUN apt-get clean && \
     find /tmp /var/tmp -mindepth 2 -delete && \
     apt-get purge -y --auto-remove
 
-# Setup nginx service
-COPY ./nginx/*.sh /build/nginx/
-RUN /build/nginx/setup.sh
+# Configure nginx to start as a service
+COPY ./nginx/service/runit.sh /etc/service/nginx/run
+RUN chmod +x /etc/service/nginx/run
 
 
-# Setup php-fpm service
-COPY ./php-fpm/*.sh /build/php-fpm/
-RUN /build/php-fpm/setup.sh
+# Configure PHP-FPM to start as a service
+COPY ./php-fpm/service/runit.sh /etc/service/php-fpm/run
+RUN chmod +x /etc/service/php-fpm/run
 
 RUN rm -rf /build
 
 # Copy custom init script
 COPY bin/ /usr/sbin/
 COPY init /etc/my_init.d
+RUN chmod +x /etc/my_init.d/*.sh
 
 # Prepare configuration
 COPY nginx/sites-templates/ /etc/nginx/sites-templates/
