@@ -64,13 +64,20 @@ server {
         fastcgi_param                   MAGENTO_ROOT ${MAGENTO_ROOT};
         fastcgi_param                   MAGE_IS_DEVELOPER_MODE ${MAGENTO_DEVELOPERMODE};
 
-        fastcgi_param                   REMOTE_ADDR $http_x_real_ip;
-        fastcgi_buffer_size             1024k;
-        fastcgi_buffers                 500 512k;
-        fastcgi_connect_timeout         1200;
-        fastcgi_send_timeout            1200;
-        fastcgi_read_timeout            1200;
+        ## Tweak fastcgi buffers, just in case.
+        fastcgi_buffer_size 128k;
+        fastcgi_buffers 256 4k;
+        fastcgi_busy_buffers_size 256k;
+        fastcgi_temp_file_write_size 256k;
 
+        proxy_read_timeout 300;
+
+         add_header X-Config-By 'CopeX.io';
+        add_header X-Frame-Options SAMEORIGIN;
+        add_header X-Content-Type-Options nosniff;
+        add_header X-XSS-Protection "1; mode=block";
+        add_header X-UA-Compatible 'IE=Edge,chrome=1';
+        add_header X-Processing-Time $request_time;
     }
 
     rewrite ^/minify/([0-9]+)(/.*.(js|css))$ /lib/minify/m.php?f=$2&d=$1 last;
