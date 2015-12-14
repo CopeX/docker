@@ -15,6 +15,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php5-intl \
         php5-gd \
         php5-redis \
+        php5-xsl \
+        php5-intl \
         curl
 
 # Cleanup
