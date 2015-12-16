@@ -41,6 +41,9 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
 	chmod +x php-cs-fixer.phar && \
 	mv php-cs-fixer.phar /usr/local/bin/php-cs-fixer
 
+COPY bin/run.sh /bin/run.sh
+RUN chmod +x /bin/run.sh
+
 WORKDIR /var/www/htdocs
 
-CMD /bin/true
+CMD /bin/run.sh
