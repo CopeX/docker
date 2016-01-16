@@ -1,10 +1,10 @@
 #!/bin/sh
 
-if [ $USE_OLD_CRON ]; then
-    echo "* * * * * ! test -e /var/www/htdocs/maintenance.flag && /bin/sh /var/www/htdocs/cron.sh" > mycron
+if [ -e $MAGENTO_ROOT/scheduler_cron.sh ]; then
+    echo "* * * * * ! test -e $MAGENTO_ROOT/maintenance.flag && /bin/bash $MAGENTO_ROOT/scheduler_cron.sh --mode always" > mycron
+    echo "* * * * * ! test -e $MAGENTO_ROOT/maintenance.flag && /bin/bash $MAGENTO_ROOT/scheduler_cron.sh --mode default" >> mycron
 else
-    echo "* * * * * ! test -e /var/www/htdocs/maintenance.flag && /bin/bash /var/www/htdocs/scheduler_cron.sh --mode always" > mycron
-    echo "* * * * * ! test -e /var/www/htdocs/maintenance.flag && /bin/bash /var/www/htdocs/scheduler_cron.sh --mode default" >> mycron
+    echo "* * * * * ! test -e $MAGENTO_ROOT/maintenance.flag && /bin/sh $MAGENTO_ROOT/cron.sh" > mycron
 fi
 
 crontab -u www-data mycron
