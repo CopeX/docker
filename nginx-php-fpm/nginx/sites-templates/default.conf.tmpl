@@ -63,8 +63,9 @@ server {
         fastcgi_buffers 256 4k;
         fastcgi_busy_buffers_size 256k;
         fastcgi_temp_file_write_size 256k;
+        fastcgi_read_timeout 600;
 
-        proxy_read_timeout 300;
+        proxy_read_timeout 600;
 
         add_header X-Config-By 'CopeX.io';
         add_header X-Frame-Options SAMEORIGIN;
