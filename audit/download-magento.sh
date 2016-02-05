@@ -11,7 +11,7 @@ fi
 
 MAGE_VERSION=$1
 DEST=$2
-MAGE_URL=https://github.com/OpenMage/magento-mirror/archive/$MAGE_VERSION.tar.gz
+MAGE_URL=https://github.com/OpenMage/magento-lts/archive/$MAGE_VERSION.tar.gz
 echo "Downloading Magento " $MAGE_VERSION
 echo $MAGE_URL
 
