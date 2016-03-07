@@ -18,6 +18,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
 
 COPY nginx/sites-templates/ /etc/nginx/sites-templates/
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
+COPY nginx/includes/cssjstimestamp.conf /etc/nginx/conf.d/includes/cssjstimestamp.conf
 
 # Configure
 COPY php-fpm/ext-xdebug.ini /etc/php5/fpm/conf.d/21-xdebug.ini
