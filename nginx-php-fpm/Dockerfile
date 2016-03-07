@@ -17,6 +17,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 COPY nginx/sites-templates/ /etc/nginx/sites-templates/
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
 
 # Configure
 COPY php-fpm/ext-xdebug.ini /etc/php5/fpm/conf.d/21-xdebug.ini
