@@ -42,6 +42,8 @@ COPY nginx/includes/ /etc/nginx/conf.d/includes/
 COPY nginx/ssl/ /etc/nginx/ssl/
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 
+COPY nginx/ssl/dhparams.pem /etc/ssl/private/
+
 # Copy php config
 COPY php-fpm/php-fpm.conf /etc/php5/fpm/pool.d/www.conf
 
