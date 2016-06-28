@@ -1,68 +1,23 @@
 server {
-    listen                      80;
-    listen                      [::]:80;
-    listen                      443 ssl http2;
-    listen                       [::]:443 ssl http2;
-
+    listen 80;
+    listen [::]:80;
+    listen      443 ssl;
+    listen [::]:443 ssl;
     client_max_body_size        10M;
 
     server_name ${DOMAIN};
 
+    ssl_certificate             /etc/nginx/ssl/cert.pem;
+    ssl_certificate_key        /etc/nginx/ssl/cert.key;
+
     root                        ${MAGENTO_ROOT};
     index                       index.php;
 
-    location = /js/index.php/x.js {
-       rewrite ^(.*\.php)/ $1 last;
-       }
-
-    location / {
-        index index.html index.php;
-        try_files /maintenance.html $uri $uri/ @handler;
-        expires 30d;
-    }
-
-    include /etc/nginx/conf.d/includes/*.conf;
-
-    location /robots.txt {
-        allow all;
-        log_not_found off;
-        access_log off;
-    }
-
-    location  /. {
-        return 404;
-    }
-
-    location @handler {
-        rewrite / /index.php;
-    }
-
-    location ~ \.php/ {
-        rewrite ^(.*\.php)/ $1 last;
-    }
+    include /etc/nginx/conf.d/includes/default/*.conf;
+    include /etc/nginx/conf.d/includes/magento/*.conf;
 
     location ~ \.php$ {
-
-        ## Catch 404s that try_files miss
-        if (!-e $request_filename) {
-            rewrite / /index.php last;
-        }
-
-        fastcgi_split_path_info         ^(.+\.php)(/.+)$;
-
-        fastcgi_pass                    unix:/var/run/php5-fpm.sock;
-        fastcgi_index                   index.php;
-
-        include fastcgi_params;
-        fastcgi_param                   SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include /etc/nginx/conf.d/includes/php/*.conf;
         fastcgi_param                   MAGENTO_ROOT ${MAGENTO_ROOT};
-
-        add_header X-Config-By 'CopeX.io';
-        add_header X-Frame-Options SAMEORIGIN;
-        add_header X-Content-Type-Options nosniff;
-        add_header X-XSS-Protection "1; mode=block";
-        add_header X-UA-Compatible 'IE=Edge,chrome=1';
-        add_header X-Processing-Time $request_time;
     }
-
 }
