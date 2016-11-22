@@ -8,20 +8,21 @@ ENV LC_ALL en_US.UTF-8
 # Build packages first
 RUN export DEBIAN_FRONTEND=noninteractive && \
     echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/02apt-speedup  && \
-    add-apt-repository -y ppa:ondrej/php5-5.6 && \
+    add-apt-repository -y ppa:ondrej/php &&\
     apt-get update && \
     apt-get --no-install-recommends -y --force-yes install \
-        php5-mysql \
-        php5-imagick \
-        php5-mcrypt \
-        php5-curl \
-        php5-cli \
-        php5-memcache \
-        php5-intl \
-        php5-gd \
-        php5-redis \
-        php5-xsl \
-        php5-intl \
+        php5.6 \
+        php5.6-mysql \
+        php5.6-imagick \
+        php5.6-mcrypt \
+        php5.6-curl \
+        php5.6-cli \
+        php5.6-memcache \
+        php5.6-intl \
+        php5.6-gd \
+        php5.6-redis \
+        php5.6-xsl \
+        php5.6-intl \
         curl
 
 # Cleanup
@@ -33,6 +34,6 @@ RUN apt-get clean && \
 
 
 # Copy php config
-COPY php.ini /etc/php5/fpm/php.ini
+COPY php.ini /etc/php/5.6/fpm/php.ini
 
 WORKDIR /var/www/htdocs
