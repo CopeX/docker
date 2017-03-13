@@ -23,7 +23,26 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php5.6-redis \
         php5.6-xsl \
         php5.6-intl \
-        curl
+        php5.6-zip \
+        curl \
+        # Install PHP 7
+        php7.1 \
+        php7.1-cli \
+        php7.1-common \
+        php7.1-gd \
+        php7.1-mysql \
+        php7.1-curl \
+        php7.1-int \
+        php7.1-mcrypt \
+        php7.1-tidy \
+        php7.1-imap \
+        php7.1-xsl \
+        php7.1-dev \
+        php7.1-mbstring \
+        php7.1-bcmath \
+        php7.1-xml \
+        php7.1-zip \
+        php7.1-soap
 
 # Cleanup
 RUN apt-get clean && \
@@ -32,8 +51,8 @@ RUN apt-get clean && \
     find /tmp /var/tmp -mindepth 2 -delete && \
     apt-get purge -y --auto-remove
 
-
 # Copy php config
-COPY php.ini /etc/php/5.6/fpm/php.ini
+COPY php.ini /etc/php/5.6/cli/php.ini
+COPY php.ini /etc/php/7.1/cli/php.ini
 
 WORKDIR /var/www/htdocs
