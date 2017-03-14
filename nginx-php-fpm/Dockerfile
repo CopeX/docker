@@ -49,18 +49,6 @@ apt-get install ruby2.2 ruby2.2-dev -y --force-yes
 RUN gem install mailcatcher --conservative --no-rdoc --no-ri
 
 #################################
-# XDEBUG - ONLY FOR PHP7        #
-# Based on:                     #
-# https://xdebug.org/wizard.php #
-#################################
-RUN cd /tmp && wget http://xdebug.org/files/xdebug-2.5.1.tgz && \
-cd /tmp && tar -xvzf xdebug-2.5.1.tgz && \
-cd /tmp/xdebug-2.5.1 && phpize && \
-cd /tmp/xdebug-2.5.1 && ./configure && \
-cd /tmp/xdebug-2.5.1 && make && \
-cp /tmp/xdebug-2.5.1/modules/xdebug.so /usr/lib/php/20160303/xdebug.so
-
-#################################
 # Cleanup                       #
 #################################
 RUN apt-get autoremove -y && \
