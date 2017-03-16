@@ -25,7 +25,27 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php5.6-intl \
         php5.6-zip \
         curl \
-        # Install PHP 7
+
+        # Install PHP 7.0
+        php7.0 \
+        php7.0-cli \
+        php7.0-common \
+        php7.0-gd \
+        php7.0-mysql \
+        php7.0-curl \
+        php7.0-int \
+        php7.0-mcrypt \
+        php7.0-tidy \
+        php7.0-imap \
+        php7.0-xsl \
+        php7.0-dev \
+        php7.0-mbstring \
+        php7.0-bcmath \
+        php7.0-xml \
+        php7.0-zip \
+        php7.0-soap \
+
+        # Install PHP 7.1
         php7.1 \
         php7.1-cli \
         php7.1-common \
@@ -53,6 +73,7 @@ RUN apt-get clean && \
 
 # Copy php config
 COPY php.ini /etc/php/5.6/cli/php.ini
+COPY php.ini /etc/php/7.0/cli/php.ini
 COPY php.ini /etc/php/7.1/cli/php.ini
 
 WORKDIR /var/www/htdocs

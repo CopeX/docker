@@ -1,24 +1,25 @@
 FROM copex/php
 
-RUN rm -rf /etc/nginx/conf.d/*
+EXPOSE 80 443
+
+CMD ["/sbin/my_init"]
 
 # Build packages first
 
 COPY nginx/install/nginx.list /etc/apt/sources.list.d/nginx.list
 COPY nginx/install/nginx_signing.key /etc/apt/nginx_signing.key
-RUN apt-key add /etc/apt/nginx_signing.key
-RUN export DEBIAN_FRONTEND=noninteractive && \
+RUN rm -rf /etc/nginx/conf.d/* && \
+    apt-key add /etc/apt/nginx_signing.key && \
+    export DEBIAN_FRONTEND=noninteractive && \
     echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/02apt-speedup  && \
     add-apt-repository -y ppa:nginx/stable && \
     apt-get update && \
-    apt-get --no-install-recommends -y --force-yes install wget php5.6-fpm php7.1-fpm
-
-RUN apt-get -y install build-essential zlib1g-dev libpcre3 libpcre3-dev libssl-dev unzip sudo
-RUN wget --no-check-certificate https://raw.github.com/rupa/z/master/z.sh -O /usr/local/bin/z.sh && \
+    apt-get --no-install-recommends -y --force-yes install wget php5.6-fpm php7.0-fpm php7.1-fpm && \
+    apt-get -y install build-essential zlib1g-dev libpcre3 libpcre3-dev libssl-dev unzip sudo && \
+    wget --no-check-certificate https://raw.github.com/rupa/z/master/z.sh -O /usr/local/bin/z.sh && \
     chmod +x /usr/local/bin/z.sh && \
-    echo '. /usr/local/bin/z.sh' >> /root/.bashrc
-
-RUN wget --no-check-certificate https://ngxpagespeed.com/install && \
+    echo '. /usr/local/bin/z.sh' >> /root/.bashrc && \
+    wget --no-check-certificate https://ngxpagespeed.com/install && \
     chmod +x install && \
     ./install  --nginx-version latest  -a '--conf-path=/etc/nginx/nginx.conf --with-http_ssl_module --with-http_realip_module --with-http_addition_module --with-http_sub_module --with-http_mp4_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_random_index_module --with-http_secure_link_module --with-http_stub_status_module --with-http_auth_request_module --with-mail --with-mail_ssl_module --with-file-aio --with-http_v2_module' && \
     rm install
@@ -32,15 +33,12 @@ RUN apt-get clean && \
 
 # Configure nginx to start as a service
 COPY ./nginx/service/runit.sh /etc/service/nginx/run
-RUN chmod +x /etc/service/nginx/run
-
-
-RUN rm -rf /build
+RUN chmod +x /etc/service/nginx/run && \
+    rm -rf /build
 
 # Copy custom init script
 COPY bin/ /usr/sbin/
 COPY init /etc/my_init.d
-RUN chmod +x /etc/my_init.d/*.sh
 
 # Prepare configuration
 COPY nginx/sites-templates/ /etc/nginx/sites-templates/
@@ -52,15 +50,14 @@ COPY nginx/ssl/dhparams.pem /etc/ssl/private/
 
 # Copy php config
 COPY php-fpm/php-fpm.conf /etc/php/5.6/fpm/pool.d/www.conf
+COPY php-fpm/php7-fpm.conf /etc/php/7.0/fpm/pool.d/www.conf
 COPY php-fpm/php7-fpm.conf /etc/php/7.1/fpm/pool.d/www.conf
 
 # Configure PHP-FPM to start as a service
 COPY ./php-fpm/service/runit.sh /etc/service/php-fpm/run
-RUN chmod +x /etc/service/php-fpm/run
 
-RUN mkdir /run/php && mkdir /var/log/nginx
-RUN ln -s /usr/local/nginx/sbin/nginx /usr/bin/nginx
+RUN chmod +x /etc/my_init.d/*.sh && \
+    chmod +x /etc/service/php-fpm/run
 
-EXPOSE 80 443
-
-CMD ["/sbin/my_init"]
+RUN mkdir /run/php && mkdir /var/log/nginx && \
+    ln -s /usr/local/nginx/sbin/nginx /usr/bin/nginx
