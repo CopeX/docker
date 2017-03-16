@@ -19,6 +19,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     gem \
     libsqlite3-dev \
     php5.6-dev \
+    php7.0-dev \
     php7.1-dev \
     php5.6-xdebug \
     iproute2
@@ -64,24 +65,26 @@ COPY php-fpm/ext-xdebug.ini /etc/php/5.6/fpm/conf.d/21-xdebug.ini
 COPY php-fpm/ext-mailcatcher.ini /etc/php/5.6/fpm/conf.d/22-mailcatcher.ini
 
 
-# Make sure the volume mount point is empty
-RUN rm -rf /var/www/*
+
 
 COPY magento/local.xml.phpunit /var/www/htdocs/app/etc/local.xml.phpunit
 COPY magento/phpunit.xml.dist /var/www/htdocs/phpunit.xml.dist
 
 # Copy php config
 COPY php-fpm/php.ini /etc/php/5.6/fpm/php.ini
-COPY php-fpm/php.ini /etc/php/7.1/fpm/php.ini
 COPY php-fpm/php-fpm.conf /etc/php/5.6/fpm/pool.d/www.conf
-COPY php-fpm/php-fpm.conf /etc/php/7.1/fpm/pool.d/www.conf
 
 COPY mailcatcher/mailcatcher.sh /etc/service/mailcatcher/run
 
-RUN ln -s /etc/php/5.6/fpm/conf.d/22-mailcatcher.ini /etc/php/7.1/fpm/conf.d/22-mailcatcher.ini && \
+RUN ln -s /etc/php/5.6/fpm/conf.d/22-mailcatcher.ini /etc/php/7.0/fpm/conf.d/22-mailcatcher.ini && \
+    ln -s /etc/php/5.6/fpm/conf.d/22-mailcatcher.ini /etc/php/7.1/fpm/conf.d/22-mailcatcher.ini && \
+    ln -s /etc/php/5.6/fpm/conf.d/21-xdebug.ini /etc/php/7.0/fpm/conf.d/21-xdebug.ini && \
     ln -s /etc/php/5.6/fpm/conf.d/21-xdebug.ini /etc/php/7.1/fpm/conf.d/21-xdebug.ini && \
+    ln -sf /etc/php/5.6/fpm/php.ini  /etc/php/7.0/fpm/php.ini  && \
+    ln -sf /etc/php/5.6/fpm/php.ini  /etc/php/7.1/fpm/php.ini  && \
+    ln -sf /etc/php/5.6/fpm/pool.d/www.conf /etc/php/7.0/fpm/pool.d/www.conf && \
+    ln -sf /etc/php/5.6/fpm/pool.d/www.conf /etc/php/7.1/fpm/pool.d/www.conf && \
     chmod +x /etc/service/mailcatcher/run
-
 
 
 RUN usermod -u 1000 www-data
