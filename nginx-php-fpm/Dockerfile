@@ -57,9 +57,6 @@ RUN apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-COPY nginx/sites-templates/ /etc/nginx/sites-templates/
-COPY nginx/nginx.conf /etc/nginx/nginx.conf
-
 # Configure
 COPY php-fpm/ext-xdebug.ini /etc/php/5.6/fpm/conf.d/21-xdebug.ini
 COPY php-fpm/ext-mailcatcher.ini /etc/php/5.6/fpm/conf.d/22-mailcatcher.ini
