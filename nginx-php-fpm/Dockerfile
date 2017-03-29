@@ -81,7 +81,8 @@ RUN ln -s /etc/php/5.6/fpm/conf.d/22-mailcatcher.ini /etc/php/7.0/fpm/conf.d/22-
     ln -sf /etc/php/5.6/fpm/php.ini  /etc/php/7.1/fpm/php.ini  && \
     ln -sf /etc/php/5.6/fpm/pool.d/www.conf /etc/php/7.0/fpm/pool.d/www.conf && \
     ln -sf /etc/php/5.6/fpm/pool.d/www.conf /etc/php/7.1/fpm/pool.d/www.conf && \
-    chmod +x /etc/service/mailcatcher/run
+    chmod +x /etc/service/mailcatcher/run && \
+    rm -rf /etc/nginx/conf.d/includes/nginx/90-file-cache.conf
 
 
 RUN usermod -u 1000 www-data
