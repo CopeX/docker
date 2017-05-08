@@ -76,4 +76,6 @@ COPY php.ini /etc/php/5.6/cli/php.ini
 COPY php.ini /etc/php/7.0/cli/php.ini
 COPY php.ini /etc/php/7.1/cli/php.ini
 
+COPY init /etc/my_init.d
+
 WORKDIR /var/www/htdocs
