@@ -24,6 +24,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php5.6-xsl \
         php5.6-intl \
         php5.6-zip \
+        php5.6-mbstring \
         curl \
 
         # Install PHP 7.0
