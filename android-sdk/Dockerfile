@@ -22,6 +22,6 @@ RUN mkdir $HOME/.android  && \
     echo y | $ANDROID_HOME/tools/bin/sdkmanager 'extras;android;m2repository' && \
     echo y | $ANDROID_HOME/tools/bin/sdkmanager 'extras;google;google_play_services' && \
     echo y | $ANDROID_HOME/tools/bin/sdkmanager 'extras;google;m2repository' && \
-    echo y | $ANDROID_HOME/tools/bin/sdkmanager 'cmake;'$ANDROID_CMAKE_REV && \
+    echo y | $ANDROID_HOME/tools/bin/sdkmanager 'cmake;'$ANDROID_CMAKE_REV
     # - echo y | $ANDROID_HOME/tools/bin/sdkmanager 'ndk-bundle'      NDK
-    chmod +x ./gradlew
+RUN chmod +x $PWD/gradlew
