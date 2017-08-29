@@ -6,8 +6,8 @@ ENV ANDROID_SDK_TOOLS_REV "3859397"
 ENV ANDROID_CMAKE_REV "3.6.4111459"
 
 
-RUN mkdir $HOME/.android  && \ #For sdkmanager configs
-    echo 'count=0' > $HOME/.android/repositories.cfg && \ #Avoid warning
+RUN mkdir $HOME/.android  && \
+    echo 'count=0' > $HOME/.android/repositories.cfg && \
     wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/sdk-tools-linux-${ANDROID_SDK_TOOLS_REV}.zip && \
     mkdir $PWD/android-sdk-linux && \
     unzip -qq android-sdk.zip -d $PWD/android-sdk-linux && \
