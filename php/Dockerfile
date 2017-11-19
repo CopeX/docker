@@ -24,6 +24,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php5.6-xsl \
         php5.6-intl \
         php5.6-zip \
+        php5.6-mbstring \
+        php5.6-soap \
         curl \
 
         # Install PHP 7.0
@@ -75,5 +77,7 @@ RUN apt-get clean && \
 COPY php.ini /etc/php/5.6/cli/php.ini
 COPY php.ini /etc/php/7.0/cli/php.ini
 COPY php.ini /etc/php/7.1/cli/php.ini
+
+COPY init /etc/my_init.d
 
 WORKDIR /var/www/htdocs

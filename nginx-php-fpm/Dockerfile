@@ -50,8 +50,8 @@ COPY nginx/ssl/dhparams.pem /etc/ssl/private/
 
 # Copy php config
 COPY php-fpm/php-fpm.conf /etc/php/5.6/fpm/pool.d/www.conf
-COPY php-fpm/php7-fpm.conf /etc/php/7.0/fpm/pool.d/www.conf
-COPY php-fpm/php7-fpm.conf /etc/php/7.1/fpm/pool.d/www.conf
+COPY php-fpm/php-fpm.conf /etc/php/7.0/fpm/pool.d/www.conf
+COPY php-fpm/php-fpm.conf /etc/php/7.1/fpm/pool.d/www.conf
 
 # Configure PHP-FPM to start as a service
 COPY ./php-fpm/service/runit.sh /etc/service/php-fpm/run
