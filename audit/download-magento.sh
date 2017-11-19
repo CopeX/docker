@@ -17,4 +17,4 @@ echo "Downloading Magento " $MAGE_VERSION
 echo $MAGE_URL
 
 mkdir -p $DEST \
-    && wget -qO- $MAGE_URL | tar -zxf- -C $DEST --strip=1 magento-ce-$MAGE_VERSION
+    && wget -qO- $MAGE_URL | tar -zxf- -C $DEST --strip=1 Magento-CE-Mirror-magento-ce-$MAGE_VERSION
