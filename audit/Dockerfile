@@ -1,7 +1,7 @@
 FROM jolicode/phaudit
 
 RUN cd $HOME && \
-	wget https://raw.githubusercontent.com/netz98/n98-magerun/master/n98-magerun.phar && \
+	wget https://files.magerun.net/n98-magerun.phar && \
 	chmod +x n98-magerun.phar && \
 	mv n98-magerun.phar /usr/local/bin/n98-magerun  && \
 	mkdir -p ~/.n98-magerun/modules/ && \
