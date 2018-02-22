@@ -14,7 +14,8 @@ RUN rm -rf /etc/nginx/conf.d/* && \
     echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/02apt-speedup  && \
     add-apt-repository -y ppa:nginx/stable && \
     apt-get update && \
-    apt-get --no-install-recommends -y --force-yes install wget php5.6-fpm php7.0-fpm php7.1-fpm && \
+    apt-get upgrade -y && \
+    apt-get -y --force-yes install wget php5.6-fpm php7.0-fpm php7.1-fpm && \
     apt-get -y install build-essential zlib1g-dev libpcre3 libpcre3-dev libssl-dev unzip sudo && \
     wget --no-check-certificate https://raw.github.com/rupa/z/master/z.sh -O /usr/local/bin/z.sh && \
     chmod +x /usr/local/bin/z.sh && \
