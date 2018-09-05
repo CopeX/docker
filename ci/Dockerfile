@@ -11,6 +11,8 @@ RUN gem install capistrano -v 3.4.0 && \
     gem install capistrano-magento2
 
 
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-RUN php composer-setup.php
-RUN php -r "unlink('composer-setup.php');"
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+    php composer-setup.php && \
+    php -r "unlink('composer-setup.php');"
+
+RUN /var/www/htdocs/composer.phar global require hirak/prestissimo
