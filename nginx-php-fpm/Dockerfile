@@ -38,6 +38,11 @@ RUN curl -sS https://getcomposer.org/installer | php -- --filename=composer --in
 chmod +x /usr/local/bin/composer
 
 #################################
+#Parallell Downloads in Composer#
+#################################
+RUN composer global require hirak/prestissimo
+
+#################################
 # Ruby 2                        #
 #################################
 RUN apt-add-repository ppa:brightbox/ruby-ng && \
