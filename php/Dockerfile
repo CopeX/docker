@@ -38,7 +38,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php7.0-tidy \
         php7.0-imap \
         php7.0-xsl \
-        php7.0-dev \
         php7.0-mbstring \
         php7.0-bcmath \
         php7.0-xml \
@@ -55,7 +54,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php7.1-tidy \
         php7.1-imap \
         php7.1-xsl \
-        php7.1-dev \
         php7.1-mbstring \
         php7.1-bcmath \
         php7.1-xml \
@@ -81,7 +79,6 @@ RUN apt-get --no-install-recommends -y --force-yes install \
         php7.2-zip \
         php7.2-json \
         php7.2-iconv \
-        php7.2-dev \
         openssl
 
 # Cleanup
