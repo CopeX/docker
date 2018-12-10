@@ -27,8 +27,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php5.6-mbstring \
         php5.6-soap \
         curl \
-
-        # Install PHP 7.0
         php7.0 \
         php7.0-cli \
         php7.0-common \
@@ -46,8 +44,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php7.0-xml \
         php7.0-zip \
         php7.0-soap \
-
-        # Install PHP 7.1
         php7.1 \
         php7.1-cli \
         php7.1-common \
@@ -66,6 +62,28 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php7.1-zip \
         php7.1-soap
 
+        # Install PHP 7.2
+RUN apt-get --no-install-recommends -y --force-yes install \
+        php7.2 \
+        php7.2-cli \
+        php7.2-common \
+        php7.2-bcmath \
+        php7.2-ctype \
+        php7.2-curl \
+        php7.2-dom \
+        php7.2-gd \
+        php7.2-intl \
+        php7.2-mbstring \
+        php7.2-mysql \
+        php7.2-simplexml \
+        php7.2-soap \
+        php7.2-xsl \
+        php7.2-zip \
+        php7.2-json \
+        php7.2-iconv \
+        php7.2-dev \
+        openssl
+
 # Cleanup
 RUN apt-get clean && \
     rm -f /etc/dpkg/dpkg.cfg.d/02apt-speedup && \
@@ -77,6 +95,7 @@ RUN apt-get clean && \
 COPY php.ini /etc/php/5.6/cli/php.ini
 COPY php.ini /etc/php/7.0/cli/php.ini
 COPY php.ini /etc/php/7.1/cli/php.ini
+COPY php.ini /etc/php/7.2/cli/php.ini
 
 COPY init /etc/my_init.d
 
