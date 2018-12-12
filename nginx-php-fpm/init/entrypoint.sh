@@ -49,7 +49,11 @@ sed -i 's/-c \/etc\/php\/$PHP_VERSION\/fpm/-c \/etc\/php\/$PHP_VERSION-noxdebug\
 
 chmod +x /etc/service/php-fpm-noxdebug/run
 
-if [ "$PHP_ENABLE_XDEBUG" != "true" ]; then
+if [ -z ${$PHP_ENABLE_XDEBUG:-} ]; then
+    PHP_ENABLE_XDEBUG="true"
+fi
+
+if [ "$PHP_ENABLE_XDEBUG" == "false" ]; then
     rm /etc/php/$PHP_VERSION/fpm/conf.d/20-xdebug.ini
     rm /etc/php/$PHP_VERSION/cli/conf.d/20-xdebug.ini
 fi
