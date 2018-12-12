@@ -22,6 +22,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     php7.0-dev \
     php7.1-dev \
     php7.2-dev \
+    php7.3-dev \
     php5.6-xdebug \
     iproute2
 
@@ -82,15 +83,19 @@ COPY mailcatcher/mailcatcher.sh /etc/service/mailcatcher/run
 RUN ln -s /etc/php/5.6/fpm/conf.d/22-mailcatcher.ini /etc/php/7.0/fpm/conf.d/22-mailcatcher.ini && \
     ln -s /etc/php/5.6/fpm/conf.d/22-mailcatcher.ini /etc/php/7.1/fpm/conf.d/22-mailcatcher.ini && \
     ln -s /etc/php/5.6/fpm/conf.d/22-mailcatcher.ini /etc/php/7.2/fpm/conf.d/22-mailcatcher.ini && \
+    ln -s /etc/php/5.6/fpm/conf.d/22-mailcatcher.ini /etc/php/7.3/fpm/conf.d/22-mailcatcher.ini && \
     ln -s /etc/php/5.6/fpm/conf.d/21-xdebug.ini /etc/php/7.0/fpm/conf.d/21-xdebug.ini && \
     ln -s /etc/php/5.6/fpm/conf.d/21-xdebug.ini /etc/php/7.1/fpm/conf.d/21-xdebug.ini && \
     ln -s /etc/php/5.6/fpm/conf.d/21-xdebug.ini /etc/php/7.2/fpm/conf.d/21-xdebug.ini && \
+    ln -s /etc/php/5.6/fpm/conf.d/21-xdebug.ini /etc/php/7.3/fpm/conf.d/21-xdebug.ini && \
     ln -sf /etc/php/5.6/fpm/php.ini  /etc/php/7.0/fpm/php.ini  && \
     ln -sf /etc/php/5.6/fpm/php.ini  /etc/php/7.1/fpm/php.ini  && \
     ln -sf /etc/php/5.6/fpm/php.ini  /etc/php/7.2/fpm/php.ini  && \
+    ln -sf /etc/php/5.6/fpm/php.ini  /etc/php/7.3/fpm/php.ini  && \
     ln -sf /etc/php/5.6/fpm/pool.d/www.conf /etc/php/7.0/fpm/pool.d/www.conf && \
     ln -sf /etc/php/5.6/fpm/pool.d/www.conf /etc/php/7.1/fpm/pool.d/www.conf && \
     ln -sf /etc/php/5.6/fpm/pool.d/www.conf /etc/php/7.2/fpm/pool.d/www.conf && \
+    ln -sf /etc/php/5.6/fpm/pool.d/www.conf /etc/php/7.3/fpm/pool.d/www.conf && \
     chmod +x /etc/service/mailcatcher/run && \
     rm -rf /etc/nginx/conf.d/includes/nginx/90-file-cache.conf
 
