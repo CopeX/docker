@@ -2,7 +2,7 @@ FROM composer/satis
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apk --no-cache add supervisor
+RUN apk --no-cache add supervisor at
 
 COPY bin/* /satis/bin/
 
