@@ -41,9 +41,9 @@ fi
 
 # No Xdebug fpm
 cp -r /etc/php/$PHP_VERSION /etc/php/$PHP_VERSION-noxdebug
-rm /etc/php/$PHP_VERSION-noxdebug/fpm/conf.d/20-xdebug.ini
-rm /etc/php/$PHP_VERSION-noxdebug/cli/conf.d/20-xdebug.ini
-rm /etc/php/$PHP_VERSION-noxdebug/fpm/pool.d/www.conf
+rm -f /etc/php/$PHP_VERSION-noxdebug/fpm/conf.d/20-xdebug.ini
+rm -f /etc/php/$PHP_VERSION-noxdebug/cli/conf.d/20-xdebug.ini
+rm -f /etc/php/$PHP_VERSION-noxdebug/fpm/pool.d/www.conf
 cp -f /etc/php/5.6/fpm/pool.d/www.conf /etc/php/$PHP_VERSION-noxdebug/fpm/pool.d/www.conf
 sed -i 's/php-fpm.sock/php-fpm-noxdebug.sock/g' /etc/php/$PHP_VERSION-noxdebug/fpm/pool.d/www.conf
 sed -i "s/php$PHP_VERSION-fpm\.pid/php$PHP_VERSION-fpm-noxdebug\.pid/g" /etc/php/$PHP_VERSION-noxdebug/fpm/php-fpm.conf
@@ -55,6 +55,6 @@ chmod +x /etc/service/php-fpm-noxdebug/run
 
 
 if [ "$PHP_ENABLE_XDEBUG" = "false" ]; then
-    rm /etc/php/$PHP_VERSION/fpm/conf.d/20-xdebug.ini
-    rm /etc/php/$PHP_VERSION/cli/conf.d/20-xdebug.ini
+    rm -f /etc/php/$PHP_VERSION/fpm/conf.d/20-xdebug.ini
+    rm -f /etc/php/$PHP_VERSION/cli/conf.d/20-xdebug.ini
 fi
