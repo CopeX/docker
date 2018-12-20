@@ -1,0 +1,48 @@
+version: "3"
+services:
+    app:
+        image: copex/nginx-php-fpm
+        container_name: wpc-test
+        ports:
+            - "8100:80"
+        links:
+            - "cache:rediscache"
+            - "sessions:redissession"
+            - "fullpagecache:redisfullpagecache"
+            - "sql:sql"
+        environment:
+            DOMAIN: www.wpc-profi.com
+            MAGENTO_ROOT: /var/www/htdocs
+            MAGENTO_DEVELOPERMODE: 0
+        volumes:
+            - /var/www/wpc-profi/httpdocs/:/var/www/htdocs
+            - ./nginx/:/etc/nginx/conf.d/
+            - /etc/ssl/wp-profi-2019.key:/etc/nginx/ssl/cert.key
+            - /etc/ssl/wp-profi-2019.crt:/etc/nginx/ssl/cert.pem
+    sql:
+        image: mariadb
+        environment:
+            MYSQL_ROOT_PASSWORD: H1siiDae3Kiel7u
+            MYSQL_USER: magento
+            MYSQL_PASSWORD: H@siiDae3Kiel7u
+            MYSQL_DATABASE: magento_2
+        container_name: sql-wpc
+        ports:
+        - "3308:3306"
+        volumes:
+        - "/var/databases/test:/var/lib/mysql"
+    cache:
+        image: redis:latest
+    fullpagecache:
+        image: redis:latest
+    sessions:
+        image: redis:latest
+    cron:
+        image: copex/cron
+        links:
+            - "cache:rediscache"
+            - "sessions:redissession"
+            - "fullpagecache:redisfullpagecache"
+            - "sql:sql"
+        volumes:
+        - /var/www/wpc-profi/httpdocs/:/var/www/htdocs
