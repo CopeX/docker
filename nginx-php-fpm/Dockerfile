@@ -37,10 +37,6 @@ COPY ./nginx/service/runit.sh /etc/service/nginx/run
 RUN chmod +x /etc/service/nginx/run && \
     rm -rf /build
 
-# Copy custom init script
-COPY bin/ /usr/sbin/
-COPY init /etc/my_init.d
-
 # Prepare configuration
 COPY nginx/site-templates/ /etc/nginx/site-templates/
 COPY nginx/includes/ /etc/nginx/conf.d/includes/
@@ -58,6 +54,10 @@ COPY php-fpm/php-fpm.conf /etc/php/7.3/fpm/pool.d/www.conf
 
 # Configure PHP-FPM to start as a service
 COPY ./php-fpm/service/runit.sh /etc/service/php-fpm/run
+
+# Copy custom init script
+COPY bin/ /usr/sbin/
+COPY init /etc/my_init.d
 
 RUN chmod +x /etc/my_init.d/*.sh && \
     chmod +x /etc/service/php-fpm/run
