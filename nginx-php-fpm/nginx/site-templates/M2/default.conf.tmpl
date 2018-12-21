@@ -17,7 +17,6 @@ server {
     set $MAGE_MODE production;
 
 
-    include /etc/nginx/conf.d/includes/default/*.conf;
     include /etc/nginx/conf.d/M2/nginx.conf;
 
     add_header X-Config-By 'CopeX.io';

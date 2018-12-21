@@ -33,7 +33,7 @@ cp /etc/nginx/site-templates/M$MAGENTO_VERSION/default.conf.tmpl /etc/nginx/site
 find "${outdir}" -maxdepth 1 -type f -exec rm -v {} \;
 
 template_files | xargs -0 substitute-env-vars.sh "${outdir}"
-non_template_files | xargs -0 -I{} ln -s {} "${outdir}"
+non_template_files | xargs -0 -I{} ln -sf {} "${outdir}"
 
 if [ -z ${PHP_VERSION:-} ]; then
     PHP_VERSION="5.6"
