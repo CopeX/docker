@@ -1,0 +1,27 @@
+upstream fastcgi_backend {
+    server   unix:/var/run/php-fpm.sock;
+}
+
+
+server {
+    listen                      80 default_server;
+    listen                      443 default_server ssl;
+
+    client_max_body_size        10M;
+
+    ssl_certificate             /etc/nginx/ssl/cert.pem;
+    ssl_certificate_key        /etc/nginx/ssl/cert.key;
+
+    server_name ${DOMAIN};
+    set $MAGE_ROOT ${MAGENTO_ROOT};
+    set $MAGE_MODE production;
+
+
+    include /etc/nginx/conf.d/includes/default/*.conf;
+    include /etc/nginx/conf.d/M2/nginx.conf;
+
+    add_header X-Config-By 'CopeX.io';
+    add_header X-XSS-Protection "1; mode=block";
+    add_header X-UA-Compatible 'IE=Edge,chrome=1';
+    add_header X-Processing-Time $request_time;
+}

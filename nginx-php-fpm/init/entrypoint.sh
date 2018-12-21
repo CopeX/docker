@@ -3,7 +3,7 @@
 set -eu
 
 
-templates_dir="/etc/nginx/sites-templates"
+templates_dir="/etc/nginx/site-templates"
 outdir="/etc/nginx/conf.d"
 
 function template_files() {
@@ -22,6 +22,12 @@ function non_template_files() {
         -name '*.tmpl' \
         -print0
 }
+
+if [ -z ${MAGENTO_VERSION:-} ]; then
+    MAGENTO_VERSION="1"
+fi
+
+cp /etc/nginx/site-templates/M$MAGENTO_VERSION/default.conf.tmpl /etc/nginx/site-templates/default.conf.tmpl
 
 #clean
 find "${outdir}" -maxdepth 1 -type f -exec rm -v {} \;

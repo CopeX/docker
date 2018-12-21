@@ -42,7 +42,7 @@ COPY bin/ /usr/sbin/
 COPY init /etc/my_init.d
 
 # Prepare configuration
-COPY nginx/sites-templates/ /etc/nginx/sites-templates/
+COPY nginx/site-templates/ /etc/nginx/site-templates/
 COPY nginx/includes/ /etc/nginx/conf.d/includes/
 COPY nginx/ssl/ /etc/nginx/ssl/
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
