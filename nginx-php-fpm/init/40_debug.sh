@@ -1,10 +1,5 @@
 #!/bin/bash
 
-
-if [ -z ${PHP_ENABLE_XDEBUG:-} ]; then
-    PHP_ENABLE_XDEBUG="true"
-fi
-
 # No Xdebug fpm
 cp -r /etc/php/$PHP_VERSION /etc/php/$PHP_VERSION-noxdebug
 rm -f /etc/php/$PHP_VERSION-noxdebug/fpm/conf.d/20-xdebug.ini
@@ -18,6 +13,12 @@ mkdir -p /etc/service/php-fpm-noxdebug
 cp /etc/service/php-fpm/run /etc/service/php-fpm-noxdebug/run && \
 sed -i 's/php-fpm$PHP_VERSION -c \/etc\/php\/$PHP_VERSION\/fpm/PHP_INI_SCAN_DIR=\/etc\/php\/$PHP_VERSION-noxdebug\/fpm\/conf\.d\/ php-fpm$PHP_VERSION -c \/etc\/php\/$PHP_VERSION-noxdebug\/fpm -y \/etc\/php\/$PHP_VERSION-noxdebug\/fpm\/php-fpm\.conf/g' /etc/service/php-fpm-noxdebug/run
 chmod +x /etc/service/php-fpm-noxdebug/run
+
+
+
+if [ -z ${PHP_ENABLE_XDEBUG:-} ]; then
+    PHP_ENABLE_XDEBUG="true"
+fi
 
 
 if [ "$PHP_ENABLE_XDEBUG" = "false" ]; then

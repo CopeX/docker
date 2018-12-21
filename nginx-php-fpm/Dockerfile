@@ -101,7 +101,6 @@ RUN ln -s /etc/php/5.6/fpm/conf.d/22-mailcatcher.ini /etc/php/7.0/fpm/conf.d/22-
 
 COPY init /etc/my_init.d
 
-COPY nginx/site-templates/defaultM2.conf.tmpl /etc/nginx/site-templates/defaultM2.conf.tmpl
-COPY nginx/nginxM2.conf /etc/nginx/conf.d/M2/nginxM2.conf
+COPY nginx/site-templates/ /etc/nginx/site-templates/
 
 RUN usermod -u 1000 www-data
