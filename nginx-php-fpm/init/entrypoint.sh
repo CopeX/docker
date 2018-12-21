@@ -46,6 +46,11 @@ if [ -z ${PHP_VERSION:-} ]; then
 fi
 ln -sf /usr/bin/php$PHP_VERSION /etc/alternatives/php
 
+echo "\n127.0.0.1 $DOMAIN" >> /etc/hosts
+
+sed -i "s/hostname=.*/hostname$DOMAIN/g" /etc/ssmtp/ssmtp.conf
+
+
 if [ -z ${PHP_ENABLE_XDEBUG:-} ]; then
     PHP_ENABLE_XDEBUG="true"
 fi
