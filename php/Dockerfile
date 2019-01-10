@@ -120,6 +120,5 @@ COPY php.ini /etc/php/7.3/cli/php.ini
 
 COPY init /etc/my_init.d
 
-COPY bin/php_composer /usr/local/bin/php_composer
 
 WORKDIR /var/www/htdocs
