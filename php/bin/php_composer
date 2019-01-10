@@ -1,0 +1,5 @@
+#!/bin/bash
+
+/etc/my_init.d/20_set_php_version.sh
+
+composer $@
