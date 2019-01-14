@@ -16,6 +16,8 @@ server {
     include /etc/nginx/conf.d/includes/default/*.conf;
     include /etc/nginx/conf.d/includes/magento/*.conf;
 
+    include /etc/nginx/conf.d/M1/*.conf;
+
     location ~ \.php$ {
         include /etc/nginx/conf.d/includes/php/*.conf;
         fastcgi_param                   MAGENTO_ROOT ${MAGENTO_ROOT};

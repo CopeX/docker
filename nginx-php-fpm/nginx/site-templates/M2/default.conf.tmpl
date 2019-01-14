@@ -17,7 +17,7 @@ server {
     set $MAGE_MODE production;
 
 
-    include /etc/nginx/conf.d/M2/nginx.conf;
+    include /etc/nginx/conf.d/M2/*.conf;
 
     add_header X-Config-By 'CopeX.io';
     add_header X-XSS-Protection "1; mode=block";
