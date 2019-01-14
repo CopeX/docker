@@ -30,7 +30,7 @@ RUN apt-get clean && \
     rm -f /etc/dpkg/dpkg.cfg.d/02apt-speedup && \
     find /var/lib/apt/lists -mindepth 1 -delete -print && \
     find /tmp /var/tmp -mindepth 2 -delete && \
-    apt-get purge -y --auto-remove build-essential zlib1g-dev libssl-dev libpcre3-dev unzip wget
+    apt-get purge -y --auto-remove build-essential zlib1g-dev libssl-dev libpcre3-dev
 
 # Configure nginx to start as a service
 COPY ./nginx/service/runit.sh /etc/service/nginx/run
