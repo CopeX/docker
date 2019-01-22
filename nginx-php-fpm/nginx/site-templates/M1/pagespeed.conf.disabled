@@ -58,11 +58,9 @@ pagespeed Disallow "*/backoffice/*";
 
 pagespeed StatisticsLogging on;
 pagespeed StatisticsPath /ngx_pagespeed_statistics;
-pagespeed GlobalStatisticsPath /ngx_pagespeed_global_statistics;
 pagespeed MessagesPath /ngx_pagespeed_message;
 pagespeed ConsolePath /pagespeed_console;
 pagespeed AdminPath /pagespeed_admin;
-pagespeed GlobalAdminPath /pagespeed_global_admin;
 
 location /ngx_pagespeed_statistics { allow 127.0.0.1; deny all; }
 location /ngx_pagespeed_global_statistics { allow 127.0.0.1; deny all; }

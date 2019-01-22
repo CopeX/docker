@@ -29,6 +29,23 @@ fi
 
 cp /etc/nginx/site-templates/M$MAGENTO_VERSION/default.conf.tmpl /etc/nginx/site-templates/default.conf.tmpl
 
+if [ -z ${SSL_ON:-} ]; then
+    SSL_ON="0"
+fi
+
+if [ "$SSL_ON" == "0" ]; then
+    sed -i "s/ http2 ssl/ http2/g" /etc/nginx/site-templates/default.conf.tmpl
+    sed -i "s/ssl_certificate/# ssl_certificate/g" /etc/nginx/site-templates/default.conf.tmpl
+fi
+
+if [ -z ${PAGESPEED:-} ]; then
+    PAGESPEED="0"
+fi
+
+if [ "$PAGESPEED" == "1" ]; then
+    ln -s /etc/nginx/site-templates/M$MAGENTO_VERSION/pagespeed.conf.disabled /etc/nginx/site-templates/M$MAGENTO_VERSION/pagespeed.conf
+fi
+
 #clean
 find "${outdir}" -maxdepth 1 -type f -exec rm -v {} \;
 
