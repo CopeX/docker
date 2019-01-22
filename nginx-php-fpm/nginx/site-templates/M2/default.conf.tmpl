@@ -8,7 +8,7 @@ upstream fastcgi_backend_noxdebug {
 
 server {
     listen                      80 default_server;
-    listen                      443 default_server;
+    listen                      443 default_server http2;
 
     client_max_body_size        10M;
 
@@ -16,7 +16,7 @@ server {
     set $MAGE_ROOT ${MAGENTO_ROOT};
     set $MAGE_MODE developer;
 
-    include /etc/nginx/conf.d/M2/nginx.conf;
+    include /etc/nginx/conf.d/M2/*.conf;
 
    add_header X-Config-By 'CopeX.io';
    add_header X-XSS-Protection "1; mode=block";
