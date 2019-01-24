@@ -57,6 +57,12 @@ apt-get install ruby2.2 ruby2.2-dev -y --force-yes
 RUN gem install mailcatcher --conservative --no-rdoc --no-ri
 
 #################################
+# Node.js                       #
+#################################
+RUN curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - && \
+    sudo apt-get --no-install-recommends -y --force-yes install nodejs
+
+#################################
 # Cleanup                       #
 #################################
 RUN apt-get autoremove -y && \
