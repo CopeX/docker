@@ -57,10 +57,11 @@ apt-get install ruby2.2 ruby2.2-dev -y --force-yes
 RUN gem install mailcatcher --conservative --no-rdoc --no-ri
 
 #################################
-# Node.js                       #
+# Node.js    & BrowserSync      #
 #################################
 RUN curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - && \
-    sudo apt-get --no-install-recommends -y --force-yes install nodejs
+    sudo apt-get --no-install-recommends -y --force-yes install nodejs && \
+    npm install -g browser-sync
 
 #################################
 # Cleanup                       #
