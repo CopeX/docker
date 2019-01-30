@@ -47,9 +47,7 @@ RUN composer global require hirak/prestissimo
 #################################
 # Ruby 2                        #
 #################################
-RUN apt-add-repository ppa:brightbox/ruby-ng && \
-apt-get update && \
-apt-get install ruby2.2 ruby2.2-dev -y --force-yes
+RUN apt-get install ruby ruby-dev -y --force-yes
 
 #################################
 # Mailcatcher                   #
