@@ -1,0 +1,79 @@
+version: '3'
+# https://raw.githubusercontent.com/jontey/docker-magento2/master/docker-compose.yml
+networks:
+    default:
+        external: false
+    web_traefik:
+        external: true
+
+volumes:
+    magento_web:
+    magento_composer:
+    magento_db:
+
+services:
+    cron:
+        image: fballiano/magento2-cron
+        networks:
+            - default
+        depends_on:
+            - apache
+        links:
+            - db
+            - cache
+            - clusterdata
+            - apache
+        volumes:
+            - magento2_web:/var/www/html
+            # Enable the next line if you want to add a custom php.ini
+            #- ./php.ini:/usr/local/etc/php/conf.d/999-customphp.ini
+
+    apache:
+        image: fballiano/magento2-apache-php
+        networks:
+            - default
+            - web_traefik
+        depends_on:
+            - db
+            - cache
+            - clusterdata
+        links:
+            - db
+            - cache
+            - clusterdata
+        volumes:
+            - magento2_web:/var/www/html
+            - magento_composer:/root/.composer
+            # Enable the next line if you want to add a custom php.ini
+            #- ./php.ini:/usr/local/etc/php/conf.d/999-customphp.ini
+        deploy:
+            labels:
+                - "traefik.enable=true"
+                - "traefik.port=80"
+                - "traefik.frontend.rule=Host:magento.localhost"
+                - "traefik.entrypoints=https"
+                - "traefik.frontend.passHostHeader=true"
+                - "traefik.backend=apache"
+                - "traefik.docker.network=web_traefik"
+
+    db:
+        image: mariadb
+        networks:
+            - default
+        volumes:
+            - magento_db:/var/lib/mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD=magento2
+            - MYSQL_DATABASE=magento2
+            - MYSQL_USER=magento2
+            - MYSQL_PASSWORD=magento2
+
+    cache:
+        image: fballiano/redis-volatile
+        networks:
+            - default
+
+    clusterdata:
+        image: fballiano/redis-volatile
+        networks:
+            - default

@@ -86,9 +86,13 @@ COPY php-fpm/php-fpm.conf /etc/php/5.6/fpm/pool.d/www.conf
 COPY mailcatcher/mailcatcher.sh /etc/service/mailcatcher/run
 
 RUN ln -s /etc/php/5.6/fpm/conf.d/22-mailcatcher.ini /etc/php/7.0/fpm/conf.d/22-mailcatcher.ini && \
+RUN ln -s /etc/php/5.6/fpm/conf.d/22-mailcatcher.ini /etc/php/7.0/cli/conf.d/22-mailcatcher.ini && \
     ln -s /etc/php/5.6/fpm/conf.d/22-mailcatcher.ini /etc/php/7.1/fpm/conf.d/22-mailcatcher.ini && \
+    ln -s /etc/php/5.6/fpm/conf.d/22-mailcatcher.ini /etc/php/7.1/cli/conf.d/22-mailcatcher.ini && \
     ln -s /etc/php/5.6/fpm/conf.d/22-mailcatcher.ini /etc/php/7.2/fpm/conf.d/22-mailcatcher.ini && \
+    ln -s /etc/php/5.6/fpm/conf.d/22-mailcatcher.ini /etc/php/7.2/cli/conf.d/22-mailcatcher.ini && \
     ln -s /etc/php/5.6/fpm/conf.d/22-mailcatcher.ini /etc/php/7.3/fpm/conf.d/22-mailcatcher.ini && \
+    ln -s /etc/php/5.6/fpm/conf.d/22-mailcatcher.ini /etc/php/7.3/cli/conf.d/22-mailcatcher.ini && \
     ln -s /etc/php/5.6/fpm/conf.d/21-xdebug.ini /etc/php/7.0/fpm/conf.d/21-xdebug.ini && \
     ln -s /etc/php/5.6/fpm/conf.d/21-xdebug.ini /etc/php/7.1/fpm/conf.d/21-xdebug.ini && \
     ln -s /etc/php/5.6/fpm/conf.d/21-xdebug.ini /etc/php/7.2/fpm/conf.d/21-xdebug.ini && \
