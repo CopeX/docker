@@ -61,21 +61,26 @@ if [[ -z ${PHP_VERSION:-} ]]; then
 fi
 ln -sf /usr/bin/php$PHP_VERSION /etc/alternatives/php
 
-echo "127.0.0.1 $DOMAIN" >> /etc/hosts
-
-if [[ -z ${SSMTP_USER:-} ]]; then
-    SSMTP_USER="copex"
+if [[ ! $(grep '/etc/hosts' -e $DOMAIN) ]]; then
+    echo "127.0.0.1 $DOMAIN" >> /etc/hosts
 fi
 
-if [[ -z ${SSMTP_PASS:-} ]]; then
-    SSMTP_PASS="xepoc"
-fi
+if [[ ! $(grep '/etc/ssmtp/ssmtp.conf' -e 'AuthUser') ]]; then
 
-if [[ -z ${SSMTP_LOGIN_METHOD:-} ]]; then
-    SSMTP_LOGIN_METHOD="LOGIN"
-fi
+    if [[ -z ${SSMTP_USER:-} ]]; then
+        SSMTP_USER="copex"
+    fi
 
-sed -i "s/hostname=.*/hostname=$DOMAIN/g" /etc/ssmtp/ssmtp.conf
-echo "AuthUser=$SSMTP_USER" >> /etc/ssmtp/ssmtp.conf
-echo "AuthPass=$SSMTP_PASS" >> /etc/ssmtp/ssmtp.conf
-echo "AuthMethod=$SSMTP_LOGIN_METHOD" >> /etc/ssmtp/ssmtp.conf
+    if [[ -z ${SSMTP_PASS:-} ]]; then
+        SSMTP_PASS="xepoc"
+    fi
+
+    if [[ -z ${SSMTP_LOGIN_METHOD:-} ]]; then
+        SSMTP_LOGIN_METHOD="LOGIN"
+    fi
+
+    sed -i "s/hostname=.*/hostname=$DOMAIN/g" /etc/ssmtp/ssmtp.conf
+    echo "AuthUser=$SSMTP_USER" >> /etc/ssmtp/ssmtp.conf
+    echo "AuthPass=$SSMTP_PASS" >> /etc/ssmtp/ssmtp.conf
+    echo "AuthMethod=$SSMTP_LOGIN_METHOD" >> /etc/ssmtp/ssmtp.conf
+fi
