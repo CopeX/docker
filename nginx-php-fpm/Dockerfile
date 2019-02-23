@@ -60,8 +60,9 @@ COPY bin/ /usr/sbin/
 COPY init /etc/my_init.d
 
 RUN chmod +x /etc/my_init.d/*.sh && \
-    chmod +x /etc/service/php-fpm/run
-
-RUN mkdir /run/php && mkdir /var/log/nginx && \
+    chmod +x /etc/service/php-fpm/run && \
+    mkdir -p /var/www/.composer/cache && \
+    chown -R www-data:www-data /var/www/.composer && \
+    mkdir /run/php && mkdir /var/log/nginx && \
     ln -s /usr/local/nginx/sbin/nginx /usr/bin/nginx
 
