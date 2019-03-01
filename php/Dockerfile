@@ -94,7 +94,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php7.3-zip \
         php7.3-json \
         php7.3-iconv \
-        openssl
+        openssl \
+        patch
 #Install composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
     php composer-setup.php --filename=composer --install-dir=/usr/local/bin && \
