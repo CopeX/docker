@@ -11,6 +11,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     add-apt-repository -y ppa:ondrej/php &&\
     apt-get update && \
     apt-get --no-install-recommends -y --force-yes install \
+        unzip \
         php5.6 \
         php5.6-mysql \
         php5.6-imagick \
@@ -58,10 +59,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php7.1-bcmath \
         php7.1-xml \
         php7.1-zip \
-        php7.1-soap
-
-        # Install PHP 7.2 and 7.3
-RUN apt-get --no-install-recommends -y --force-yes install \
+        php7.1-soap \
         php7.2 \
         php7.2-cli \
         php7.2-common \
@@ -100,9 +98,8 @@ RUN apt-get --no-install-recommends -y --force-yes install \
 #Install composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
     php composer-setup.php --filename=composer --install-dir=/usr/local/bin && \
-    php -r "unlink('composer-setup.php');"
-
-RUN composer global require hirak/prestissimo
+    php -r "unlink('composer-setup.php');" && \
+    composer global require hirak/prestissimo
 
 # Cleanup
 RUN apt-get clean && \
