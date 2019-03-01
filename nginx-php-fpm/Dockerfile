@@ -88,10 +88,15 @@ RUN ln -s /etc/php/5.6/fpm/conf.d/21-xdebug.ini /etc/php/7.0/fpm/conf.d/21-xdebu
     ln -s /etc/php/5.6/fpm/conf.d/21-xdebug.ini /etc/php/7.1/fpm/conf.d/21-xdebug.ini && \
     ln -s /etc/php/5.6/fpm/conf.d/21-xdebug.ini /etc/php/7.2/fpm/conf.d/21-xdebug.ini && \
     ln -s /etc/php/5.6/fpm/conf.d/21-xdebug.ini /etc/php/7.3/fpm/conf.d/21-xdebug.ini && \
+    ln -sf /etc/php/5.6/fpm/php.ini  /etc/php/5.6/cli/php.ini  && \
     ln -sf /etc/php/5.6/fpm/php.ini  /etc/php/7.0/fpm/php.ini  && \
+    ln -sf /etc/php/5.6/fpm/php.ini  /etc/php/7.0/cli/php.ini  && \
     ln -sf /etc/php/5.6/fpm/php.ini  /etc/php/7.1/fpm/php.ini  && \
+    ln -sf /etc/php/5.6/fpm/php.ini  /etc/php/7.1/cli/php.ini  && \
     ln -sf /etc/php/5.6/fpm/php.ini  /etc/php/7.2/fpm/php.ini  && \
+    ln -sf /etc/php/5.6/fpm/php.ini  /etc/php/7.2/cli/php.ini  && \
     ln -sf /etc/php/5.6/fpm/php.ini  /etc/php/7.3/fpm/php.ini  && \
+    ln -sf /etc/php/5.6/fpm/php.ini  /etc/php/7.3/cli/php.ini  && \
     ln -sf /etc/php/5.6/fpm/pool.d/www.conf /etc/php/7.0/fpm/pool.d/www.conf && \
     ln -sf /etc/php/5.6/fpm/pool.d/www.conf /etc/php/7.1/fpm/pool.d/www.conf && \
     ln -sf /etc/php/5.6/fpm/pool.d/www.conf /etc/php/7.2/fpm/pool.d/www.conf && \
