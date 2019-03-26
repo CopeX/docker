@@ -43,6 +43,12 @@ if [[ -z ${PAGESPEED:-} ]]; then
 fi
 
 if [[ "$PAGESPEED" == "1" ]]; then
+    if [[ -z ${TLD:-} ]]; then
+        domain=${DOMAIN}
+    else
+        domain="*.${TLD}"
+    fi
+    sed -i "s/pagespeed Domain \*;/pagespeed Domain ${domain};/g" /etc/nginx/site-templates/M$MAGENTO_VERSION/pagespeed.conf.disabled
     ln -s /etc/nginx/site-templates/M$MAGENTO_VERSION/pagespeed.conf.disabled /etc/nginx/site-templates/M$MAGENTO_VERSION/pagespeed.conf
 fi
 
