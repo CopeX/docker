@@ -15,7 +15,7 @@ RUN rm -rf /etc/nginx/conf.d/* && \
     add-apt-repository -y ppa:nginx/stable && \
     apt-get update && \
     apt-get upgrade -y && \
-    apt-get -y --force-yes install mysql-client wget php5.6-fpm php7.0-fpm php7.1-fpm php7.2-fpm php7.3-fpm ssmtp && \
+    apt-get -y --force-yes install mysql-client wget php5.6-fpm php7.0-fpm php7.1-fpm php7.2-fpm php7.3-fpm ssmtp net-tools && \
     apt-get -y install build-essential zlib1g-dev libpcre3 libpcre3-dev libssl-dev unzip sudo && \
     wget --no-check-certificate https://raw.github.com/rupa/z/master/z.sh -O /usr/local/bin/z.sh && \
     chmod +x /usr/local/bin/z.sh && \
@@ -51,6 +51,12 @@ COPY php-fpm/php-fpm.conf /etc/php/7.0/fpm/pool.d/www.conf
 COPY php-fpm/php-fpm.conf /etc/php/7.1/fpm/pool.d/www.conf
 COPY php-fpm/php-fpm.conf /etc/php/7.2/fpm/pool.d/www.conf
 COPY php-fpm/php-fpm.conf /etc/php/7.3/fpm/pool.d/www.conf
+
+RUN ln -sf /etc/php/5.6/cli/php.ini /etc/php/5.6/fpm/php.ini && \
+    ln -sf /etc/php/7.0/cli/php.ini /etc/php/7.0/fpm/php.ini && \
+    ln -sf /etc/php/7.1/cli/php.ini /etc/php/7.1/fpm/php.ini && \
+    ln -sf /etc/php/7.2/cli/php.ini /etc/php/7.2/fpm/php.ini && \
+    ln -sf /etc/php/7.3/cli/php.ini /etc/php/7.3/fpm/php.ini
 
 # Configure PHP-FPM to start as a service
 COPY ./php-fpm/service/runit.sh /etc/service/php-fpm/run
