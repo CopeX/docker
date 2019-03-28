@@ -13,8 +13,12 @@ server {
     client_max_body_size        10M;
 
     server_name ${DOMAIN};
-    set $MAGE_ROOT ${MAGENTO_ROOT};
+
     set $MAGE_MODE developer;
+
+    set $MAGENTO_ROOT ${MAGENTO_ROOT};
+    set $MAGE_RUN_TYPE ${MAGE_RUN_TYPE};
+    set $MAGE_RUN_CODE ${MAGE_RUN_CODE};
 
     include /etc/nginx/conf.d/M2/*.conf;
 
