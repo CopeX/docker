@@ -69,33 +69,24 @@ RUN apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+COPY mailcatcher/mailcatcher.sh /etc/service/mailcatcher/run
+
 # Configure
-COPY php-fpm/ext-xdebug.ini /etc/php/5.6/fpm/conf.d/21-xdebug.ini
-
-
+COPY php-fpm/ext-xdebug.ini /etc/php/conf.d/21-xdebug.ini
 
 
 COPY magento/local.xml.phpunit /var/www/htdocs/app/etc/local.xml.phpunit
 COPY magento/phpunit.xml.dist /var/www/htdocs/phpunit.xml.dist
 
-# Copy php config
-COPY php-fpm/php.ini /etc/php/5.6/cli/php.ini
-COPY php-fpm/php-fpm.conf /etc/php/5.6/fpm/pool.d/www.conf
+# Copy php config (to override production config)
+COPY php-fpm/php.ini /etc/php/php.ini
+COPY php-fpm/php-fpm.conf /etc/php/www.conf
 
-COPY mailcatcher/mailcatcher.sh /etc/service/mailcatcher/run
-
-RUN ln -s /etc/php/5.6/fpm/conf.d/21-xdebug.ini /etc/php/7.0/fpm/conf.d/21-xdebug.ini && \
-    ln -s /etc/php/5.6/fpm/conf.d/21-xdebug.ini /etc/php/7.1/fpm/conf.d/21-xdebug.ini && \
-    ln -s /etc/php/5.6/fpm/conf.d/21-xdebug.ini /etc/php/7.2/fpm/conf.d/21-xdebug.ini && \
-    ln -s /etc/php/5.6/fpm/conf.d/21-xdebug.ini /etc/php/7.3/fpm/conf.d/21-xdebug.ini && \
-    ln -sf /etc/php/5.6/cli/php.ini  /etc/php/7.0/cli/php.ini  && \
-    ln -sf /etc/php/5.6/cli/php.ini  /etc/php/7.1/cli/php.ini  && \
-    ln -sf /etc/php/5.6/cli/php.ini  /etc/php/7.2/cli/php.ini  && \
-    ln -sf /etc/php/5.6/cli/php.ini  /etc/php/7.3/cli/php.ini  && \
-    ln -sf /etc/php/5.6/fpm/pool.d/www.conf /etc/php/7.0/fpm/pool.d/www.conf && \
-    ln -sf /etc/php/5.6/fpm/pool.d/www.conf /etc/php/7.1/fpm/pool.d/www.conf && \
-    ln -sf /etc/php/5.6/fpm/pool.d/www.conf /etc/php/7.2/fpm/pool.d/www.conf && \
-    ln -sf /etc/php/5.6/fpm/pool.d/www.conf /etc/php/7.3/fpm/pool.d/www.conf && \
+RUN ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/5.6/fpm/conf.d/21-xdebug.ini && \
+    ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/7.0/fpm/conf.d/21-xdebug.ini && \
+    ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/7.1/fpm/conf.d/21-xdebug.ini && \
+    ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/7.2/fpm/conf.d/21-xdebug.ini && \
+    ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/7.3/fpm/conf.d/21-xdebug.ini && \
     chmod +x /etc/service/mailcatcher/run && \
     rm -rf /etc/nginx/conf.d/includes/nginx/90-file-cache.conf
 
