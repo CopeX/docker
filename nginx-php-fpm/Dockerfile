@@ -46,20 +46,21 @@ COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY nginx/ssl/dhparams.pem /etc/ssl/private/
 
 # Copy php config
-COPY php-fpm/php-fpm.conf /etc/php/5.6/fpm/pool.d/www.conf
-COPY php-fpm/php-fpm.conf /etc/php/7.0/fpm/pool.d/www.conf
-COPY php-fpm/php-fpm.conf /etc/php/7.1/fpm/pool.d/www.conf
-COPY php-fpm/php-fpm.conf /etc/php/7.2/fpm/pool.d/www.conf
-COPY php-fpm/php-fpm.conf /etc/php/7.3/fpm/pool.d/www.conf
+COPY php-fpm/php-fpm.conf /etc/php/www.conf
+RUN ln -sf /etc/php/www.conf /etc/php/5.6/fpm/pool.d/www.conf && \
+    ln -sf /etc/php/www.conf /etc/php/7.0/fpm/pool.d/www.conf && \
+    ln -sf /etc/php/www.conf /etc/php/7.1/fpm/pool.d/www.conf && \
+    ln -sf /etc/php/www.conf /etc/php/7.2/fpm/pool.d/www.conf && \
+    ln -sf /etc/php/www.conf /etc/php/7.3/fpm/pool.d/www.conf
 
-RUN ln -sf /etc/php/5.6/cli/php.ini /etc/php/5.6/fpm/php.ini && \
-    ln -sf /etc/php/7.0/cli/php.ini /etc/php/7.0/fpm/php.ini && \
-    ln -sf /etc/php/7.1/cli/php.ini /etc/php/7.1/fpm/php.ini && \
-    ln -sf /etc/php/7.2/cli/php.ini /etc/php/7.2/fpm/php.ini && \
-    ln -sf /etc/php/7.3/cli/php.ini /etc/php/7.3/fpm/php.ini
+RUN ln -sf /etc/php/php.ini /etc/php/5.6/fpm/php.ini && \
+    ln -sf /etc/php/php.ini /etc/php/7.0/fpm/php.ini && \
+    ln -sf /etc/php/php.ini /etc/php/7.1/fpm/php.ini && \
+    ln -sf /etc/php/php.ini /etc/php/7.2/fpm/php.ini && \
+    ln -sf /etc/php/php.ini /etc/php/7.3/fpm/php.ini
 
 # Configure PHP-FPM to start as a service
-COPY ./php-fpm/service/runit.sh /etc/service/php-fpm/run
+COPY php-fpm/service/runit.sh /etc/service/php-fpm/run
 
 # Copy custom init script
 COPY bin/ /usr/sbin/

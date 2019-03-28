@@ -12,6 +12,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     apt-get update && \
     apt-get --no-install-recommends -y --force-yes install \
         unzip \
+        php-redis \
         php5.6 \
         php5.6-mysql \
         php5.6-imagick \
@@ -21,7 +22,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php5.6-memcache \
         php5.6-intl \
         php5.6-gd \
-        php5.6-redis \
         php5.6-xsl \
         php5.6-intl \
         php5.6-zip \
@@ -110,11 +110,12 @@ RUN apt-get clean && \
     apt-get purge -y --auto-remove
 
 # Copy php config
-COPY php.ini /etc/php/5.6/cli/php.ini
-COPY php.ini /etc/php/7.0/cli/php.ini
-COPY php.ini /etc/php/7.1/cli/php.ini
-COPY php.ini /etc/php/7.2/cli/php.ini
-COPY php.ini /etc/php/7.3/cli/php.ini
+COPY php.ini /etc/php/php.ini
+RUN ln -sf /etc/php/php.ini /etc/php/5.6/cli/php.ini && \
+    ln -sf /etc/php/php.ini /etc/php/7.0/cli/php.ini && \
+    ln -sf /etc/php/php.ini /etc/php/7.1/cli/php.ini && \
+    ln -sf /etc/php/php.ini /etc/php/7.2/cli/php.ini && \
+    ln -sf /etc/php/php.ini /etc/php/7.3/cli/php.ini
 
 COPY init /etc/my_init.d
 
