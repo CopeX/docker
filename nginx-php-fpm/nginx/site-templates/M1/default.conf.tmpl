@@ -8,6 +8,10 @@ server {
     ssl_certificate             /etc/nginx/ssl/cert.pem;
     ssl_certificate_key        /etc/nginx/ssl/cert.key;
 
+    set $MAGENTO_ROOT ${MAGENTO_ROOT};
+    set $MAGE_RUN_TYPE ${MAGE_RUN_TYPE};
+    set $MAGE_RUN_CODE ${MAGE_RUN_CODE};
+
     root                        ${MAGENTO_ROOT};
     index                       index.php;
 
@@ -18,6 +22,5 @@ server {
 
     location ~ \.php$ {
         include /etc/nginx/conf.d/includes/php/*.conf;
-        fastcgi_param                   MAGENTO_ROOT ${MAGENTO_ROOT};
     }
 }

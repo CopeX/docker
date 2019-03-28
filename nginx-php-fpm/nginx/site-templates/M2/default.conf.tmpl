@@ -13,8 +13,11 @@ server {
     ssl_certificate_key        /etc/nginx/ssl/cert.key;
 
     server_name ${DOMAIN};
-    set $MAGE_ROOT ${MAGENTO_ROOT};
+
+    set $MAGENTO_ROOT ${MAGENTO_ROOT};
     set $MAGE_MODE production;
+    set $MAGE_RUN_TYPE ${MAGE_RUN_TYPE};
+    set $MAGE_RUN_CODE ${MAGE_RUN_CODE};
 
     include /etc/nginx/conf.d/includes/default/60-spider.conf;
     include /etc/nginx/conf.d/includes/default/70-staticcaching.conf;
