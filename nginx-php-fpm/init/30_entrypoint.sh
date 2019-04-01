@@ -27,10 +27,19 @@ if [[ -z ${MAGENTO_VERSION:-} ]]; then
     MAGENTO_VERSION="1"
 fi
 
+
 cp /etc/nginx/site-templates/M$MAGENTO_VERSION/default.conf.tmpl /etc/nginx/site-templates/default.conf.tmpl
 
 if [[ -z ${SSL_ON:-} ]]; then
     SSL_ON="0"
+fi
+
+if [[ -z ${MAGE_RUN_TYPE:-} ]]; then
+    sed -i "s/set \$MAGE_RUN_TYPE \${MAGE_RUN_TYPE};/set \$MAGE_RUN_TYPE '';/g" /etc/nginx/site-templates/default.conf.tmpl
+fi
+
+if [[ -z ${MAGE_RUN_CODE:-} ]]; then
+    sed -i "s/set \$MAGE_RUN_CODE \${MAGE_RUN_CODE};/set \$MAGE_RUN_CODE '';/g" /etc/nginx/site-templates/default.conf.tmpl
 fi
 
 if [[ "$SSL_ON" == "0" ]]; then
