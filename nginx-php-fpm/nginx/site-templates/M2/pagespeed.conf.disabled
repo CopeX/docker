@@ -55,6 +55,7 @@ pagespeed EnableFilters insert_dns_prefetch;
 
 pagespeed RetainComment "esi*";
 pagespeed Disallow "*/backoffice/*";
+pagespeed Disallow "*/checkout/*";
 
 pagespeed StatisticsLogging on;
 pagespeed StatisticsPath /ngx_pagespeed_statistics;
