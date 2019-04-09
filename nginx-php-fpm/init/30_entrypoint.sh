@@ -57,8 +57,15 @@ if [[ "$PAGESPEED" == "1" ]]; then
     else
         domain="*.${TLD}"
     fi
-    sed -i "s/pagespeed Domain \*;/pagespeed Domain ${domain};/g" /etc/nginx/site-templates/M$MAGENTO_VERSION/pagespeed.conf.disabled
-    ln -s /etc/nginx/site-templates/M$MAGENTO_VERSION/pagespeed.conf.disabled /etc/nginx/site-templates/M$MAGENTO_VERSION/pagespeed.conf
+    multipleDomains=""
+    for dm in $domain
+    do
+        multipleDomains="${multipleDomains}pagespeed Domain ${dm};\n"
+    done
+    if [[ $multipleDomains ]]; then
+        sed -i "s/pagespeed Domain \*;/${multipleDomains}/g" /etc/nginx/site-templates/M$MAGENTO_VERSION/pagespeed.conf.disabled
+    fi
+    ln -sf /etc/nginx/site-templates/M$MAGENTO_VERSION/pagespeed.conf.disabled /etc/nginx/site-templates/M$MAGENTO_VERSION/pagespeed.conf
 fi
 
 if [[ -f "/etc/nginx/.htpasswd" ]]; then
@@ -75,6 +82,7 @@ if [[ -z ${PHP_VERSION:-} ]]; then
     PHP_VERSION="5.6"
 fi
 ln -sf /usr/bin/php$PHP_VERSION /etc/alternatives/php
+
 
 if [[ ! $(grep '/etc/hosts' -e $DOMAIN) ]]; then
     echo "127.0.0.1 $DOMAIN" >> /etc/hosts
