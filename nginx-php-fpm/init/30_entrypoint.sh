@@ -78,11 +78,6 @@ find "${outdir}" -maxdepth 1 -type f -exec rm -v {} \;
 template_files | xargs -0 substitute-env-vars.sh "${outdir}"
 non_template_files | xargs -0 -I{} ln -sf {} "${outdir}"
 
-if [[ -z ${PHP_VERSION:-} ]]; then
-    PHP_VERSION="5.6"
-fi
-ln -sf /usr/bin/php$PHP_VERSION /etc/alternatives/php
-
 
 if [[ ! $(grep '/etc/hosts' -e $DOMAIN) ]]; then
     echo "127.0.0.1 $DOMAIN" >> /etc/hosts
