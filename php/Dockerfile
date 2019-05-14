@@ -11,6 +11,12 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     add-apt-repository -y ppa:ondrej/php &&\
     apt-get update && \
     apt-get --no-install-recommends -y install \
+        php5.6-fpm \
+        php7.0-fpm \
+        php7.1-fpm \
+        php7.2-fpm \
+        php7.3-fpm && \
+    apt-get --no-install-recommends -y install \
         unzip \
         php-redis \
         php5.6 \

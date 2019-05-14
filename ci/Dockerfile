@@ -1,6 +1,7 @@
 FROM copex/php
 
-RUN apt-get update && \
+RUN DEBIAN_FRONTEND=noninteractive && \
+    apt-get update && \
     apt-get --no-install-recommends -y install \
         ruby \
         zip \
