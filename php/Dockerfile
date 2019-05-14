@@ -10,7 +10,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/02apt-speedup  && \
     add-apt-repository -y ppa:ondrej/php &&\
     apt-get update && \
-    apt-get --no-install-recommends -y --force-yes install \
+    apt-get --no-install-recommends -y install \
         unzip \
         php-redis \
         php5.6 \

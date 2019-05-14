@@ -1,7 +1,7 @@
 FROM copex/php
 
 RUN apt-get update && \
-    apt-get --no-install-recommends -y --force-yes install \
+    apt-get --no-install-recommends -y install \
         ruby \
         zip \
         unzip
