@@ -9,7 +9,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/02apt-speedup  && \
     add-apt-repository -y ppa:ondrej/php && \
     apt-get update && \
-    apt-get --no-install-recommends -y --force-yes install mysql-client \
+    apt-get --no-install-recommends -y install mysql-client \
     vim \
     git \
     curl \
@@ -47,7 +47,7 @@ RUN composer global require hirak/prestissimo
 #################################
 # Ruby 2                        #
 #################################
-RUN apt-get install ruby ruby-dev -y --force-yes
+RUN apt-get install ruby ruby-dev -y
 
 #################################
 # Mailcatcher                   #
@@ -58,7 +58,7 @@ RUN gem install mailcatcher --conservative --no-rdoc --no-ri
 # Node.js    & BrowserSync      #
 #################################
 RUN curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - && \
-    sudo apt-get --no-install-recommends -y --force-yes install nodejs && \
+    sudo apt-get --no-install-recommends -y install nodejs && \
     npm install -g browser-sync
 
 #################################
