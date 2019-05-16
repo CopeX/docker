@@ -2,6 +2,8 @@ pagespeed on;
 
 pagespeed Domain *;
 
+pagespeed RespectXForwardedProto on;
+
 pagespeed RewriteLevel CoreFilters;
 
 pagespeed EnableFilters extend_cache;
