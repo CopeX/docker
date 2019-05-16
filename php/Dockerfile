@@ -33,6 +33,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php5.6-zip \
         php5.6-mbstring \
         php5.6-soap \
+        php5.6-apcu \
         curl \
         php7.0 \
         php7.0-cli \
@@ -50,6 +51,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php7.0-xml \
         php7.0-zip \
         php7.0-soap \
+        php7.0-apcu \
         php7.1 \
         php7.1-cli \
         php7.1-common \
@@ -66,6 +68,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php7.1-xml \
         php7.1-zip \
         php7.1-soap \
+        php7.1-apcu \
         php7.2 \
         php7.2-cli \
         php7.2-common \
@@ -83,6 +86,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php7.2-zip \
         php7.2-json \
         php7.2-iconv \
+        php7.2-apcu \
         php7.3 \
         php7.3-cli \
         php7.3-common \
@@ -100,6 +104,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php7.3-zip \
         php7.3-json \
         php7.3-iconv \
+        php7.3-apcu \
         openssl \
         patch
 #Install composer
