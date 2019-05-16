@@ -65,6 +65,9 @@ if [[ "$PAGESPEED" == "1" ]]; then
     if [[ $multipleDomains ]]; then
         sed -i "s/pagespeed Domain \*;/${multipleDomains}/g" /etc/nginx/site-templates/M$MAGENTO_VERSION/pagespeed.conf.disabled
     fi
+    firstDomain=$(echo ${domain} | awk '{print $1}' | sed 's/\*\.//g')
+    sed -i "s/copex.io/${firstDomain}/g" /etc/nginx/site-templates/M$MAGENTO_VERSION/pagespeed.conf.disabled
+    sed -i "s!PROJECT_ROOT!${MAGENTO_ROOT}/pub/!g" /etc/nginx/site-templates/M$MAGENTO_VERSION/pagespeed.conf.disabled
     ln -sf /etc/nginx/site-templates/M$MAGENTO_VERSION/pagespeed.conf.disabled /etc/nginx/site-templates/M$MAGENTO_VERSION/pagespeed.conf
 fi
 

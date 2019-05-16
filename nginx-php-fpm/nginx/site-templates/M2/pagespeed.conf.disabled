@@ -2,6 +2,8 @@ pagespeed on;
 
 pagespeed Domain *;
 
+pagespeed MapOriginDomain "http://localhost" "https://www.copex.io";
+pagespeed LoadFromFile "https://www.copex.io" "PROJECT_ROOT";
 pagespeed RespectXForwardedProto on;
 
 pagespeed RewriteLevel CoreFilters;
