@@ -5,7 +5,8 @@ RUN DEBIAN_FRONTEND=noninteractive && \
     apt-get --no-install-recommends -y install \
         ruby \
         zip \
-        unzip
+        unzip \
+        git
 
 RUN gem install capistrano -v 3.4.0 && \
     gem install capistrano-scm-gitcopy -v 0.1.5 && \
