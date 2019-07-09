@@ -10,7 +10,7 @@ RUN DEBIAN_FRONTEND=noninteractive && \
 
 RUN gem install capistrano -v 3.4.0 && \
     gem install capistrano-scm-gitcopy -v 0.1.5 && \
-    gem install capistrano-magento2
+    gem install capistrano-magento2 -v 0.8.7
 
 
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
