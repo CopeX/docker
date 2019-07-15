@@ -82,7 +82,7 @@ template_files | xargs -0 substitute-env-vars.sh "${outdir}"
 non_template_files | xargs -0 -I{} ln -sf {} "${outdir}"
 
 
-if [[ ! $(grep '/etc/hosts' -e $DOMAIN) ]]; then
+if [[ ! $(grep '/etc/hosts' -e "$DOMAIN") ]]; then
     echo "127.0.0.1 $DOMAIN" >> /etc/hosts
 fi
 
