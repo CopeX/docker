@@ -87,6 +87,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php7.2-json \
         php7.2-iconv \
         php7.2-apcu \
+        php7.2-imap \
         php7.3 \
         php7.3-cli \
         php7.3-common \
@@ -105,6 +106,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php7.3-json \
         php7.3-iconv \
         php7.3-apcu \
+        php7.3-imap \
         openssl \
         patch \
         git
