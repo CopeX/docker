@@ -23,7 +23,6 @@ server {
     include /etc/nginx/conf.d/M2/*.conf;
 
    add_header X-Config-By 'CopeX.io';
-   add_header X-XSS-Protection "1; mode=block";
    add_header X-UA-Compatible 'IE=Edge,chrome=1';
    add_header X-Processing-Time $request_time;
 }
