@@ -72,7 +72,7 @@ if [[ "$PAGESPEED" == "1" ]]; then
 fi
 
 if [[ -f "/etc/nginx/.htpasswd" ]]; then
-    sed -i "s/# auth_basic/auth_basic/g" /etc/nginx/site-templates/M2/nginx.conf
+    sed -i "s/# auth_basic/auth_basic/g" /etc/nginx/site-templates/M$MAGENTO_VERSION/nginx.conf
 fi
 
 #clean
