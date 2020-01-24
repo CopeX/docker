@@ -15,7 +15,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php7.0-fpm \
         php7.1-fpm \
         php7.2-fpm \
-        php7.3-fpm && \
+        php7.3-fpm \
+        php7.4-fpm && \
     apt-get --no-install-recommends -y install \
         unzip \
         php-redis \
@@ -107,15 +108,32 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php7.3-iconv \
         php7.3-apcu \
         php7.3-imap \
+        php7.4 \
+        php7.4-cli \
+        php7.4-common \
+        php7.4-bcmath \
+        php7.4-ctype \
+        php7.4-curl \
+        php7.4-dom \
+        php7.4-gd \
+        php7.4-intl \
+        php7.4-mbstring \
+        php7.4-mysql \
+        php7.4-simplexml \
+        php7.4-soap \
+        php7.4-xsl \
+        php7.4-zip \
+        php7.4-json \
+        php7.4-iconv \
+        php7.4-apcu \
+        php7.4-imap \
         openssl \
         patch \
         git
 
 #Install composer
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
-    php composer-setup.php --filename=composer --install-dir=/usr/local/bin && \
-    php -r "unlink('composer-setup.php');" && \
-    composer global require hirak/prestissimo
+RUN  curl --show-error --silent https://getcomposer.org/installer | php && \
+    php composer.phar global require hirak/prestissimo
 
 # Cleanup
 RUN apt-get clean && \
@@ -130,7 +148,8 @@ RUN ln -sf /etc/php/php.ini /etc/php/5.6/cli/php.ini && \
     ln -sf /etc/php/php.ini /etc/php/7.0/cli/php.ini && \
     ln -sf /etc/php/php.ini /etc/php/7.1/cli/php.ini && \
     ln -sf /etc/php/php.ini /etc/php/7.2/cli/php.ini && \
-    ln -sf /etc/php/php.ini /etc/php/7.3/cli/php.ini
+    ln -sf /etc/php/php.ini /etc/php/7.3/cli/php.ini && \
+    ln -sf /etc/php/php.ini /etc/php/7.4/cli/php.ini
 
 COPY init /etc/my_init.d
 
