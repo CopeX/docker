@@ -3,18 +3,16 @@ FROM copex/php
 RUN DEBIAN_FRONTEND=noninteractive && \
     apt-get update && \
     apt-get --no-install-recommends -y install \
-        ruby \
+        openssh-client \
         zip \
         unzip \
         git
 
-RUN gem install capistrano -v 3.4.0 && \
-    gem install capistrano-scm-gitcopy -v 0.1.5 && \
-    gem install capistrano-magento2 -v 0.8.7
-
-
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
-    php composer-setup.php && \
-    php -r "unlink('composer-setup.php');"
-
-RUN /var/www/htdocs/composer.phar global require hirak/prestissimo
+# set git user
+# For Docker builds disable host key checking. Be aware that by adding that
+# you are suspectible to man-in-the-middle attacks.
+# WARNING: Use this only with the Docker executor, if you use it with shell
+# you will overwrite your user's SSH config.
+RUN mkdir -p ~/.ssh && \
+    bash -c '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config' && \
+    git config --global user.email "ci@copex.io" && git config --global user.name "CI Deployment"
