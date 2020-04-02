@@ -5,7 +5,7 @@ if [ -z ${MAGENTO_VERSION:-} ]; then
 fi
 
 if [ $MAGENTO_VERSION = 2 ]; then
-    echo "* * * * * php $MAGENTO_ROOT/bin/magento cron:run >> $MAGENTO_ROOT/var/log/cron_run.log" > mycron
+    echo "* * * * * php $MAGENTO_ROOT/bin/magento cron:run | grep -v Ran jobs by schedule >> $MAGENTO_ROOT/var/log/cron_run.log" > mycron
 else
     if [ -e $MAGENTO_ROOT/scheduler_cron.sh ]; then
         echo "* * * * * ! test -e $MAGENTO_ROOT/maintenance.flag && /bin/bash $MAGENTO_ROOT/scheduler_cron.sh --mode always" > mycron
