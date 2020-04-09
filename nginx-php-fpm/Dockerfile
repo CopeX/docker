@@ -18,13 +18,17 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     tmux \
     gem \
     libsqlite3-dev \
-    php5.6-dev \
-    php7.0-dev \
-    php7.1-dev \
-    php7.2-dev \
-    php7.3-dev \
-    php5.6-xdebug \
     iproute2
+
+RUN apt-get --no-install-recommends -y install php5.6-dev
+RUN apt-get --no-install-recommends -y install php7.0-dev
+RUN apt-get --no-install-recommends -y install php7.1-dev
+RUN apt-get --no-install-recommends -y install php7.2-dev
+RUN apt-get --no-install-recommends -y install php7.3-dev
+RUN apt-get --no-install-recommends -y install php7.4-dev
+RUN apt-get --no-install-recommends -y install php-xdebug
+RUN apt-get --no-install-recommends -y install php5.6-xdebug
+
 
 ###############################
 # modman.phar                 #
@@ -87,6 +91,7 @@ RUN ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/5.6/fpm/conf.d/21-xdebug.ini &&
     ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/7.1/fpm/conf.d/21-xdebug.ini && \
     ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/7.2/fpm/conf.d/21-xdebug.ini && \
     ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/7.3/fpm/conf.d/21-xdebug.ini && \
+    ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/7.4/fpm/conf.d/21-xdebug.ini && \
     chmod +x /etc/service/mailcatcher/run && \
     rm -rf /etc/nginx/conf.d/includes/nginx/90-file-cache.conf
 
