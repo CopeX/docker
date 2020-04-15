@@ -18,6 +18,10 @@ crontab -u www-data mycron
 
 rm mycron
 
+## Disable realpath cache & set max execution time
+sed -i "s/realpath_cache_size = 4M/realpath_cache_size = 0/g" /etc/php/php.ini
+sed -i "s/max_execution_time = 90/max_execution_time = 0/g" /etc/php/php.ini
+
 # Set memory limit
 if [ -z ${MEMORY_LIMIT:-} ]; then
     MEMORY_LIMIT="512M"
