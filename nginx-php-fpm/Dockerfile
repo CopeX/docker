@@ -53,7 +53,8 @@ COPY nginx/ssl/dhparams.pem /etc/ssl/private/
 #################################
 RUN curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash - && \
     sudo apt-get --no-install-recommends -y install nodejs && \
-    npm install -g grunt-cli
+    npm install -g grunt-cli && \
+    npm install -g magepack
 
 # Copy php config
 COPY php-fpm/php-fpm.conf /etc/php/www.conf
