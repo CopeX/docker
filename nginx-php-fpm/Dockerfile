@@ -70,8 +70,7 @@ COPY init /etc/my_init.d
 
 RUN chmod +x /etc/my_init.d/*.sh && \
     chmod +x /etc/service/php-fpm/run && \
-    mkdir -p /var/www/.composer/cache && \
-    chown -R www-data:www-data /var/www/.composer && \
-    mkdir -p /run/php && mkdir -p /var/log/nginx && mkdir -p /var/cache/pagespeed && \
+    mkdir -p /run/php /var/log/nginx /var/cache/pagespeed /var/www/.composer/cache && \
+    chown -R www-data:www-data /var/www/.composer /var/cache/pagespeed && \
     ln -s /usr/local/nginx/sbin/nginx /usr/bin/nginx
 
