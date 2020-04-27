@@ -14,7 +14,6 @@ RUN rm -rf /etc/nginx/conf.d/* && \
     echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/02apt-speedup  && \
     add-apt-repository -y ppa:nginx/stable && \
     apt-get update && \
-    apt-get upgrade -y && \
     apt-get -y install mysql-client wget ssmtp net-tools && \
     apt-get -y install build-essential zlib1g-dev libpcre3 libpcre3-dev libssl-dev unzip sudo brotli git
 RUN wget --no-check-certificate https://raw.github.com/rupa/z/master/z.sh -O /usr/local/bin/z.sh && \
@@ -23,7 +22,8 @@ RUN wget --no-check-certificate https://raw.github.com/rupa/z/master/z.sh -O /us
     chmod +x /usr/local/bin/z.sh && \
     echo '. /usr/local/bin/z.sh' >> /root/.bashrc
 
-RUN wget --no-check-certificate https://ngxpagespeed.com/install && \
+RUN apt-get -y install libuuid1 && \
+    wget --no-check-certificate https://ngxpagespeed.com/install && \
     chmod +x install && \
     ./install  --nginx-version latest  -a '--conf-path=/etc/nginx/nginx.conf --with-http_ssl_module --with-http_realip_module --with-http_addition_module --with-http_sub_module --with-http_mp4_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_random_index_module --with-http_secure_link_module --with-http_stub_status_module --with-http_auth_request_module --with-mail --with-mail_ssl_module --with-file-aio --with-http_v2_module --add-module=/usr/local/src/ngx_brotli' && \
     rm install
@@ -47,6 +47,13 @@ COPY nginx/ssl/ /etc/nginx/ssl/
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 
 COPY nginx/ssl/dhparams.pem /etc/ssl/private/
+
+#################################
+# Node.js & Grunt CLI           #
+#################################
+RUN curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash - && \
+    sudo apt-get --no-install-recommends -y install nodejs && \
+    npm install -g grunt-cli
 
 # Copy php config
 COPY php-fpm/php-fpm.conf /etc/php/www.conf
