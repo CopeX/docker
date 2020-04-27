@@ -55,7 +55,7 @@ if [[ "$PAGESPEED" == "1" ]]; then
     if [[ -z ${ADMIN_PLACEHOLDER:-} ]]; then
         ADMIN_PLACEHOLDER="backoffice"
     fi
-    sed -i "s!ADMIN_PLACEHOLDER!${ADMIN_PLACEHOLDER}/!g" /etc/nginx/site-templates/M$MAGENTO_VERSION/pagespeed.conf.disabled
+    sed -i "s!ADMIN_PLACEHOLDER!${ADMIN_PLACEHOLDER}!g" /etc/nginx/site-templates/M$MAGENTO_VERSION/pagespeed.conf.disabled
     ln -sf /etc/nginx/site-templates/M$MAGENTO_VERSION/pagespeed.conf.disabled /etc/nginx/site-templates/M$MAGENTO_VERSION/pagespeed.conf
 fi
 
