@@ -20,14 +20,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     libsqlite3-dev \
     iproute2
 
-RUN apt-get --no-install-recommends -y install php5.6-dev
-RUN apt-get --no-install-recommends -y install php7.0-dev
-RUN apt-get --no-install-recommends -y install php7.1-dev
-RUN apt-get --no-install-recommends -y install php7.2-dev
-RUN apt-get --no-install-recommends -y install php7.3-dev
-RUN apt-get --no-install-recommends -y install php7.4-dev
 RUN apt-get --no-install-recommends -y install php-xdebug
-RUN apt-get --no-install-recommends -y install php5.6-xdebug
 
 
 ###############################
@@ -59,11 +52,10 @@ RUN apt-get install ruby ruby-dev -y
 RUN gem install mailcatcher --conservative --no-rdoc --no-ri
 
 #################################
-# Node.js    & BrowserSync      #
+# Livereload & BrowserSync      #
 #################################
-RUN curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - && \
-    sudo apt-get --no-install-recommends -y install nodejs && \
-    npm install -g browser-sync
+RUN npm install -g browser-sync && \
+    npm install -g livereload
 
 #################################
 # Cleanup                       #
