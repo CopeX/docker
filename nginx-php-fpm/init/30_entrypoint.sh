@@ -52,22 +52,10 @@ if [[ -z ${PAGESPEED:-} ]]; then
 fi
 
 if [[ "$PAGESPEED" == "1" ]]; then
-    if [[ -z ${TLD:-} ]]; then
-        domain=${DOMAIN}
-    else
-        domain="*.${TLD}"
+    if [[ -z ${ADMIN_PLACEHOLDER:-} ]]; then
+        ADMIN_PLACEHOLDER="backoffice"
     fi
-    multipleDomains=""
-    for dm in $domain
-    do
-        multipleDomains="${multipleDomains}pagespeed Domain ${dm};\n"
-    done
-    if [[ $multipleDomains ]]; then
-        sed -i "s/pagespeed Domain \*;/${multipleDomains}/g" /etc/nginx/site-templates/M$MAGENTO_VERSION/pagespeed.conf.disabled
-    fi
-    firstDomain=$(echo ${domain} | awk '{print $1}' | sed 's/\*\.//g')
-    sed -i "s/copex.io/${firstDomain}/g" /etc/nginx/site-templates/M$MAGENTO_VERSION/pagespeed.conf.disabled
-    sed -i "s!PROJECT_ROOT!${MAGENTO_ROOT}/pub/!g" /etc/nginx/site-templates/M$MAGENTO_VERSION/pagespeed.conf.disabled
+    sed -i "s!ADMIN_PLACEHOLDER!${ADMIN_PLACEHOLDER}/!g" /etc/nginx/site-templates/M$MAGENTO_VERSION/pagespeed.conf.disabled
     ln -sf /etc/nginx/site-templates/M$MAGENTO_VERSION/pagespeed.conf.disabled /etc/nginx/site-templates/M$MAGENTO_VERSION/pagespeed.conf
 fi
 
