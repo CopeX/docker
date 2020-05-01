@@ -52,11 +52,7 @@ pagespeed EnableFilters insert_dns_prefetch;
 
 pagespeed RetainComment "esi*";
 pagespeed Disallow "*/ADMIN_PLACEHOLDER/*";
-
-location ~ "^/checkout/" {
-  pagespeed DisableFilters combine_javascript;
-# pagespeed DisableFilters combine_css;
-}
+pagespeed Disallow "*/checkout/*.html";
 
 location ~ "\.pagespeed\.([a-z]\.)?[a-z]{2}\.[^.]{10}\.[^.]+" {
   add_header "" "";
