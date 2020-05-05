@@ -53,8 +53,9 @@ pagespeed EnableFilters insert_dns_prefetch;
 
 pagespeed RetainComment "esi*";
 pagespeed Disallow "*/ADMIN_PLACEHOLDER/*";
+pagespeed Disallow "/checkout/*";
 
-location ~ ".html$" {
+location ~ \.html$ {
     pagespeed DisableFilters move_css_to_head;
     pagespeed DisableFilters move_css_above_scripts;
 }
