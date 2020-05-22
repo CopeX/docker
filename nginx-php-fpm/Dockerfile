@@ -27,8 +27,7 @@ RUN apt-get -y install libuuid1 && \
     chmod +x install && \
     ./install  --nginx-version latest  -a '--conf-path=/etc/nginx/nginx.conf --with-http_ssl_module --with-http_realip_module --with-http_addition_module --with-http_sub_module --with-http_mp4_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_random_index_module --with-http_secure_link_module --with-http_stub_status_module --with-http_auth_request_module --with-mail --with-mail_ssl_module --with-file-aio --with-http_v2_module --add-module=/usr/local/src/ngx_brotli' && \
     rm install
-    
-RUN apt-get -y install gconf-service libasound2 libatk1.0-0 libatk-bridge2.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget    
+
 
 # Cleanup
 RUN apt-get clean && \
@@ -57,6 +56,12 @@ RUN curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash - && \
     sudo apt-get --no-install-recommends -y install nodejs && \
     npm install -g grunt-cli && \
     npm install -g magepack
+
+###############################
+# magepack                    #
+###############################
+RUN apt-get -y install gconf-service libasound2 libatk1.0-0 libatk-bridge2.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget && \
+npm install -g magepack --unsafe-perm=true --allow-root
 
 # Copy php config
 COPY php-fpm/php-fpm.conf /etc/php/www.conf
