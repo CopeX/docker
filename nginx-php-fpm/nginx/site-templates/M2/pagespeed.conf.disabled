@@ -72,7 +72,7 @@ pagespeed EnableFilters collapse_whitespace;
 pagespeed EnableFilters dedup_inlined_images;
 pagespeed EnableFilters inline_preview_images,resize_mobile_images;
 pagespeed EnableFilters responsive_images,resize_images;
-pagespeed FetchHttps enable;
+pagespeed FetchHttps disable;
 
 # From https://www.optiweb.com/blog/install-and-configure-nginx-pagespeed-module-for-better-performance/
 pagespeed EnableFilters insert_dns_prefetch;
