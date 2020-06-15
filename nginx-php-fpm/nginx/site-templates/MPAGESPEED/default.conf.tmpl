@@ -1,0 +1,14 @@
+upstream fastcgi_backend {
+    server   unix:/var/run/php-fpm.sock;
+}
+
+
+server {
+    listen                      80 default_server;
+    listen                      443 default_server http2 ssl;
+
+    client_max_body_size        10M;
+    server_name ${DOMAIN};
+
+    include /etc/nginx/conf.d/MPAGESPEED/*.conf;
+}
