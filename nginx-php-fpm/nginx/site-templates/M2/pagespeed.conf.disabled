@@ -22,8 +22,6 @@ pagespeed EnableFilters recompress_jpeg;
 pagespeed EnableFilters convert_jpeg_to_progressive;
 pagespeed EnableFilters lazyload_images;
 # pagespeed LazyloadImagesAfterOnload off;
-pagespeed CriticalImagesBeaconEnabled false;
-pagespeed DisableFilters prioritize_critical_css;
 
 pagespeed EnableFilters move_css_above_scripts;
 pagespeed EnableFilters move_css_to_head;
