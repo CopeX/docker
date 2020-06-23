@@ -27,12 +27,7 @@ if [[ -z ${MAGENTO_VERSION:-} ]]; then
     MAGENTO_VERSION="1"
 fi
 
-
 cp /etc/nginx/site-templates/M$MAGENTO_VERSION/default.conf.tmpl /etc/nginx/site-templates/default.conf.tmpl
-
-if [[ -z ${SSL_ON:-} ]]; then
-    SSL_ON="0"
-fi
 
 if [[ -z ${MAGE_RUN_TYPE:-} ]]; then
     sed -i "s/set \$MAGE_RUN_TYPE \${MAGE_RUN_TYPE};/set \$MAGE_RUN_TYPE '';/g" /etc/nginx/site-templates/default.conf.tmpl
@@ -40,6 +35,12 @@ fi
 
 if [[ -z ${MAGE_RUN_CODE:-} ]]; then
     sed -i "s/set \$MAGE_RUN_CODE \${MAGE_RUN_CODE};/set \$MAGE_RUN_CODE '';/g" /etc/nginx/site-templates/default.conf.tmpl
+fi
+
+[[ -z ${MAGENTO_ROOT:-} ]] || sed -i "s!\$MAGENTO_ROOT!${MAGENTO_ROOT}!g" /etc/logrotate.d/magento
+
+if [[ -z ${SSL_ON:-} ]]; then
+    SSL_ON="0"
 fi
 
 if [[ "$SSL_ON" == "0" ]]; then
@@ -72,6 +73,9 @@ find "${outdir}" -maxdepth 1 -type f -exec rm -v {} \;
 template_files | xargs -0 substitute-env-vars.sh "${outdir}"
 non_template_files | xargs -0 -I{} ln -sf {} "${outdir}"
 
+if [[ -z ${DOMAIN:-} ]]; then
+        DOMAIN="localhost"
+fi
 
 if [[ ! $(grep '/etc/hosts' -e "$DOMAIN") ]]; then
     echo "127.0.0.1 $DOMAIN" >> /etc/hosts
