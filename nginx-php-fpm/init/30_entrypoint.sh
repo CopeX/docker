@@ -64,7 +64,7 @@ if [[ "$PAGESPEED" == "1" ]]; then
 fi
 
 if [[ -f "/etc/nginx/.htpasswd" ]]; then
-    if [[ "$MAGENTO_VERSION" == "1"]]; then
+    if [[ "$MAGENTO_VERSION" == "1" ]]; then
       sed -i "s/# auth_basic/auth_basic/g" /etc/nginx/conf.d/includes/default/10-locations.conf
     else
       sed -i "s/# auth_basic/auth_basic/g" /etc/nginx/site-templates/M$MAGENTO_VERSION/nginx.conf
