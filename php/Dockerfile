@@ -166,7 +166,7 @@ RUN ln -sf /etc/php/php.ini /etc/php/5.6/cli/php.ini && \
     ln -sf /etc/php/php.ini /etc/php/7.3/cli/php.ini && \
     ln -sf /etc/php/php.ini /etc/php/7.4/cli/php.ini
 
-RUN ln -sf /usr/bin/php7.2 /etc/alternatives/php
+RUN ln -sf /usr/bin/php7.4 /etc/alternatives/php
 
 COPY init /etc/my_init.d
 
