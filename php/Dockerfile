@@ -127,6 +127,21 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php7.4-iconv \
         php7.4-apcu \
         php7.4-imap \
+        php8.0 \
+        php8.0-cli \
+        php8.0-common \
+        php8.0-bcmath \
+        php8.0-curl \
+        php8.0-gd \
+        php8.0-intl \
+        php8.0-mbstring \
+        php8.0-mysql \
+        php8.0-xml \
+        php8.0-soap \
+        php8.0-xsl \
+        php8.0-zip \
+        php8.0-apcu \
+        php8.0-imap \
         openssl \
         patch \
         git
