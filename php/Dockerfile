@@ -148,7 +148,9 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
 
 #Install composer
 RUN  curl --show-error --silent https://getcomposer.org/installer | php && \
-    mv composer.phar /usr/bin/composer
+    mv composer.phar /usr/bin/composer && \
+    composer selfupdate --1 && \
+    composer global require hirak/prestissimo
 
 # Cleanup
 RUN apt-get clean && \
