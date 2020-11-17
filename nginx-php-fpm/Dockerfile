@@ -84,6 +84,7 @@ RUN ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/5.6/fpm/conf.d/21-xdebug.ini &&
     ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/7.2/fpm/conf.d/21-xdebug.ini && \
     ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/7.3/fpm/conf.d/21-xdebug.ini && \
     ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/7.4/fpm/conf.d/21-xdebug.ini && \
+    ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/8.0/fpm/conf.d/21-xdebug.ini && \
     chmod +x /etc/service/mailcatcher/run && \
     rm -rf /etc/nginx/conf.d/includes/nginx/90-file-cache.conf
 
