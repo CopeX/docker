@@ -16,7 +16,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php7.1-fpm \
         php7.2-fpm \
         php7.3-fpm \
-        php7.4-fpm && \
+        php7.4-fpm \
+        php8.0-fpm && \
     apt-get --no-install-recommends -y install \
         unzip \
         php-redis \
