@@ -30,17 +30,6 @@ RUN git clone https://github.com/colinmollenhour/modman.git /usr/local/src/modma
 mv /usr/local/src/modman/modman /usr/local/bin/modman && \
 chmod +x /usr/local/bin/modman
 
-###############################
-# composer.phar               #
-###############################
-RUN curl -sS https://getcomposer.org/installer | php -- --filename=composer --install-dir=/usr/local/bin && \
-chmod +x /usr/local/bin/composer
-
-#################################
-#Parallell Downloads in Composer#
-#################################
-RUN composer global require hirak/prestissimo
-
 #################################
 # Ruby 2                        #
 #################################
