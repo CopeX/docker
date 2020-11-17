@@ -77,7 +77,7 @@ RUN ln -sf /etc/php/www.conf /etc/php/5.6/fpm/pool.d/www.conf && \
     ln -sf /etc/php/php.ini /etc/php/7.1/fpm/php.ini && \
     ln -sf /etc/php/php.ini /etc/php/7.2/fpm/php.ini && \
     ln -sf /etc/php/php.ini /etc/php/7.3/fpm/php.ini && \
-    ln -sf /etc/php/php.ini /etc/php/7.4/fpm/php.ini
+    ln -sf /etc/php/php.ini /etc/php/7.4/fpm/php.ini && \
     ln -sf /etc/php/php.ini /etc/php/8.0/fpm/php.ini
 
 # Configure PHP-FPM to start as a service
