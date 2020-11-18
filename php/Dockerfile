@@ -11,6 +11,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     add-apt-repository -y ppa:ondrej/php &&\
     apt-get update && \
     apt-get --no-install-recommends -y install \
+        imagemagick \
         php5.6-fpm \
         php7.0-fpm \
         php7.1-fpm \
@@ -23,7 +24,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php-redis \
         php5.6 \
         php5.6-mysql \
-        php5.6-imagick \
         php5.6-mcrypt \
         php5.6-curl \
         php5.6-cli \
@@ -143,6 +143,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php8.0-zip \
         php8.0-apcu \
         php8.0-imap \
+        php-imagick \
         openssl \
         patch \
         git
