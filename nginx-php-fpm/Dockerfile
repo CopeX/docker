@@ -14,27 +14,18 @@ RUN rm -rf /etc/nginx/conf.d/* && \
     echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/02apt-speedup  && \
     add-apt-repository -y ppa:nginx/stable && \
     apt-get update && \
-    apt-get -y install mysql-client wget ssmtp net-tools && \
-    apt-get -y install build-essential zlib1g-dev libpcre3 libpcre3-dev libssl-dev unzip sudo brotli git
+    apt-get -y install nginx mysql-client wget ssmtp net-tools unzip
+
 RUN wget --no-check-certificate https://raw.github.com/rupa/z/master/z.sh -O /usr/local/bin/z.sh && \
     cd /usr/local/src && \
-    git clone --recursive https://github.com/google/ngx_brotli.git && \
     chmod +x /usr/local/bin/z.sh && \
     echo '. /usr/local/bin/z.sh' >> /root/.bashrc
-
-RUN apt-get -y install libuuid1 && \
-    wget --no-check-certificate https://ngxpagespeed.com/install && \
-    chmod +x install && \
-    ./install  --nginx-version latest  -a '--conf-path=/etc/nginx/nginx.conf --with-http_ssl_module --with-http_realip_module --with-http_addition_module --with-http_sub_module --with-http_mp4_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_random_index_module --with-http_secure_link_module --with-http_stub_status_module --with-http_auth_request_module --with-mail --with-mail_ssl_module --with-file-aio --with-http_v2_module --add-module=/usr/local/src/ngx_brotli' && \
-    rm install
-
 
 # Cleanup
 RUN apt-get clean && \
     rm -f /etc/dpkg/dpkg.cfg.d/02apt-speedup && \
     find /var/lib/apt/lists -mindepth 1 -delete -print && \
-    find /tmp /var/tmp -mindepth 2 -delete && \
-    apt-get purge -y --auto-remove build-essential zlib1g-dev libssl-dev libpcre3-dev git
+    find /tmp /var/tmp -mindepth 2 -delete
 
 # Configure nginx to start as a service
 COPY ./nginx/service/runit.sh /etc/service/nginx/run
@@ -44,8 +35,8 @@ RUN chmod +x /etc/service/nginx/run && \
 #################################
 # Node.js & Grunt CLI           #
 #################################
-RUN curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash - && \
-    sudo apt-get --no-install-recommends -y install nodejs && \
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
+    apt-get --no-install-recommends -y install nodejs && \
     npm install -g grunt-cli && \
     npm install -g magepack
 
@@ -90,7 +81,7 @@ COPY logrotate/magento /etc/logrotate.d/magento
 
 RUN chmod +x /etc/my_init.d/*.sh && \
     chmod +x /etc/service/php-fpm/run && \
-    mkdir -p /run/php /var/log/nginx /var/cache/pagespeed /var/www/.composer/cache && \
-    chown -R www-data:www-data /var/www/.composer /var/cache/pagespeed && \
+    mkdir -p /run/php /var/log/nginx /var/www/.composer/cache && \
+    chown -R www-data:www-data /var/www/.composer && \
     ln -s /usr/local/nginx/sbin/nginx /usr/bin/nginx
 

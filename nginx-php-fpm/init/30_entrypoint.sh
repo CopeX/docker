@@ -48,21 +48,6 @@ if [[ "$SSL_ON" == "0" ]]; then
     sed -i "s/ssl_certificate/# ssl_certificate/g" /etc/nginx/site-templates/default.conf.tmpl
 fi
 
-if [[ -z ${PAGESPEED:-} ]]; then
-    PAGESPEED="0"
-fi
-
-if [[ "$PAGESPEED" == "1" ]]; then
-    if [[ -z ${ADMIN_PLACEHOLDER:-} ]]; then
-        ADMIN_PLACEHOLDER="backoffice"
-    fi
-    sed -i "s!ADMIN_PLACEHOLDER!${ADMIN_PLACEHOLDER}!g" /etc/nginx/conf.d/includes/pagespeed/pagespeed.conf
-    ln -sf /etc/nginx/conf.d/includes/pagespeed/pagespeed.conf /etc/nginx/site-templates/M$MAGENTO_VERSION/pagespeed.conf
-    if [[ -f "/etc/nginx/.htpasswd.pagespeed" ]]; then
-      ln -sf /etc/nginx/conf.d/includes/pagespeed/statistics.conf /etc/nginx/site-templates/M$MAGENTO_VERSION/90-statistics.conf
-    fi
-fi
-
 if [[ -f "/etc/nginx/.htpasswd" ]]; then
     if [[ "$MAGENTO_VERSION" == "1" ]]; then
       sed -i "s/# auth_basic/auth_basic/g" /etc/nginx/conf.d/includes/default/10-locations.conf
