@@ -1,8 +1,5 @@
 #!/bin/bash
 
-set -eu
-
-
 templates_dir="/etc/nginx/site-templates"
 outdir="/etc/nginx/conf.d"
 
@@ -30,11 +27,24 @@ fi
 cp /etc/nginx/site-templates/M$MAGENTO_VERSION/default.conf.tmpl /etc/nginx/site-templates/default.conf.tmpl
 
 if [[ -z ${MAGE_RUN_TYPE:-} ]]; then
-    sed -i "s/set \$MAGE_RUN_TYPE \${MAGE_RUN_TYPE};/set \$MAGE_RUN_TYPE '';/g" /etc/nginx/site-templates/default.conf.tmpl
+    sed -i "s/set \$MAGE_RUN_TYPE \${MAGE_RUN_TYPE};/# set \$MAGE_RUN_TYPE '';/g" /etc/nginx/site-templates/default.conf.tmpl
 fi
 
 if [[ -z ${MAGE_RUN_CODE:-} ]]; then
-    sed -i "s/set \$MAGE_RUN_CODE \${MAGE_RUN_CODE};/set \$MAGE_RUN_CODE '';/g" /etc/nginx/site-templates/default.conf.tmpl
+    sed -i "s/set \$MAGE_RUN_CODE \${MAGE_RUN_CODE};/# set \$MAGE_RUN_CODE '';/g" /etc/nginx/site-templates/default.conf.tmpl
+fi
+
+if [[ -z ${HOST_MAPPING:-} ]]; then
+read -d '' HOST_MAPPING <<- EOF
+map \$http_host \$MAGE_RUN_CODE {
+    default '';
+}
+
+map ""  \$MAGE_RUN_TYPE {
+    default '';
+}
+EOF
+
 fi
 
 [[ -z ${MAGENTO_ROOT:-} ]] || sed -i "s!\$MAGENTO_ROOT!${MAGENTO_ROOT}!g" /etc/logrotate.d/magento
@@ -57,10 +67,14 @@ if [[ -f "/etc/nginx/.htpasswd" ]]; then
 fi
 
 #clean
-find "${outdir}" -maxdepth 1 -type f -exec rm -v {} \;
+find "${outdir}" -maxdepth 1 -type f -exec rm {} \;
 
 template_files | xargs -0 substitute-env-vars.sh "${outdir}"
 non_template_files | xargs -0 -I{} ln -sf {} "${outdir}"
+
+if [[ ! -f /etc/nginx/conf.d/map.conf ]]; then
+  printf "%s" "$HOST_MAPPING" > /etc/nginx/conf.d/map.conf
+fi
 
 if [[ -z ${DOMAIN:-} ]]; then
         DOMAIN="localhost"

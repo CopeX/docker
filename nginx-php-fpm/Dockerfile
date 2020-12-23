@@ -48,7 +48,7 @@ npm install -g magepack --unsafe-perm=true --allow-root
 
 # Prepare configuration
 COPY nginx/site-templates/ /etc/nginx/site-templates/
-COPY nginx/includes/ /etc/nginx/conf.d/includes/
+COPY nginx/conf.d/includes/ /etc/nginx/conf.d/includes/
 COPY nginx/ssl/ /etc/nginx/ssl/
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 
