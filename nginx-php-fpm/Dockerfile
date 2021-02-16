@@ -1,6 +1,6 @@
 FROM copex/nginx-php-fpm
 
-EXPOSE 1080 9000
+EXPOSE 1080 9000 9003
 
 CMD ["/sbin/my_init"]
 
