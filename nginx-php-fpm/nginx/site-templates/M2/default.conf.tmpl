@@ -9,8 +9,9 @@ server {
 
     client_max_body_size        10M;
 
-    ssl_certificate             /etc/nginx/ssl/cert.crt;
+    ssl_certificate            /etc/nginx/ssl/cert.crt;
     ssl_certificate_key        /etc/nginx/ssl/cert.key;
+    ssl_dhparam                /etc/nginx/ssl/dhparams.pem;
 
     server_name ${DOMAIN};
 

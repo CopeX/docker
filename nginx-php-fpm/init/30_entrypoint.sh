@@ -56,6 +56,8 @@ fi
 if [[ "$SSL_ON" == "0" ]]; then
     sed -i "s/ http2 ssl/ http2/g" /etc/nginx/site-templates/default.conf.tmpl
     sed -i "s/ssl_certificate/# ssl_certificate/g" /etc/nginx/site-templates/default.conf.tmpl
+    sed -i "s/ssl_certificate_key/# ssl_certificate_key/g" /etc/nginx/site-templates/default.conf.tmpl
+    sed -i "s/ssl_dhparam/# ssl_dhparam/g" /etc/nginx/site-templates/default.conf.tmpl
 fi
 
 if [[ -f "/etc/nginx/.htpasswd" ]]; then
