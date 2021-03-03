@@ -102,4 +102,5 @@ if [[ ! $(grep '/etc/ssmtp/ssmtp.conf' -e 'AuthUser') ]]; then
     echo "AuthUser=$SSMTP_USER" >> /etc/ssmtp/ssmtp.conf
     echo "AuthPass=$SSMTP_PASS" >> /etc/ssmtp/ssmtp.conf
     echo "AuthMethod=$SSMTP_LOGIN_METHOD" >> /etc/ssmtp/ssmtp.conf
+    echo "FromLineOverride=YES" >> /etc/ssmtp/ssmtp.conf
 fi
