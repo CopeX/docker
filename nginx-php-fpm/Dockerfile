@@ -73,15 +73,16 @@ COPY bin/ /usr/sbin/
 COPY init /etc/my_init.d
 COPY logrotate/magento /etc/logrotate.d/magento
 
-RUN chmod +x /etc/my_init.d/*.sh && \
-    chmod +x /etc/service/php-fpm/run && \
-    mkdir -p /run/php /var/log/nginx /var/www/.composer/cache && \
-    chown -R www-data:www-data /var/www/.composer && \
-    ln -s /usr/local/nginx/sbin/nginx /usr/bin/nginx \
+RUN chmod +x /etc/my_init.d/*.sh \
+    && chmod +x /etc/service/php-fpm/run \
+    && mkdir -p /run/php /var/log/nginx /var/www/.composer/cache \
+    && chown -R www-data:www-data /var/www/.composer \
+    && ln -s /usr/local/nginx/sbin/nginx /usr/bin/nginx \
     # forward request and error logs to docker log collector
     && ln -sf /dev/stdout /var/log/nginx/access.log \
     && ln -sf /dev/stderr /var/log/nginx/error.log \
-    && apt-get remove --purge --auto-remove -y && rm -rf /var/lib/apt/lists/* /etc/apt/sources.list.d/nginx.list \
+    && apt-get remove --purge --auto-remove -y \
+    && rm -rf /var/lib/apt/lists/* /etc/apt/sources.list.d/nginx.list \
     && apt-get clean \
     && rm -f /etc/dpkg/dpkg.cfg.d/02apt-speedup \
     && find /var/lib/apt/lists -mindepth 1 -delete -print \
