@@ -11,19 +11,19 @@ COPY nginx/install/nginx_signing.key /etc/apt/nginx_signing.key
 # Configure nginx to start as a service
 COPY ./nginx/service/runit.sh /etc/service/nginx/run
 
-RUN rm -rf /etc/nginx/conf.d/* && \
-    apt-key add /etc/apt/nginx_signing.key && \
-    export DEBIAN_FRONTEND=noninteractive && \
-    echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/02apt-speedup  && \
-    add-apt-repository -y ppa:nginx/stable && \
-    apt-get update && \
-    apt-get -y install --no-install-recommends --no-install-suggests nginx mysql-client wget ssmtp net-tools unzip \
-    && wget --no-check-certificate https://raw.github.com/rupa/z/master/z.sh -O /usr/local/bin/z.sh && \
-    cd /usr/local/src && \
-    chmod +x /usr/local/bin/z.sh && \
-    echo '. /usr/local/bin/z.sh' >> /root/.bashrc \
-    && chmod +x /etc/service/nginx/run && \
-    rm -rf /build
+RUN rm -rf /etc/nginx/conf.d/* \
+    && apt-key add /etc/apt/nginx_signing.key \
+    && export DEBIAN_FRONTEND=noninteractive \
+    && echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/02apt-speedup  \
+    && add-apt-repository -y ppa:nginx/stable \
+    && apt-get update \
+    && apt-get -y install --no-install-recommends --no-install-suggests nginx mysql-client wget ssmtp net-tools unzip \
+    && wget --no-check-certificate https://raw.githubusercontent.com/rupa/z/master/z.sh -O /usr/local/bin/z.sh \
+    && cd /usr/local/src \
+    && chmod +x /usr/local/bin/z.sh \
+    && echo '. /usr/local/bin/z.sh' >> /root/.bashrc \
+    && chmod +x /etc/service/nginx/run \
+    && rm -rf /build
 
 # Prepare configuration
 COPY nginx/site-templates/ /etc/nginx/site-templates/
@@ -35,20 +35,20 @@ COPY nginx/ssl/dhparams.pem /etc/ssl/private/
 
 # Copy php config
 COPY php-fpm/php-fpm.conf /etc/php/www.conf
-RUN ln -sf /etc/php/www.conf /etc/php/5.6/fpm/pool.d/www.conf && \
-    ln -sf /etc/php/www.conf /etc/php/7.0/fpm/pool.d/www.conf && \
-    ln -sf /etc/php/www.conf /etc/php/7.1/fpm/pool.d/www.conf && \
-    ln -sf /etc/php/www.conf /etc/php/7.2/fpm/pool.d/www.conf && \
-    ln -sf /etc/php/www.conf /etc/php/7.3/fpm/pool.d/www.conf && \
-    ln -sf /etc/php/www.conf /etc/php/7.4/fpm/pool.d/www.conf && \
-    ln -sf /etc/php/www.conf /etc/php/8.0/fpm/pool.d/www.conf && \
-    ln -sf /etc/php/php.ini /etc/php/5.6/fpm/php.ini && \
-    ln -sf /etc/php/php.ini /etc/php/7.0/fpm/php.ini && \
-    ln -sf /etc/php/php.ini /etc/php/7.1/fpm/php.ini && \
-    ln -sf /etc/php/php.ini /etc/php/7.2/fpm/php.ini && \
-    ln -sf /etc/php/php.ini /etc/php/7.3/fpm/php.ini && \
-    ln -sf /etc/php/php.ini /etc/php/7.4/fpm/php.ini && \
-    ln -sf /etc/php/php.ini /etc/php/8.0/fpm/php.ini
+RUN ln -sf /etc/php/www.conf /etc/php/5.6/fpm/pool.d/www.conf \
+    && ln -sf /etc/php/www.conf /etc/php/7.0/fpm/pool.d/www.conf \
+    && ln -sf /etc/php/www.conf /etc/php/7.1/fpm/pool.d/www.conf \
+    && ln -sf /etc/php/www.conf /etc/php/7.2/fpm/pool.d/www.conf \
+    && ln -sf /etc/php/www.conf /etc/php/7.3/fpm/pool.d/www.conf \
+    && ln -sf /etc/php/www.conf /etc/php/7.4/fpm/pool.d/www.conf \
+    && ln -sf /etc/php/www.conf /etc/php/8.0/fpm/pool.d/www.conf \
+    && ln -sf /etc/php/php.ini /etc/php/5.6/fpm/php.ini \
+    && ln -sf /etc/php/php.ini /etc/php/7.0/fpm/php.ini \
+    && ln -sf /etc/php/php.ini /etc/php/7.1/fpm/php.ini \
+    && ln -sf /etc/php/php.ini /etc/php/7.2/fpm/php.ini \
+    && ln -sf /etc/php/php.ini /etc/php/7.3/fpm/php.ini \
+    && ln -sf /etc/php/php.ini /etc/php/7.4/fpm/php.ini \
+    && ln -sf /etc/php/php.ini /etc/php/8.0/fpm/php.ini
 
 # Configure PHP-FPM to start as a service
 COPY php-fpm/service/runit.sh /etc/service/php-fpm/run
