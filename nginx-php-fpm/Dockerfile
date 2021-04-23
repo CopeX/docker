@@ -56,9 +56,12 @@ RUN export DEBIAN_FRONTEND=noninteractive  \
 #################################
 # Cleanup                       #
 #################################
-RUN apt-get autoremove -y \
+RUN apt-get remove --purge --auto-remove -y \
     && apt-get autoclean \
     && apt-get clean  \
+    && rm -f /etc/dpkg/dpkg.cfg.d/02apt-speedup \
+    && find /var/lib/apt/lists -mindepth 1 -delete -print \
+    && find /tmp /var/tmp -mindepth 2 -delete \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 COPY mailcatcher/mailcatcher.sh /etc/service/mailcatcher/run
