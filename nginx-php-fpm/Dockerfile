@@ -26,9 +26,8 @@ RUN export DEBIAN_FRONTEND=noninteractive  \
     #################################
     && curl -sL https://deb.nodesource.com/setup_14.x | bash - \
     && apt-get --no-install-recommends --no-install-suggests -y install nodejs \
-    && npm install -g grunt-cli && \
-    && npm install -g magepack \
-    && npm install -g clean-css-cli grunt grunt-critical grunt-contrib-cssmin \
+    && npm install -g grunt-cli \
+    && npm install -g clean-css-cli grunt grunt-critical grunt-contrib-cssmin --unsafe-perm=true \
     ###############################
     # magepack                    #
     ###############################
@@ -43,7 +42,7 @@ RUN export DEBIAN_FRONTEND=noninteractive  \
     #################################
     # Ruby 2                        #
     #################################
-    && apt-get install ruby ruby-dev -y \
+    && apt-get install --no-install-recommends --no-install-suggests ruby ruby-dev -y \
     #################################
     # Mailcatcher                   #
     #################################
@@ -51,8 +50,8 @@ RUN export DEBIAN_FRONTEND=noninteractive  \
     #################################
     # Livereload & BrowserSync      #
     #################################
-    && npm install -g browser-sync && \
-    npm install -g livereload
+    && npm install -g browser-sync \
+    && npm install -g livereload
 
 #################################
 # Cleanup                       #
@@ -75,15 +74,15 @@ COPY magento/phpunit.xml.dist /var/www/htdocs/phpunit.xml.dist
 COPY php-fpm/php.ini /etc/php/php.ini
 COPY php-fpm/php-fpm.conf /etc/php/www.conf
 
-RUN ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/5.6/fpm/conf.d/21-xdebug.ini && \
-    ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/7.0/fpm/conf.d/21-xdebug.ini && \
-    ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/7.1/fpm/conf.d/21-xdebug.ini && \
-    ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/7.2/fpm/conf.d/21-xdebug.ini && \
-    ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/7.3/fpm/conf.d/21-xdebug.ini && \
-    ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/7.4/fpm/conf.d/21-xdebug.ini && \
-    ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/8.0/fpm/conf.d/21-xdebug.ini && \
-    chmod +x /etc/service/mailcatcher/run && \
-    rm -rf /etc/nginx/conf.d/includes/nginx/90-file-cache.conf
+RUN ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/5.6/fpm/conf.d/21-xdebug.ini \
+    && ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/7.0/fpm/conf.d/21-xdebug.ini \
+    && ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/7.1/fpm/conf.d/21-xdebug.ini \
+    && ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/7.2/fpm/conf.d/21-xdebug.ini \
+    && ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/7.3/fpm/conf.d/21-xdebug.ini \
+    && ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/7.4/fpm/conf.d/21-xdebug.ini \
+    && ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/8.0/fpm/conf.d/21-xdebug.ini \
+    && chmod +x /etc/service/mailcatcher/run \
+    && rm -rf /etc/nginx/conf.d/includes/nginx/90-file-cache.conf
 
 COPY init /etc/my_init.d
 
