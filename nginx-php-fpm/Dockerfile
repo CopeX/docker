@@ -8,37 +8,22 @@ CMD ["/sbin/my_init"]
 
 COPY nginx/install/nginx.list /etc/apt/sources.list.d/nginx.list
 COPY nginx/install/nginx_signing.key /etc/apt/nginx_signing.key
+# Configure nginx to start as a service
+COPY ./nginx/service/runit.sh /etc/service/nginx/run
+
 RUN rm -rf /etc/nginx/conf.d/* && \
     apt-key add /etc/apt/nginx_signing.key && \
     export DEBIAN_FRONTEND=noninteractive && \
     echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/02apt-speedup  && \
     add-apt-repository -y ppa:nginx/stable && \
     apt-get update && \
-    apt-get -y install --no-install-recommends --no-install-suggests nginx mysql-client wget ssmtp net-tools unzip
-
-RUN wget --no-check-certificate https://raw.github.com/rupa/z/master/z.sh -O /usr/local/bin/z.sh && \
+    apt-get -y install --no-install-recommends --no-install-suggests nginx mysql-client wget ssmtp net-tools unzip \
+    && wget --no-check-certificate https://raw.github.com/rupa/z/master/z.sh -O /usr/local/bin/z.sh && \
     cd /usr/local/src && \
     chmod +x /usr/local/bin/z.sh && \
-    echo '. /usr/local/bin/z.sh' >> /root/.bashrc
-
-# Configure nginx to start as a service
-COPY ./nginx/service/runit.sh /etc/service/nginx/run
-RUN chmod +x /etc/service/nginx/run && \
+    echo '. /usr/local/bin/z.sh' >> /root/.bashrc \
+    && chmod +x /etc/service/nginx/run && \
     rm -rf /build
-
-#################################
-# Node.js & Grunt CLI           #
-#################################
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
-    apt-get --no-install-recommends --no-install-suggests -y install nodejs && \
-    npm install -g grunt-cli && \
-    npm install -g magepack
-
-###############################
-# magepack                    #
-###############################
-RUN apt-get --no-install-recommends --no-install-suggests -y install gconf-service libasound2 libatk1.0-0 libatk-bridge2.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget && \
-npm install -g magepack --unsafe-perm=true --allow-root
 
 # Prepare configuration
 COPY nginx/site-templates/ /etc/nginx/site-templates/
