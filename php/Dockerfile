@@ -6,11 +6,12 @@ ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
 # Build packages first
-RUN export DEBIAN_FRONTEND=noninteractive && \
-    echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/02apt-speedup  && \
-    add-apt-repository -y ppa:ondrej/php &&\
-    apt-get update && \
-    apt-get --no-install-recommends -y install \
+RUN export DEBIAN_FRONTEND=noninteractive \
+    && echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/02apt-speedup \
+    && add-apt-repository -y ppa:ondrej/php \
+    && apt-get update \
+    && apt-get upgrade -y \
+    && apt-get --no-install-recommends -y install \
         imagemagick \
         php5.6-fpm \
         php7.0-fpm \
@@ -18,8 +19,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php7.2-fpm \
         php7.3-fpm \
         php7.4-fpm \
-        php8.0-fpm && \
-    apt-get --no-install-recommends -y install \
+        php8.0-fpm \
+    && apt-get --no-install-recommends -y install \
         unzip \
         php-redis \
         php5.6 \
@@ -36,6 +37,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php5.6-mbstring \
         php5.6-soap \
         php5.6-apcu \
+        php5.6-imagick \
         curl \
         php7.0 \
         php7.0-cli \
@@ -54,6 +56,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php7.0-zip \
         php7.0-soap \
         php7.0-apcu \
+        php7.0-imagick \
         php7.1 \
         php7.1-cli \
         php7.1-common \
@@ -71,6 +74,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php7.1-zip \
         php7.1-soap \
         php7.1-apcu \
+        php7.1-imagick \
         php7.2 \
         php7.2-cli \
         php7.2-common \
@@ -90,6 +94,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php7.2-iconv \
         php7.2-apcu \
         php7.2-imap \
+        php7.2-imagick \
         php7.3 \
         php7.3-cli \
         php7.3-common \
@@ -109,6 +114,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php7.3-iconv \
         php7.3-apcu \
         php7.3-imap \
+        php7.3-imagick \
         php7.4 \
         php7.4-cli \
         php7.4-common \
@@ -128,6 +134,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php7.4-iconv \
         php7.4-apcu \
         php7.4-imap \
+        php7.4-imagick \
         php8.0 \
         php8.0-cli \
         php8.0-common \
@@ -143,37 +150,36 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         php8.0-zip \
         php8.0-apcu \
         php8.0-imap \
-        php-imagick \
+        php8.0-imagick \
         openssl \
         patch \
         git
 
-#Install composer
-RUN  curl --show-error --silent https://getcomposer.org/installer | php && \
-    mv composer.phar /usr/bin/composer && \
-    composer selfupdate --1 && \
-    composer global require hirak/prestissimo
-
-# Cleanup
-RUN apt-get clean && \
-    rm -f /etc/dpkg/dpkg.cfg.d/02apt-speedup && \
-    find /var/lib/apt/lists -mindepth 1 -delete -print && \
-    find /tmp /var/tmp -mindepth 2 -delete && \
-    apt-get purge -y --auto-remove
-
 # Copy php config
 COPY php.ini /etc/php/php.ini
-RUN ln -sf /etc/php/php.ini /etc/php/5.6/cli/php.ini && \
-    ln -sf /etc/php/php.ini /etc/php/7.0/cli/php.ini && \
-    ln -sf /etc/php/php.ini /etc/php/7.1/cli/php.ini && \
-    ln -sf /etc/php/php.ini /etc/php/7.2/cli/php.ini && \
-    ln -sf /etc/php/php.ini /etc/php/7.3/cli/php.ini && \
-    ln -sf /etc/php/php.ini /etc/php/7.4/cli/php.ini
 
-RUN ln -sf /usr/bin/php7.4 /etc/alternatives/php
+#Install composer
+RUN  curl --show-error --silent https://getcomposer.org/installer | php \
+    && mv composer.phar /usr/bin/composer \
+    && composer selfupdate --1 \
+    && composer global require hirak/prestissimo \
+    # Cleanup
+    && apt-get clean \
+    && rm -f /etc/dpkg/dpkg.cfg.d/02apt-speedup \
+    && find /var/lib/apt/lists -mindepth 1 -delete -print \
+    && find /tmp /var/tmp -mindepth 2 -delete \
+    && apt-get purge -y --auto-remove \
+    # symlink php config
+    && ln -sf /etc/php/php.ini /etc/php/5.6/cli/php.ini \
+    && ln -sf /etc/php/php.ini /etc/php/7.0/cli/php.ini \
+    && ln -sf /etc/php/php.ini /etc/php/7.1/cli/php.ini \
+    && ln -sf /etc/php/php.ini /etc/php/7.2/cli/php.ini \
+    && ln -sf /etc/php/php.ini /etc/php/7.3/cli/php.ini \
+    && ln -sf /etc/php/php.ini /etc/php/7.4/cli/php.ini \
+    #Setting default version to 7.4
+    && ln -sf /usr/bin/php7.4 /etc/alternatives/php \
+    && sed -i "s/exec/# exec/g" /etc/service/cron/run
 
 COPY init /etc/my_init.d
-
-RUN sed -i "s/exec/# exec/g" /etc/service/cron/run
 
 WORKDIR /var/www/htdocs
