@@ -18,10 +18,6 @@ RUN rm -rf /etc/nginx/conf.d/* \
     && add-apt-repository -y ppa:nginx/stable \
     && apt-get update \
     && apt-get -y install --no-install-recommends --no-install-suggests nginx mysql-client wget ssmtp net-tools unzip \
-    && wget --no-check-certificate https://raw.githubusercontent.com/rupa/z/master/z.sh -O /usr/local/bin/z.sh \
-    && cd /usr/local/src \
-    && chmod +x /usr/local/bin/z.sh \
-    && echo '. /usr/local/bin/z.sh' >> /root/.bashrc \
     && chmod +x /etc/service/nginx/run \
     && rm -rf /build
 
