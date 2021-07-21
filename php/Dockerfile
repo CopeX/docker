@@ -1,4 +1,4 @@
-FROM phusion/baseimage:0.11
+FROM phusion/baseimage:master-amd64
 
 RUN locale-gen en_US.UTF-8 de_DE.UTF-8
 ENV LANG en_US.UTF-8
