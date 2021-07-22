@@ -20,7 +20,7 @@ RUN export DEBIAN_FRONTEND=noninteractive  \
     libsqlite3-dev \
     iproute2 \
     # xdebug
-    && apt-get --no-install-recommends -y install php-xdebug \
+    && apt-get --no-install-recommends -y install php5.6-xdebug php7.0-xdebug php7.1-xdebug php7.2-xdebug php7.3-xdebug php7.4-xdebug php8.0-xdebug \
     #################################
     # Node.js & Grunt CLI           #
     #################################
