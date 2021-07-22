@@ -2,10 +2,8 @@
 
 # No Xdebug fpm
 cp -r /etc/php/$PHP_VERSION /etc/php/$PHP_VERSION-noxdebug
-rm -f /etc/php/$PHP_VERSION-noxdebug/fpm/conf.d/20-xdebug.ini
-rm -f /etc/php/$PHP_VERSION-noxdebug/cli/conf.d/20-xdebug.ini
-rm -f /etc/php/$PHP_VERSION-noxdebug/fpm/pool.d/www.conf
-cp -f /etc/php/$PHP_VERSION/fpm/pool.d/www.conf /etc/php/$PHP_VERSION-noxdebug/fpm/pool.d/www.conf
+rm -f /etc/php/$PHP_VERSION-noxdebug/fpm/conf.d/21-xdebug.ini
+rm -f /etc/php/$PHP_VERSION-noxdebug/cli/conf.d/21-xdebug.ini
 sed -i 's/php-fpm.sock/php-fpm-noxdebug.sock/g' /etc/php/$PHP_VERSION-noxdebug/fpm/pool.d/www.conf
 sed -i "s/php$PHP_VERSION-fpm\.pid/php$PHP_VERSION-fpm-noxdebug\.pid/g" /etc/php/$PHP_VERSION-noxdebug/fpm/php-fpm.conf
 sed -i "s/etc\/php\/$PHP_VERSION\/fpm\/pool\.d\/\*\.conf/etc\/php\/$PHP_VERSION-noxdebug\/fpm\/pool\.d\/\*\.conf/g" /etc/php/$PHP_VERSION-noxdebug/fpm/php-fpm.conf
@@ -22,8 +20,8 @@ fi
 
 
 if [ "$PHP_ENABLE_XDEBUG" = "false" ]; then
-    rm -f /etc/php/$PHP_VERSION/fpm/conf.d/20-xdebug.ini
-    rm -f /etc/php/$PHP_VERSION/cli/conf.d/20-xdebug.ini
+    rm -f /etc/php/$PHP_VERSION/fpm/conf.d/21-xdebug.ini
+    rm -f /etc/php/$PHP_VERSION/cli/conf.d/21-xdebug.ini
 fi
 
 if [ -z ${ENABLE_BLACKFIRE:-} ]; then

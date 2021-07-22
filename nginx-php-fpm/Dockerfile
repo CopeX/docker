@@ -42,11 +42,11 @@ RUN export DEBIAN_FRONTEND=noninteractive  \
     #################################
     # Ruby 2                        #
     #################################
-    && apt-get install --no-install-recommends --no-install-suggests ruby ruby-dev -y \
+    && apt-get install --no-install-recommends --no-install-suggests ruby ruby-dev -y
     #################################
     # Mailcatcher                   #
     #################################
-    && gem install mailcatcher --conservative --no-rdoc --no-ri \
+RUN gem install mailcatcher --conservative --no-document \
     #################################
     # Livereload & BrowserSync      #
     #################################
