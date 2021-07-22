@@ -2,7 +2,7 @@ resolver 127.0.0.11;
 
 map "$cookie_XDEBUG_SESSION$cookie_XDEBUG_PROFILE$cookie_XDEBUG_TRACE" $fastcgi_backend {
     # Nothing for debug
-    ":" "fastcgi_backend_noxdebug";
+    "" "fastcgi_backend_noxdebug";
 
     # In all other cases, a debug cookie will be present; use debug container
     default "fastcgi_backend";
