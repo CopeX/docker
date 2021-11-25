@@ -3,7 +3,7 @@ FROM copex/nginx-php-fpm
 #################################
 # Node.js & Grunt CLI           #
 #################################
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
     && apt-get update \
     && apt-get --no-install-recommends --no-install-suggests -y install nodejs \
     && npm install -g grunt-cli \

@@ -13,68 +13,14 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get upgrade -y \
     && apt-get --no-install-recommends -y install \
         imagemagick \
-        php5.6-fpm \
-        php7.0-fpm \
-        php7.1-fpm \
         php7.2-fpm \
         php7.3-fpm \
         php7.4-fpm \
         php8.0-fpm \
+        php8.1-fpm \
     && apt-get --no-install-recommends -y install \
         unzip \
         php-redis \
-        php5.6 \
-        php5.6-mysql \
-        php5.6-mcrypt \
-        php5.6-curl \
-        php5.6-cli \
-        php5.6-memcache \
-        php5.6-intl \
-        php5.6-gd \
-        php5.6-xsl \
-        php5.6-intl \
-        php5.6-zip \
-        php5.6-mbstring \
-        php5.6-soap \
-        php5.6-apcu \
-        php5.6-imagick \
-        curl \
-        php7.0 \
-        php7.0-cli \
-        php7.0-common \
-        php7.0-gd \
-        php7.0-mysql \
-        php7.0-curl \
-        php7.0-int \
-        php7.0-mcrypt \
-        php7.0-tidy \
-        php7.0-imap \
-        php7.0-xsl \
-        php7.0-mbstring \
-        php7.0-bcmath \
-        php7.0-xml \
-        php7.0-zip \
-        php7.0-soap \
-        php7.0-apcu \
-        php7.0-imagick \
-        php7.1 \
-        php7.1-cli \
-        php7.1-common \
-        php7.1-gd \
-        php7.1-mysql \
-        php7.1-curl \
-        php7.1-int \
-        php7.1-mcrypt \
-        php7.1-tidy \
-        php7.1-imap \
-        php7.1-xsl \
-        php7.1-mbstring \
-        php7.1-bcmath \
-        php7.1-xml \
-        php7.1-zip \
-        php7.1-soap \
-        php7.1-apcu \
-        php7.1-imagick \
         php7.2 \
         php7.2-cli \
         php7.2-common \
@@ -151,6 +97,22 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         php8.0-apcu \
         php8.0-imap \
         php8.0-imagick \
+        php8.1 \
+        php8.1-cli \
+        php8.1-common \
+        php8.1-bcmath \
+        php8.1-curl \
+        php8.1-gd \
+        php8.1-intl \
+        php8.1-mbstring \
+        php8.1-mysql \
+        php8.1-xml \
+        php8.1-soap \
+        php8.1-xsl \
+        php8.1-zip \
+        php8.1-apcu \
+        php8.1-imap \
+        php8.1-imagick \
         openssl \
         patch \
         git
@@ -161,8 +123,6 @@ COPY php.ini /etc/php/php.ini
 #Install composer
 RUN  curl --show-error --silent https://getcomposer.org/installer | php \
     && mv composer.phar /usr/bin/composer \
-    && composer selfupdate --1 \
-    && composer global require hirak/prestissimo \
     # Cleanup
     && apt-get clean \
     && rm -f /etc/dpkg/dpkg.cfg.d/02apt-speedup \
@@ -170,12 +130,11 @@ RUN  curl --show-error --silent https://getcomposer.org/installer | php \
     && find /tmp /var/tmp -mindepth 2 -delete \
     && apt-get purge -y --auto-remove \
     # symlink php config
-    && ln -sf /etc/php/php.ini /etc/php/5.6/cli/php.ini \
-    && ln -sf /etc/php/php.ini /etc/php/7.0/cli/php.ini \
-    && ln -sf /etc/php/php.ini /etc/php/7.1/cli/php.ini \
     && ln -sf /etc/php/php.ini /etc/php/7.2/cli/php.ini \
     && ln -sf /etc/php/php.ini /etc/php/7.3/cli/php.ini \
     && ln -sf /etc/php/php.ini /etc/php/7.4/cli/php.ini \
+    && ln -sf /etc/php/php.ini /etc/php/8.0/cli/php.ini \
+    && ln -sf /etc/php/php.ini /etc/php/8.1/cli/php.ini \
     #Setting default version to 7.4
     && ln -sf /usr/bin/php7.4 /etc/alternatives/php \
     && sed -i "s/exec/# exec/g" /etc/service/cron/run
