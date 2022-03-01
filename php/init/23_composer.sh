@@ -1,6 +1,6 @@
 #!/bin/bash
 
-
+export COMPOSER_HOME=/var/www/.composer/
 if [[ -z ${COMPOSER:-} ]]; then
     COMPOSER="2"
 fi
