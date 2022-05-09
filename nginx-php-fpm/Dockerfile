@@ -20,11 +20,11 @@ RUN export DEBIAN_FRONTEND=noninteractive  \
     libsqlite3-dev \
     iproute2 \
     # xdebug
-    && apt-get --no-install-recommends -y install php5.6-xdebug php7.0-xdebug php7.1-xdebug php7.2-xdebug php7.3-xdebug php7.4-xdebug php8.0-xdebug \
+    && apt-get --no-install-recommends -y install php7.2-xdebug php7.3-xdebug php7.4-xdebug php8.0-xdebug php8.1-xdebug \
     #################################
     # Node.js & Grunt CLI           #
     #################################
-    && curl -sL https://deb.nodesource.com/setup_14.x | bash - \
+    && curl -sL https://deb.nodesource.com/setup_16.x | bash - \
     && apt-get --no-install-recommends --no-install-suggests -y install nodejs \
     && npm install -g grunt-cli \
     && npm install -g clean-css-cli grunt grunt-critical grunt-contrib-cssmin --unsafe-perm=true \
