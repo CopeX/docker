@@ -3,9 +3,11 @@ FROM copex/nginx-php-fpm
 #################################
 # Node.js & Grunt CLI           #
 #################################
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
-    && apt-get update \
-    && apt-get --no-install-recommends --no-install-suggests -y install nodejs \
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash - \
+    && export NVM_DIR="$HOME/.nvm" \
+    && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
+    && [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" \
+    && nvm install 14 \
     && npm install -g grunt-cli \
     && npm install -g magepack --unsafe-perm=true --allow-root \
     && apt-get remove --purge --auto-remove -y \
