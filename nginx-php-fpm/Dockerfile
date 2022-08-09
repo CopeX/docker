@@ -24,7 +24,7 @@ RUN export DEBIAN_FRONTEND=noninteractive  \
     #################################
     # Node.js & Grunt CLI           #
     #################################
-    && curl -sL https://deb.nodesource.com/setup_16.x | bash - \
+    && curl -sL https://deb.nodesource.com/setup_14.x | bash - \
     && apt-get --no-install-recommends --no-install-suggests -y install nodejs \
     && npm install -g grunt-cli \
     && npm install -g clean-css-cli grunt grunt-critical grunt-contrib-cssmin --unsafe-perm=true \
