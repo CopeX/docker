@@ -16,3 +16,7 @@ RUN DEBIAN_FRONTEND=noninteractive && \
 RUN mkdir -p ~/.ssh && \
     bash -c '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config' && \
     git config --global user.email "ci@copex.io" && git config --global user.name "CI Deployment"
+
+RUN apt-get update && \
+    apt-get install apt-transport-https ca-certificates -y && \
+    update-ca-certificates
