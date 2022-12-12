@@ -13,11 +13,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get upgrade -y \
     && apt-get --no-install-recommends -y install \
         imagemagick \
-        php7.2-fpm \
-        php7.3-fpm \
-        php7.4-fpm \
-        php8.0-fpm \
-        php8.1-fpm \
     && apt-get --no-install-recommends -y install \
         unzip \
         php-redis \
@@ -151,8 +146,9 @@ RUN  curl --show-error --silent https://getcomposer.org/installer | php \
     && ln -sf /etc/php/php.ini /etc/php/7.4/cli/php.ini \
     && ln -sf /etc/php/php.ini /etc/php/8.0/cli/php.ini \
     && ln -sf /etc/php/php.ini /etc/php/8.1/cli/php.ini \
+    && ln -sf /etc/php/php.ini /etc/php/8.2/cli/php.ini \
     #Setting default version to 7.4
-    && ln -sf /usr/bin/php7.4 /etc/alternatives/php \
+    && ln -sf /usr/bin/php8.1 /etc/alternatives/php \
     && sed -i "s/exec/# exec/g" /etc/service/cron/run
 
 COPY init /etc/my_init.d
