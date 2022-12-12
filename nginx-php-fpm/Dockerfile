@@ -20,7 +20,7 @@ RUN export DEBIAN_FRONTEND=noninteractive  \
     libsqlite3-dev \
     iproute2 \
     # xdebug
-    && apt-get --no-install-recommends -y install php7.2-xdebug php7.3-xdebug php7.4-xdebug php8.0-xdebug php8.1-xdebug \
+    && apt-get --no-install-recommends -y install php7.2-xdebug php7.3-xdebug php7.4-xdebug php8.0-xdebug php8.1-xdebug php8.2-xdebug \
     #################################
     # Node.js & Grunt CLI           #
     #################################
@@ -82,6 +82,7 @@ RUN ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/7.2/fpm/conf.d/21-xdebug.ini \
     && ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/7.4/fpm/conf.d/21-xdebug.ini \
     && ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/8.0/fpm/conf.d/21-xdebug.ini \
     && ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/8.1/fpm/conf.d/21-xdebug.ini \
+    && ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/8.2/fpm/conf.d/21-xdebug.ini \
     && chmod +x /etc/service/mailcatcher/run \
     && rm -rf /etc/nginx/conf.d/includes/nginx/90-file-cache.conf
 
