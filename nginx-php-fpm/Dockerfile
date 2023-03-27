@@ -66,6 +66,8 @@ RUN apt-get remove --purge --auto-remove -y \
 
 COPY mailcatcher/mailcatcher.sh /etc/service/mailcatcher/run
 
+RUN mkdir -p "/var/www/.npm" && chown -R 1000:33 "/var/www/.npm"
+
 # Configure
 COPY php-fpm/ext-xdebug.ini /etc/php/conf.d/21-xdebug.ini
 
