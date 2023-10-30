@@ -1,4 +1,4 @@
-FROM phusion/baseimage:master
+FROM phusion/baseimage:focal-1.2.0
 
 RUN locale-gen en_US.UTF-8 de_DE.UTF-8
 ENV LANG en_US.UTF-8
@@ -13,29 +13,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get upgrade -y \
     && apt-get --no-install-recommends -y install \
         imagemagick \
-    && apt-get --no-install-recommends -y install \
         unzip \
         php-redis \
-        php7.2 \
-        php7.2-cli \
-        php7.2-common \
-        php7.2-bcmath \
-        php7.2-ctype \
-        php7.2-curl \
-        php7.2-dom \
-        php7.2-gd \
-        php7.2-intl \
-        php7.2-mbstring \
-        php7.2-mysql \
-        php7.2-simplexml \
-        php7.2-soap \
-        php7.2-xsl \
-        php7.2-zip \
-        php7.2-json \
-        php7.2-iconv \
-        php7.2-apcu \
-        php7.2-imap \
-        php7.2-imagick \
         php7.3 \
         php7.3-cli \
         php7.3-common \
@@ -141,13 +120,12 @@ RUN  curl --show-error --silent https://getcomposer.org/installer | php \
     && find /tmp /var/tmp -mindepth 2 -delete \
     && apt-get purge -y --auto-remove \
     # symlink php config
-    && ln -sf /etc/php/php.ini /etc/php/7.2/cli/php.ini \
     && ln -sf /etc/php/php.ini /etc/php/7.3/cli/php.ini \
     && ln -sf /etc/php/php.ini /etc/php/7.4/cli/php.ini \
     && ln -sf /etc/php/php.ini /etc/php/8.0/cli/php.ini \
     && ln -sf /etc/php/php.ini /etc/php/8.1/cli/php.ini \
     && ln -sf /etc/php/php.ini /etc/php/8.2/cli/php.ini \
-    #Setting default version to 7.4
+    #Setting default version to 8.1
     && ln -sf /usr/bin/php8.1 /etc/alternatives/php \
     && sed -i "s/exec/# exec/g" /etc/service/cron/run
 

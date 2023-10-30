@@ -1,11 +1,17 @@
 FROM copex/cron
 
+ENV NODE_MAJOR=18
+
 #################################
 # Node.js    & crontab-ui       #
 #################################
-RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
-    apt --no-install-recommends -y install sudo nodejs && \
-    npm install -g crontab-ui
+ENV NVM_DIR="/root/.nvm"
+
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash - \
+    && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
+    && [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" \
+    && nvm install $NODE_MAJOR \
+    && npm install -g crontab-ui
 
 
 #################################
