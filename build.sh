@@ -24,6 +24,7 @@ get_tag_name() {
 
 # Check if at least one argument is provided
 if [ $# -eq 0 ]; then
+    $@="php php/7.3 php/7.4 php/8.0 php/8.1 php/8.2 nginx-php-fpm"
     echo -e "${GREEN}Please provide at least one directory name where the Dockerfiles are located.${NC}"
     exit 1
 fi

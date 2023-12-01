@@ -15,5 +15,3 @@ RUN gem install capistrano -v 3.4.0 && \
 RUN apt-get update && \
     apt-get install apt-transport-https ca-certificates -y && \
     update-ca-certificates
-
-RUN

@@ -19,4 +19,10 @@ RUN mkdir -p ~/.ssh && \
 
 RUN apt-get update && \
     apt-get install apt-transport-https ca-certificates -y && \
-    update-ca-certificates
+    update-ca-certificates \
+    # Cleanup
+    && apt-get clean \
+    && rm -f /etc/dpkg/dpkg.cfg.d/02apt-speedup \
+    && find /var/lib/apt/lists -mindepth 1 -delete -print \
+    && find /tmp /var/tmp -mindepth 2 -delete \
+    && apt-get purge -y --auto-remove \

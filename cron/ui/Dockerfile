@@ -5,7 +5,12 @@ ENV NODE_MAJOR=18
 #################################
 # Node.js    & crontab-ui       #
 #################################
-ENV NVM_DIR="/root/.nvm"
+ENV NVM_DIR="/var/www/.nvm"
+USER root
+RUN mkdir $NVM_DIR /var/www/.npm && chown www-data:www-data $NVM_DIR /var/www/.npm
+USER www-data
+
+SHELL ["/bin/bash", "--login", "-c"]
 
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash - \
     && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
@@ -13,20 +18,15 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | b
     && nvm install $NODE_MAJOR \
     && npm install -g crontab-ui
 
+#RUN ln -s "$NVM_DIR/versions/node/$(nvm version)/bin/node" "/usr/local/bin/node" && \
+#    ln -s "$NVM_DIR/versions/node/$(nvm version)/bin/npm" "/usr/local/bin/npm" \
 
-#################################
-# Cleanup                       #
-#################################
-RUN apt-get autoremove -y && \
-    apt-get autoclean && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-# Configure PHP-FPM to start as a service
+USER www-data
+# Configure crontab ui to start as a service
 COPY ./service/runit.sh /etc/service/crontab-ui/run
 
-RUN chmod g+w -R  /usr/lib/node_modules/crontab-ui && \
-    chgrp www-data -R  /usr/lib/node_modules/crontab-ui
+#RUN chmod g+w -R  "$NVM_DIR/versions/node/$(nvm version)/lib/node_modules" && \
+#    chgrp www-data -R "$NVM_DIR/versions/node/$(nvm version)/lib/node_modules"
 
 ENV HOST 0.0.0.0
 ENV PORT 8282
