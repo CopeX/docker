@@ -11,6 +11,6 @@ ADD supervisor/ /etc/supervisor/
 RUN touch /var/log/satis-cron.log \
 	&& mkdir -p /var/log/supervisor/
 
-ENTRYPOINT ["/satis/bin/docker-entrypoint.sh"]
+ENTRYPOINT [""]
 
-CMD [""]
+CMD ["/satis/bin/docker-entrypoint.sh"]
