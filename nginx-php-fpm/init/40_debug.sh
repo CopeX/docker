@@ -1,6 +1,15 @@
 #!/bin/bash
 
-# No Xdebug fpm
+if [ -z ${XDEBUG_MODE:-} ]; then
+    XDEBUG_MODE="off"
+fi
+
+if [ "$XDEBUG_MODE" = "off" ]; then
+    rm -f /etc/php/$PHP_VERSION/fpm/conf.d/21-xdebug.ini
+    rm -f /etc/php/$PHP_VERSION/cli/conf.d/21-xdebug.ini
+fi
+
+# Create no xdebug for get.php, ....
 cp -r /etc/php/$PHP_VERSION /etc/php/$PHP_VERSION-noxdebug
 rm -f /etc/php/$PHP_VERSION-noxdebug/fpm/conf.d/21-xdebug.ini
 rm -f /etc/php/$PHP_VERSION-noxdebug/cli/conf.d/21-xdebug.ini
@@ -13,16 +22,6 @@ sed -i 's/php-fpm$PHP_VERSION -c \/etc\/php\/$PHP_VERSION\/fpm/PHP_INI_SCAN_DIR=
 chmod +x /etc/service/php-fpm-noxdebug/run
 
 
-
-if [ -z ${PHP_ENABLE_XDEBUG:-} ]; then
-    PHP_ENABLE_XDEBUG="true"
-fi
-
-
-if [ "$PHP_ENABLE_XDEBUG" = "false" ]; then
-    rm -f /etc/php/$PHP_VERSION/fpm/conf.d/21-xdebug.ini
-    rm -f /etc/php/$PHP_VERSION/cli/conf.d/21-xdebug.ini
-fi
 
 if [ -z ${ENABLE_BLACKFIRE:-} ]; then
     ENABLE_BLACKFIRE="false"
