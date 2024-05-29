@@ -52,8 +52,6 @@ RUN apt-get remove --purge --auto-remove -y \
     && find /tmp /var/tmp -mindepth 2 -delete \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-COPY mailcatcher/mailcatcher.sh /etc/service/mailcatcher/run
-
 RUN mkdir -p "/var/www/.npm" && chown -R 1000:33 "/var/www/.npm"
 
 # Configure
@@ -72,7 +70,6 @@ RUN ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/7.4/fpm/conf.d/21-xdebug.ini \
     && ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/8.1/fpm/conf.d/21-xdebug.ini \
     && ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/8.2/fpm/conf.d/21-xdebug.ini \
     && ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/8.3/fpm/conf.d/21-xdebug.ini \
-    && chmod +x /etc/service/mailcatcher/run \
     && rm -rf /etc/nginx/conf.d/includes/nginx/90-file-cache.conf
 
 COPY init /etc/my_init.d

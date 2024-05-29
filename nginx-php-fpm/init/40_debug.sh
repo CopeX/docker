@@ -43,5 +43,5 @@ if [ "$ENABLE_BLACKFIRE" = "true" ]; then
 fi
 
 echo "root=postmaster" > /etc/ssmtp/ssmtp.conf
-echo "mailhub=localhost:1025" >> /etc/ssmtp/ssmtp.conf
+echo "mailhub=mailcatcher:1025" >> /etc/ssmtp/ssmtp.conf
 echo "hostname=$DOMAIN" >> /etc/ssmtp/ssmtp.conf
