@@ -20,32 +20,33 @@ RUN export DEBIAN_FRONTEND=noninteractive  \
     libsqlite3-dev \
     iproute2 \
     # xdebug
-    && apt-get --no-install-recommends -y install php7.4-xdebug php8.0-xdebug php8.1-xdebug php8.2-xdebug \
-    #################################
-    # Node.js & Grunt CLI           #
-    #################################
-    && curl -sL https://deb.nodesource.com/setup_14.x | bash - \
-    && apt-get --no-install-recommends --no-install-suggests -y install nodejs \
+    && apt-get --no-install-recommends -y install php7.4-xdebug php8.0-xdebug php8.1-xdebug php8.2-xdebug php8.3-xdebug
+
+
+#################################
+# Node.js & Grunt CLI           #
+#################################
+
+ENV NVM_DIR="/root/.nvm"
+ENV NODE_MAJOR=18
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash - \
+    && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
+    && [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" \
+    && nvm install $NODE_MAJOR \
     && npm install -g grunt-cli \
     && npm install -g clean-css-cli grunt grunt-critical grunt-contrib-cssmin --unsafe-perm=true \
-    ###############################
-    # magepack                    #
-    ###############################
-    && apt-get --no-install-recommends --no-install-suggests -y install gconf-service libasound2 libatk1.0-0 libatk-bridge2.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget \
-    && npm install -g magepack --unsafe-perm=true --allow-root \
-    #################################
-    # Ruby 2                        #
-    #################################
-    && apt-get install --no-install-recommends --no-install-suggests ruby ruby-dev -y
-    #################################
-    # Mailcatcher                   #
-    #################################
-RUN gem install sqlite3 -v 1.6.9 && gem install net-imap -v 0.3.7 && gem install mailcatcher --conservative --no-document \
     #################################
     # Livereload & BrowserSync      #
     #################################
     && npm install -g browser-sync \
     && npm install -g livereload
+
+    #################################
+    # Ruby 2 + Mailcatcher          #
+    #################################
+RUN apt-get install --no-install-recommends --no-install-suggests ruby ruby-dev -y \
+    && gem install sqlite3 -v 1.6.9 && gem install net-imap -v 0.3.7 && gem install mailcatcher --conservative --no-document \
+
 
 #################################
 # Cleanup                       #
