@@ -41,13 +41,6 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | b
     && npm install -g browser-sync \
     && npm install -g livereload
 
-    #################################
-    # Ruby 2 + Mailcatcher          #
-    #################################
-RUN apt-get install --no-install-recommends --no-install-suggests ruby ruby-dev -y \
-    && gem install sqlite3 -v 1.6.9 && gem install net-imap -v 0.3.7 && gem install mailcatcher --conservative --no-document \
-
-
 #################################
 # Cleanup                       #
 #################################
@@ -78,6 +71,7 @@ RUN ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/7.4/fpm/conf.d/21-xdebug.ini \
     && ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/8.0/fpm/conf.d/21-xdebug.ini \
     && ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/8.1/fpm/conf.d/21-xdebug.ini \
     && ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/8.2/fpm/conf.d/21-xdebug.ini \
+    && ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/8.3/fpm/conf.d/21-xdebug.ini \
     && chmod +x /etc/service/mailcatcher/run \
     && rm -rf /etc/nginx/conf.d/includes/nginx/90-file-cache.conf
 
