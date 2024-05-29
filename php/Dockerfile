@@ -83,6 +83,22 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         php8.2-apcu \
         php8.2-imap \
         php8.2-imagick \
+        php8.3 \
+        php8.3-cli \
+        php8.3-common \
+        php8.3-bcmath \
+        php8.3-curl \
+        php8.3-gd \
+        php8.3-intl \
+        php8.3-mbstring \
+        php8.3-mysql \
+        php8.3-xml \
+        php8.3-soap \
+        php8.3-xsl \
+        php8.3-zip \
+        php8.3-apcu \
+        php8.3-imap \
+        php8.3-imagick \
         openssl \
         patch \
         git
@@ -104,6 +120,7 @@ RUN  curl --show-error --silent https://getcomposer.org/installer | php \
     && ln -sf /etc/php/php.ini /etc/php/8.0/cli/php.ini \
     && ln -sf /etc/php/php.ini /etc/php/8.1/cli/php.ini \
     && ln -sf /etc/php/php.ini /etc/php/8.2/cli/php.ini \
+    && ln -sf /etc/php/php.ini /etc/php/8.3/cli/php.ini \
     #Setting default version to 8.1
     && ln -sf /usr/bin/php8.1 /etc/alternatives/php \
     && sed -i "s/exec/# exec/g" /etc/service/cron/run

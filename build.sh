@@ -24,7 +24,7 @@ get_tag_name() {
 
 # Check if at least one argument is provided
 if [ $# -eq 0 ]; then
-    directories=("php" "php/7.3" "php/7.4" "php/8.0" "php/8.1" "php/8.2" "nginx-php-fpm")
+    directories=("php" "php/7.3" "php/7.4" "php/8.0" "php/8.1" "php/8.2" "php/8.3" "nginx-php-fpm")
     echo -e "${GREEN}No arguments provided. Using default directories: ${directories[*]}${NC}"
 else
     directories=("$@")

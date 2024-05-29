@@ -22,6 +22,7 @@ RUN rm -rf /etc/nginx/conf.d/* \
             php8.0-fpm \
             php8.1-fpm \
             php8.2-fpm \
+            php8.3-fpm \
     && chmod +x /etc/service/nginx/run \
     && rm -rf /build
 
@@ -39,10 +40,12 @@ RUN ln -sf /etc/php/www.conf /etc/php/7.4/fpm/pool.d/www.conf \
     && ln -sf /etc/php/www.conf /etc/php/8.0/fpm/pool.d/www.conf \
     && ln -sf /etc/php/www.conf /etc/php/8.1/fpm/pool.d/www.conf \
     && ln -sf /etc/php/www.conf /etc/php/8.2/fpm/pool.d/www.conf \
+    && ln -sf /etc/php/www.conf /etc/php/8.3/fpm/pool.d/www.conf \
     && ln -sf /etc/php/php.ini /etc/php/7.4/fpm/php.ini \
     && ln -sf /etc/php/php.ini /etc/php/8.0/fpm/php.ini \
     && ln -sf /etc/php/php.ini /etc/php/8.1/fpm/php.ini \
-    && ln -sf /etc/php/php.ini /etc/php/8.2/fpm/php.ini
+    && ln -sf /etc/php/php.ini /etc/php/8.3/fpm/php.ini
+
 
 # Configure PHP-FPM to start as a service
 COPY php-fpm/service/runit.sh /etc/service/php-fpm/run
