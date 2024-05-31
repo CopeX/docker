@@ -1,6 +1,6 @@
 FROM copex/nginx-php-fpm
 
-EXPOSE 1080 9000 9003
+EXPOSE 9000 9003
 
 CMD ["/sbin/my_init"]
 
@@ -27,19 +27,27 @@ RUN export DEBIAN_FRONTEND=noninteractive  \
 # Node.js & Grunt CLI           #
 #################################
 
-ENV NVM_DIR="/root/.nvm"
+ENV NVM_DIR="/usr/local/nvm"
 ENV NODE_MAJOR=18
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash - \
-    && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
-    && [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" \
-    && nvm install $NODE_MAJOR \
-    && npm install -g grunt-cli \
-    && npm install -g clean-css-cli grunt grunt-critical grunt-contrib-cssmin --unsafe-perm=true \
-    #################################
-    # Livereload & BrowserSync      #
-    #################################
-    && npm install -g browser-sync \
-    && npm install -g livereload
+
+RUN mkdir -p $NVM_DIR && \
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash && \
+    ln -s $NVM_DIR/nvm.sh /etc/profile.d/nvm.sh && \
+    echo "source $NVM_DIR/nvm.sh" >> /etc/bash.bashrc && \
+    echo "export NVM_DIR=\"$NVM_DIR\"" >> /etc/bash.bashrc && \
+    echo "[ -s \"$NVM_DIR/nvm.sh\" ] && \. \"$NVM_DIR/nvm.sh\"" >> /etc/bash.bashrc && \
+    echo "[ -s \"$NVM_DIR/bash_completion\" ] && \. \"$NVM_DIR/bash_completion\"" >> /etc/bash.bashrc && \
+    bash -c "source $NVM_DIR/nvm.sh && nvm install $NODE_MAJOR"
+
+
+# Install global npm packages
+RUN bash -c "source $NVM_DIR/nvm.sh && nvm use default && \
+    ln -s \$(which node) /usr/bin/node && \
+    ln -s \$(which npm) /usr/bin/npm && \
+    ln -s \$(which npx) /usr/bin/npx && \
+    npm install -g grunt-cli clean-css-cli grunt grunt-critical grunt-contrib-cssmin --unsafe-perm=true browser-sync livereload"
+
+
 
 #################################
 # Cleanup                       #
