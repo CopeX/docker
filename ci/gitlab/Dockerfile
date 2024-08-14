@@ -14,7 +14,7 @@ RUN DEBIAN_FRONTEND=noninteractive && \
 # WARNING: Use this only with the Docker executor, if you use it with shell
 # you will overwrite your user's SSH config.
 RUN mkdir -p ~/.ssh && \
-    bash -c '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config' && \
+    echo "StrictHostKeyChecking no" >> $(find /etc -iname ssh_config) && \
     git config --global user.email "ci@copex.io" && git config --global user.name "CI Deployment"
 
 RUN apt-get update && \
