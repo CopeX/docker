@@ -27,6 +27,10 @@ RUN mkdir -p ~/.ssh && \
     echo "StrictHostKeyChecking no" >> $(find /etc -iname ssh_config) && \
     git config --global user.email "ci@copex.io" && git config --global user.name "CI Deployment"
 
+RUN curl -LO https://github.com/deployphp/deployer/releases/download/v7.4.0/deployer.phar \
+    && mv deployer.phar /usr/local/bin/dep \
+    && chmod +x /usr/local/bin/dep
+
 COPY ssh-deactivate-key-checking ssh-start-entrypoint ssh-add-known-host /bin/
 
 ENV LC_ALL=en_US.UTF-8
