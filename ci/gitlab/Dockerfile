@@ -6,7 +6,17 @@ RUN DEBIAN_FRONTEND=noninteractive && \
         openssh-client \
         zip \
         unzip \
-        git
+        git apt-transport-https ca-certificates && \
+    update-ca-certificates \
+    # Cleanup
+    && apt-get clean \
+    && rm -f /etc/dpkg/dpkg.cfg.d/02apt-speedup \
+    && find /var/lib/apt/lists -mindepth 1 -delete -print \
+    && find /tmp /var/tmp -mindepth 2 -delete \
+    && apt-get purge -y --auto-remove
+
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash && \
+     export NVM_DIR="$HOME/.nvm" &&  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && nvm install v18 && nvm use v18
 
 # set git user
 # For Docker builds disable host key checking. Be aware that by adding that
@@ -17,12 +27,8 @@ RUN mkdir -p ~/.ssh && \
     echo "StrictHostKeyChecking no" >> $(find /etc -iname ssh_config) && \
     git config --global user.email "ci@copex.io" && git config --global user.name "CI Deployment"
 
-RUN apt-get update && \
-    apt-get install apt-transport-https ca-certificates -y && \
-    update-ca-certificates \
-    # Cleanup
-    && apt-get clean \
-    && rm -f /etc/dpkg/dpkg.cfg.d/02apt-speedup \
-    && find /var/lib/apt/lists -mindepth 1 -delete -print \
-    && find /tmp /var/tmp -mindepth 2 -delete \
-    && apt-get purge -y --auto-remove \
+COPY ssh-deactivate-key-checking ssh-start-entrypoint ssh-add-known-host /bin/
+
+ENV LC_ALL=en_US.UTF-8
+
+ENTRYPOINT ["ssh-start-entrypoint"]

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [[ -z $1 ]]
+then
+  echo "ERROR: Empty input"
+  exit 1
+fi
+
+mkdir -p ~/.ssh
+echo $1>>~/.ssh/known_hosts
+chmod 644 ~/.ssh/known_hosts
