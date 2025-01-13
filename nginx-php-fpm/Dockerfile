@@ -4,18 +4,12 @@ EXPOSE 80 443
 
 CMD ["/sbin/my_init"]
 
-# Build packages first
-
-COPY nginx/install/nginx.list /etc/apt/sources.list.d/nginx.list
-COPY nginx/install/nginx_signing.key /etc/apt/nginx_signing.key
 # Configure nginx to start as a service
 COPY ./nginx/service/runit.sh /etc/service/nginx/run
 
 RUN rm -rf /etc/nginx/conf.d/* \
-    && apt-key add /etc/apt/nginx_signing.key \
     && export DEBIAN_FRONTEND=noninteractive \
     && echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/02apt-speedup  \
-    && add-apt-repository -y ppa:nginx/stable \
     && apt-get update \
     && apt-get -y install --no-install-recommends --no-install-suggests nginx mysql-client wget ssmtp net-tools unzip \
             php7.4-fpm \
@@ -44,6 +38,7 @@ RUN ln -sf /etc/php/www.conf /etc/php/7.4/fpm/pool.d/www.conf \
     && ln -sf /etc/php/php.ini /etc/php/7.4/fpm/php.ini \
     && ln -sf /etc/php/php.ini /etc/php/8.0/fpm/php.ini \
     && ln -sf /etc/php/php.ini /etc/php/8.1/fpm/php.ini \
+    && ln -sf /etc/php/php.ini /etc/php/8.2/fpm/php.ini \
     && ln -sf /etc/php/php.ini /etc/php/8.3/fpm/php.ini
 
 

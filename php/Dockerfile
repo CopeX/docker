@@ -1,9 +1,9 @@
-FROM phusion/baseimage:focal-1.2.0
+FROM phusion/baseimage:noble-1.0.0
 
 RUN locale-gen en_US.UTF-8 de_DE.UTF-8
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
 
 # Build packages first
 RUN export DEBIAN_FRONTEND=noninteractive \
@@ -14,6 +14,11 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get --no-install-recommends -y install \
         imagemagick \
         unzip \
+        openssl \
+        patch \
+        git
+
+RUN apt-get --no-install-recommends -y install \
         php-redis \
         php7.4 \
         php7.4-cli \
@@ -99,9 +104,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         php8.3-apcu \
         php8.3-imap \
         php8.3-imagick \
-        openssl \
-        patch \
-        git
+        php8.3-redis \
+        php8.3-dom
 
 # Copy php config
 COPY php.ini /etc/php/php.ini
