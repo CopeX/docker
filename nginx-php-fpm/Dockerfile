@@ -29,6 +29,7 @@ RUN export DEBIAN_FRONTEND=noninteractive  \
 
 ENV NVM_DIR="/usr/local/nvm"
 ENV NODE_MAJOR=18
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
 
 RUN mkdir -p $NVM_DIR && \
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash && \
@@ -84,4 +85,4 @@ COPY init /etc/my_init.d
 
 COPY nginx/site-templates/ /etc/nginx/site-templates/
 
-RUN usermod -u 1000 www-data
+RUN userdel ubuntu && usermod -u 1000 www-data
