@@ -19,6 +19,7 @@ RUN export DEBIAN_FRONTEND=noninteractive  \
     gem \
     libsqlite3-dev \
     iproute2 \
+    iputils-ping \
     # xdebug
     && apt-get --no-install-recommends -y install php7.4-xdebug php8.0-xdebug php8.1-xdebug php8.2-xdebug php8.3-xdebug
 
