@@ -24,8 +24,13 @@ get_tag_name() {
 
 # Check if at least one argument is provided
 if [ $# -eq 0 ]; then
-    directories=("php" "php/7.4" "php/8.0" "php/8.1" "php/8.2" "php/8.3" "nginx-php-fpm")
-    echo -e "${GREEN}No arguments provided. Using default directories: ${directories[*]}${NC}"
+    echo -e "${RED}This script is deprecated. Please use build-all.sh instead.${NC}"
+    echo -e "${YELLOW}Examples:${NC}"
+    echo -e "  ./build-all.sh                    # Build all images"
+    echo -e "  ./build-all.sh --push             # Build and push all images"
+    echo -e "  ./build-all.sh --version 8.2      # Build only PHP 8.2 images"
+    echo -e "  ./build-all.sh --php-only --push  # Build and push only PHP images"
+    exit 1
 else
     directories=("$@")
 fi

@@ -1,4 +1,8 @@
-FROM copex/php
+# Build argument for PHP version
+ARG PHP_VERSION=8.1
+FROM copex/php:${PHP_VERSION}
+
+ENV PHP_VERSION=${PHP_VERSION}
 
 EXPOSE 80 443
 
@@ -12,11 +16,7 @@ RUN rm -rf /etc/nginx/conf.d/* \
     && echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/02apt-speedup  \
     && apt-get update \
     && apt-get -y install --no-install-recommends --no-install-suggests nginx mysql-client wget ssmtp net-tools unzip \
-            php7.4-fpm \
-            php8.0-fpm \
-            php8.1-fpm \
-            php8.2-fpm \
-            php8.3-fpm \
+            php${PHP_VERSION}-fpm \
     && chmod +x /etc/service/nginx/run \
     && rm -rf /build
 
@@ -30,16 +30,8 @@ COPY nginx/ssl/dhparams.pem /etc/ssl/private/
 
 # Copy php config
 COPY php-fpm/php-fpm.conf /etc/php/www.conf
-RUN ln -sf /etc/php/www.conf /etc/php/7.4/fpm/pool.d/www.conf \
-    && ln -sf /etc/php/www.conf /etc/php/8.0/fpm/pool.d/www.conf \
-    && ln -sf /etc/php/www.conf /etc/php/8.1/fpm/pool.d/www.conf \
-    && ln -sf /etc/php/www.conf /etc/php/8.2/fpm/pool.d/www.conf \
-    && ln -sf /etc/php/www.conf /etc/php/8.3/fpm/pool.d/www.conf \
-    && ln -sf /etc/php/php.ini /etc/php/7.4/fpm/php.ini \
-    && ln -sf /etc/php/php.ini /etc/php/8.0/fpm/php.ini \
-    && ln -sf /etc/php/php.ini /etc/php/8.1/fpm/php.ini \
-    && ln -sf /etc/php/php.ini /etc/php/8.2/fpm/php.ini \
-    && ln -sf /etc/php/php.ini /etc/php/8.3/fpm/php.ini
+RUN ln -sf /etc/php/www.conf /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf \
+    && ln -sf /etc/php/php.ini /etc/php/${PHP_VERSION}/fpm/php.ini
 
 
 # Configure PHP-FPM to start as a service

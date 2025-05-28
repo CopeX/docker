@@ -1,5 +1,9 @@
 FROM phusion/baseimage:noble-1.0.0
 
+# Build argument for PHP version
+ARG PHP_VERSION=8.3
+ENV PHP_VERSION=${PHP_VERSION}
+
 RUN locale-gen en_US.UTF-8 de_DE.UTF-8
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
@@ -18,94 +22,28 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         patch \
         git
 
+# Install PHP packages based on PHP_VERSION
 RUN apt-get --no-install-recommends -y install \
         php-redis \
-        php7.4 \
-        php7.4-cli \
-        php7.4-common \
-        php7.4-bcmath \
-        php7.4-ctype \
-        php7.4-curl \
-        php7.4-dom \
-        php7.4-gd \
-        php7.4-intl \
-        php7.4-mbstring \
-        php7.4-mysql \
-        php7.4-simplexml \
-        php7.4-soap \
-        php7.4-xsl \
-        php7.4-zip \
-        php7.4-json \
-        php7.4-iconv \
-        php7.4-apcu \
-        php7.4-imap \
-        php7.4-imagick \
-        php8.0 \
-        php8.0-cli \
-        php8.0-common \
-        php8.0-bcmath \
-        php8.0-curl \
-        php8.0-gd \
-        php8.0-intl \
-        php8.0-mbstring \
-        php8.0-mysql \
-        php8.0-xml \
-        php8.0-soap \
-        php8.0-xsl \
-        php8.0-zip \
-        php8.0-apcu \
-        php8.0-imap \
-        php8.0-imagick \
-        php8.1 \
-        php8.1-cli \
-        php8.1-common \
-        php8.1-bcmath \
-        php8.1-curl \
-        php8.1-gd \
-        php8.1-intl \
-        php8.1-mbstring \
-        php8.1-mysql \
-        php8.1-xml \
-        php8.1-soap \
-        php8.1-xsl \
-        php8.1-zip \
-        php8.1-apcu \
-        php8.1-imap \
-        php8.1-imagick \
-        php8.2 \
-        php8.2-cli \
-        php8.2-common \
-        php8.2-bcmath \
-        php8.2-curl \
-        php8.2-gd \
-        php8.2-intl \
-        php8.2-mbstring \
-        php8.2-mysql \
-        php8.2-xml \
-        php8.2-soap \
-        php8.2-xsl \
-        php8.2-zip \
-        php8.2-apcu \
-        php8.2-imap \
-        php8.2-imagick \
-        php8.3 \
-        php8.3-cli \
-        php8.3-common \
-        php8.3-bcmath \
-        php8.3-curl \
-        php8.3-gd \
-        php8.3-intl \
-        php8.3-mbstring \
-        php8.3-mysql \
-        php8.3-xml \
-        php8.3-soap \
-        php8.3-xsl \
-        php8.3-zip \
-        php8.3-apcu \
-        php8.3-imap \
-        php8.3-imagick \
-        php8.3-redis \
-        php8.3-dom
+        php${PHP_VERSION} \
+        php${PHP_VERSION}-cli \
+        php${PHP_VERSION}-common \
+        php${PHP_VERSION}-bcmath \
+        php${PHP_VERSION}-curl \
+        php${PHP_VERSION}-gd \
+        php${PHP_VERSION}-intl \
+        php${PHP_VERSION}-mbstring \
+        php${PHP_VERSION}-mysql \
+        php${PHP_VERSION}-xml \
+        php${PHP_VERSION}-soap \
+        php${PHP_VERSION}-xsl \
+        php${PHP_VERSION}-zip \
+        php${PHP_VERSION}-apcu \
+        php${PHP_VERSION}-imap \
+        php${PHP_VERSION}-imagick \
+        $(if [ "${PHP_VERSION}" = "7.4" ]; then echo "php${PHP_VERSION}-ctype php${PHP_VERSION}-dom php${PHP_VERSION}-simplexml php${PHP_VERSION}-json php${PHP_VERSION}-iconv"; fi) \
+        $(if [ "${PHP_VERSION}" != "7.4" ]; then echo "php${PHP_VERSION}-dom"; fi) \
+        $(if [ "${PHP_VERSION}" = "8.3" ] || [ "${PHP_VERSION}" = "8.4" ]; then echo "php${PHP_VERSION}-redis"; fi)
 
 # Copy php config
 COPY php.ini /etc/php/php.ini
@@ -119,14 +57,10 @@ RUN  curl --show-error --silent https://getcomposer.org/installer | php \
     && find /var/lib/apt/lists -mindepth 1 -delete -print \
     && find /tmp /var/tmp -mindepth 2 -delete \
     && apt-get purge -y --auto-remove \
-    # symlink php config
-    && ln -sf /etc/php/php.ini /etc/php/7.4/cli/php.ini \
-    && ln -sf /etc/php/php.ini /etc/php/8.0/cli/php.ini \
-    && ln -sf /etc/php/php.ini /etc/php/8.1/cli/php.ini \
-    && ln -sf /etc/php/php.ini /etc/php/8.2/cli/php.ini \
-    && ln -sf /etc/php/php.ini /etc/php/8.3/cli/php.ini \
-    #Setting default version to 8.1
-    && ln -sf /usr/bin/php8.1 /etc/alternatives/php \
+    # symlink php config for the specific version
+    && ln -sf /etc/php/php.ini /etc/php/${PHP_VERSION}/cli/php.ini \
+    # Set the specific PHP version as default
+    && ln -sf /usr/bin/php${PHP_VERSION} /etc/alternatives/php \
     && sed -i "s/exec/# exec/g" /etc/service/cron/run
 
 COPY init /etc/my_init.d

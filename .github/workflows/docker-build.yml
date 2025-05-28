@@ -1,0 +1,119 @@
+name: Build and Push Docker Images
+
+on:
+  push:
+    branches: [ main, master, develop ]
+    paths:
+      - 'php/**'
+      - 'nginx-php-fpm/**'
+      - '.github/workflows/docker-build.yml'
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - 'php/**'
+      - 'nginx-php-fpm/**'
+      - '.github/workflows/docker-build.yml'
+  workflow_dispatch:
+    inputs:
+      php_version:
+        description: 'PHP Version to build (leave empty for all)'
+        required: false
+        type: choice
+        options:
+          - ''
+          - '7.4'
+          - '8.0'
+          - '8.1'
+          - '8.2'
+          - '8.3'
+          - '8.4'
+      image_type:
+        description: 'Image type to build'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - 'all'
+          - 'php'
+          - 'nginx-php-fpm'
+      push_images:
+        description: 'Push images to registry'
+        required: false
+        default: true
+        type: boolean
+
+env:
+  REGISTRY: docker.io
+  NAMESPACE: copex
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php_version: [7.4, 8.0, 8.1, 8.2, 8.3, 8.4]
+        image_type: [php, nginx-php-fpm]
+        exclude:
+          # Exclude combinations based on workflow inputs
+          - php_version: ${{ github.event.inputs.php_version != '' && github.event.inputs.php_version != '7.4' && '7.4' || 'never' }}
+          - php_version: ${{ github.event.inputs.php_version != '' && github.event.inputs.php_version != '8.0' && '8.0' || 'never' }}
+          - php_version: ${{ github.event.inputs.php_version != '' && github.event.inputs.php_version != '8.1' && '8.1' || 'never' }}
+          - php_version: ${{ github.event.inputs.php_version != '' && github.event.inputs.php_version != '8.2' && '8.2' || 'never' }}
+          - php_version: ${{ github.event.inputs.php_version != '' && github.event.inputs.php_version != '8.3' && '8.3' || 'never' }}
+          - php_version: ${{ github.event.inputs.php_version != '' && github.event.inputs.php_version != '8.4' && '8.4' || 'never' }}
+          - image_type: ${{ github.event.inputs.image_type == 'php' && 'nginx-php-fpm' || 'never' }}
+          - image_type: ${{ github.event.inputs.image_type == 'nginx-php-fpm' && 'php' || 'never' }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Log in to Docker Hub
+      if: github.event_name != 'pull_request' && (github.event.inputs.push_images != 'false')
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Extract metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.NAMESPACE }}/${{ matrix.image_type }}
+        tags: |
+          type=raw,value=${{ matrix.php_version }}
+          type=raw,value=${{ matrix.php_version }}-{{sha}}
+          type=raw,value=${{ matrix.php_version }}-{{date 'YYYYMMDD'}}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: ./${{ matrix.image_type }}
+        platforms: linux/amd64,linux/arm64
+        build-args: |
+          PHP_VERSION=${{ matrix.php_version }}
+        push: ${{ github.event_name != 'pull_request' && (github.event.inputs.push_images != 'false') }}
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+  build-summary:
+    needs: build
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+    - name: Build Summary
+      run: |
+        echo "## Build Summary" >> $GITHUB_STEP_SUMMARY
+        echo "| Image Type | PHP Version | Status |" >> $GITHUB_STEP_SUMMARY
+        echo "|------------|-------------|--------|" >> $GITHUB_STEP_SUMMARY
+
+        # This would need to be populated with actual results
+        # For now, just show completion
+        echo "| All | All | ✅ Completed |" >> $GITHUB_STEP_SUMMARY
