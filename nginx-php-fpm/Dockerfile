@@ -1,5 +1,5 @@
 # Build argument for PHP version
-ARG PHP_VERSION=8.1
+ARG PHP_VERSION=8.3
 FROM copex/php:${PHP_VERSION}
 
 ENV PHP_VERSION=${PHP_VERSION}
