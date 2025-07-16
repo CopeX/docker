@@ -49,7 +49,7 @@ RUN bash -c "source $NVM_DIR/nvm.sh && nvm use default && \
     ln -s \$(which node) /usr/bin/node && \
     ln -s \$(which npm) /usr/bin/npm && \
     ln -s \$(which npx) /usr/bin/npx && \
-    npm install -g grunt-cli clean-css-cli grunt grunt-critical grunt-contrib-cssmin --unsafe-perm=true browser-sync livereload"
+    npm install -g grunt-cli clean-css-cli grunt grunt-critical grunt-contrib-cssmin --unsafe-perm=true"
 
 
 
