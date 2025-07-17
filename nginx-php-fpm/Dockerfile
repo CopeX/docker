@@ -1,6 +1,4 @@
-ARG PHP_VERSION=8.3
-FROM copex/nginx-php-fpm:${PHP_VERSION}
-ENV PHP_VERSION=${PHP_VERSION}
+FROM copex/nginx-php-fpm
 
 EXPOSE 9000 9003
 
@@ -23,7 +21,7 @@ RUN export DEBIAN_FRONTEND=noninteractive  \
     iproute2 \
     iputils-ping \
     # xdebug
-    && apt-get --no-install-recommends -y install php${PHP_VERSION}-xdebug
+    && apt-get --no-install-recommends -y install php7.4-xdebug php8.0-xdebug php8.1-xdebug php8.2-xdebug php8.3-xdebug
 
 
 #################################
@@ -77,7 +75,11 @@ COPY magento/phpunit.xml.dist /var/www/htdocs/phpunit.xml.dist
 COPY php-fpm/php.ini /etc/php/php.ini
 COPY php-fpm/php-fpm.conf /etc/php/www.conf
 
-RUN ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/${PHP_VERSION}/fpm/conf.d/21-xdebug.ini \
+RUN ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/7.4/fpm/conf.d/21-xdebug.ini \
+    && ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/8.0/fpm/conf.d/21-xdebug.ini \
+    && ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/8.1/fpm/conf.d/21-xdebug.ini \
+    && ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/8.2/fpm/conf.d/21-xdebug.ini \
+    && ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/8.3/fpm/conf.d/21-xdebug.ini \
     && rm -rf /etc/nginx/conf.d/includes/nginx/90-file-cache.conf
 
 COPY init /etc/my_init.d
