@@ -1,90 +1,73 @@
-FROM copex/nginx-php-fpm
+# syntax=docker/dockerfile:1.7
+
+ARG PHP_VERSION=8.3
+
+########## Stage: node toolchain (cacheable) ##########
+FROM node:18-bullseye AS node-tools
+# Install your global CLIs here; cached independently from PHP base
+# (If you need a different Node version, change the FROM tag)
+RUN npm install -g \
+      grunt-cli \
+      clean-css-cli \
+      grunt \
+      grunt-critical \
+      grunt-contrib-cssmin \
+    && npm cache clean --force
+
+########## Stage: final ##########
+FROM copex/nginx-php-fpm:${PHP_VERSION}
 
 EXPOSE 9000 9003
-
 CMD ["/sbin/my_init"]
 
-# Install
-RUN export DEBIAN_FRONTEND=noninteractive  \
-    && echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/02apt-speedup \
-    && add-apt-repository -y ppa:ondrej/php \
-    && apt-get update \
-    && apt-get --no-install-recommends -y install mysql-client \
-    vim \
-    git \
-    curl \
-    wget \
-    build-essential \
-    tmux \
-    gem \
-    libsqlite3-dev \
-    iproute2 \
-    iputils-ping \
-    # xdebug
-    && apt-get --no-install-recommends -y install php7.4-xdebug php8.0-xdebug php8.1-xdebug php8.2-xdebug php8.3-xdebug php8.4-xdebug
+ENV DEBIAN_FRONTEND=noninteractive \
+    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
 
+# APT + PHP xdebug in one shot, with BuildKit cache
+RUN --mount=type=cache,target=/var/cache/apt \
+    --mount=type=cache,target=/var/lib/apt \
+    set -eux; \
+    echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/02apt-speedup; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+      software-properties-common ca-certificates curl wget git vim tmux \
+      build-essential libsqlite3-dev iproute2 iputils-ping mysql-client \
+      php${PHP_VERSION}-xdebug; \
+    apt-get clean; \
+    rm -rf /var/lib/apt/lists/*
 
-#################################
-# Node.js & Grunt CLI           #
-#################################
+# Bring in Node.js and the global npm packages from the node stage
+# Copying /usr/local/{bin,lib} is enough for node/npm/npx + global modules
+COPY --from=node-tools /usr/local/bin/node /usr/local/bin/node
+COPY --from=node-tools /usr/local/bin/npm /usr/local/bin/npm
+COPY --from=node-tools /usr/local/bin/npx /usr/local/bin/npx
+COPY --from=node-tools /usr/local/lib/node_modules /usr/local/lib/node_modules
+# Ensure global modules are on PATH and node tools resolve correctly
+ENV PATH="/usr/local/bin:/usr/local/lib/node_modules/.bin:${PATH}"
 
-ENV NVM_DIR="/usr/local/nvm"
-ENV NODE_MAJOR=18
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
+# Speed up subsequent npm operations inside the container (optional)
+# (This only affects future npm runs in the container, not build time.)
+ENV npm_config_cache=/var/www/.npm
 
-RUN mkdir -p $NVM_DIR && \
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash && \
-    ln -s $NVM_DIR/nvm.sh /etc/profile.d/nvm.sh && \
-    echo "source $NVM_DIR/nvm.sh" >> /etc/bash.bashrc && \
-    echo "export NVM_DIR=\"$NVM_DIR\"" >> /etc/bash.bashrc && \
-    echo "[ -s \"$NVM_DIR/nvm.sh\" ] && \. \"$NVM_DIR/nvm.sh\"" >> /etc/bash.bashrc && \
-    echo "[ -s \"$NVM_DIR/bash_completion\" ] && \. \"$NVM_DIR/bash_completion\"" >> /etc/bash.bashrc && \
-    bash -c "source $NVM_DIR/nvm.sh && nvm install $NODE_MAJOR"
-
-
-# Install global npm packages
-RUN bash -c "source $NVM_DIR/nvm.sh && nvm use default && \
-    ln -s \$(which node) /usr/bin/node && \
-    ln -s \$(which npm) /usr/bin/npm && \
-    ln -s \$(which npx) /usr/bin/npx && \
-    npm install -g grunt-cli clean-css-cli grunt grunt-critical grunt-contrib-cssmin --unsafe-perm=true"
-
-
-
-#################################
-# Cleanup                       #
-#################################
-RUN apt-get remove --purge --auto-remove -y \
-    && apt-get autoclean \
-    && apt-get clean  \
-    && rm -f /etc/dpkg/dpkg.cfg.d/02apt-speedup \
-    && find /var/lib/apt/lists -mindepth 1 -delete -print \
-    && find /tmp /var/tmp -mindepth 2 -delete \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-RUN mkdir -p "/var/www/.npm" && chown -R 1000:33 "/var/www/.npm"
+# Cleanup
+RUN set -eux; \
+    rm -f /etc/dpkg/dpkg.cfg.d/02apt-speedup; \
+    mkdir -p /var/www/.npm /run/php; \
+    chown -R 1000:33 /var/www/.npm; \
+    ln -sf /dev/stdout /var/log/nginx/access.log; \
+    ln -sf /dev/stderr /var/log/nginx/error.log
 
 # Configure
 COPY php-fpm/ext-xdebug.ini /etc/php/conf.d/21-xdebug.ini
-
-
 COPY magento/local.xml.phpunit /var/www/htdocs/app/etc/local.xml.phpunit
 COPY magento/phpunit.xml.dist /var/www/htdocs/phpunit.xml.dist
-
-# Copy php config (to override production config)
 COPY php-fpm/php.ini /etc/php/php.ini
 COPY php-fpm/php-fpm.conf /etc/php/www.conf
 
-RUN ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/7.4/fpm/conf.d/21-xdebug.ini \
-    && ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/8.0/fpm/conf.d/21-xdebug.ini \
-    && ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/8.1/fpm/conf.d/21-xdebug.ini \
-    && ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/8.2/fpm/conf.d/21-xdebug.ini \
-    && ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/8.3/fpm/conf.d/21-xdebug.ini \
-    && ln -s /etc/php/conf.d/21-xdebug.ini /etc/php/8.4/fpm/conf.d/21-xdebug.ini \
-    && rm -rf /etc/nginx/conf.d/includes/nginx/90-file-cache.conf
-
+RUN set -eux; \
+    ln -sf /etc/php/conf.d/21-xdebug.ini /etc/php/${PHP_VERSION}/fpm/conf.d/21-xdebug.ini; \
+    rm -rf /etc/nginx/conf.d/includes/nginx/90-file-cache.conf; \
+    userdel ubuntu || true; \
+    usermod -u 1000 www-data
 COPY init /etc/my_init.d
-
 COPY nginx/site-templates/ /etc/nginx/site-templates/
-
-RUN userdel ubuntu && usermod -u 1000 www-data
