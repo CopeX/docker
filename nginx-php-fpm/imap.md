@@ -11,7 +11,7 @@ Inside the container execute
 
 ```
 apt-get update
-apt-get install php7.2-imap php7.4-imap php8.0-imap php8.1-imap php8.2-imap
+apt-get install php${PHP_VERSION}-imap
 phpenmod imap
 apt-get clean && \
     rm -f /etc/dpkg/dpkg.cfg.d/02apt-speedup && \
