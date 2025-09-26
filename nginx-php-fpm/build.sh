@@ -41,13 +41,13 @@ for v in "${VERSIONS[@]}"; do
     continue
   fi
 
-#  echo ">> Push ${REPO}${v}"
-#  if docker push "${REPO}${v}"; then
-#    echo ">> Push ok: ${REPO}${v}"
-#  else
-#    echo "!! Push fehlgeschlagen für ${v}"
-#    ((fail_count++)) || true
-#  fi
+  echo ">> Push ${REPO}${v}"
+  if docker push "${REPO}${v}"; then
+    echo ">> Push ok: ${REPO}${v}"
+  else
+    echo "!! Push fehlgeschlagen für ${v}"
+    ((fail_count++)) || true
+  fi
 
   echo
 done
