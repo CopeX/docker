@@ -8,6 +8,7 @@ map "$cookie_XDEBUG_SESSION$cookie_XDEBUG_PROFILE$cookie_XDEBUG_TRACE" $fastcgi_
     default "fastcgi_backend";
 }
 
+add_header X-FastCGI-Backend $fastcgi_backend always;
 
 upstream fastcgi_backend {
     server   unix:/var/run/php-fpm.sock;
