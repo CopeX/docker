@@ -38,10 +38,8 @@ RUN --mount=type=cache,target=/var/cache/apt \
 
 # Bring in Node.js and the global npm packages from the node stage
 # Copying /usr/local/{bin,lib} is enough for node/npm/npx + global modules
-COPY --from=node-tools /usr/local/bin/node /usr/local/bin/node
-COPY --from=node-tools /usr/local/bin/npm /usr/local/bin/npm
-COPY --from=node-tools /usr/local/bin/npx /usr/local/bin/npx
-COPY --from=node-tools /usr/local/lib/node_modules /usr/local/lib/node_modules
+COPY --from=node-tools /usr/local/ /usr/local/
+
 # Ensure global modules are on PATH and node tools resolve correctly
 ENV PATH="/usr/local/bin:/usr/local/lib/node_modules/.bin:${PATH}"
 
