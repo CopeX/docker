@@ -21,7 +21,7 @@ function non_template_files() {
 }
 
 if [[ -z ${MAGENTO_VERSION:-} ]]; then
-    MAGENTO_VERSION="1"
+    MAGENTO_VERSION="2"
 fi
 
 cp /etc/nginx/site-templates/M$MAGENTO_VERSION/default.conf.tmpl /etc/nginx/site-templates/default.conf.tmpl
