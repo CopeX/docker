@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# dummy command: REPO=copex/nginx-php-fpm DOCKERFILE=nginx-php-fpm/Dockerfile CONTEXT=nginx-php-fpm ./build_type.sh (see build.sh)
 # Repo kann über ENV überschrieben werden: REPO=myrepo/php ./build-push-all.sh
 REPO="${REPO:-copex/php}"
 DOCKERFILE="${DOCKERFILE:-Dockerfile}"
