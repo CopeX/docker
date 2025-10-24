@@ -67,5 +67,9 @@ RUN set -eux; \
     rm -rf /etc/nginx/conf.d/includes/nginx/90-file-cache.conf; \
     userdel ubuntu || true; \
     usermod -u 1000 www-data
+
+RUN mkdir -p /var/www/.ssh && \
+    chown -R 1000:33 /var/www/.ssh
+
 COPY init /etc/my_init.d
 COPY nginx/site-templates/ /etc/nginx/site-templates/
