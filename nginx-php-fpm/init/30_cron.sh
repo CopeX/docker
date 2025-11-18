@@ -23,5 +23,4 @@ if [[ "$CRON" == "true" ]]; then
 
   sed -i "s/memory_limit = 512M/memory_limit = $MEMORY_LIMIT/g" /etc/php/php.ini
   sed -i "s/# exec/exec/g" /etc/service/cron/run
-  rm -rf /etc/service/php-fpm-noxdebug /etc/service/nginx /etc/service/sshd /etc/service/php-fpm
 fi
