@@ -84,23 +84,30 @@ if [[ ! $(grep '/etc/hosts' -e "$DOMAIN") ]]; then
     echo "127.0.0.1 $DOMAIN" >> /etc/hosts
 fi
 
-if [[ ! $(grep '/etc/ssmtp/ssmtp.conf' -e 'AuthUser') ]]; then
+if [[ ! -f /etc/msmtprc ]] || [[ ! $(grep '/etc/msmtprc' -e 'user') ]]; then
 
-    if [[ -z ${SSMTP_USER:-} ]]; then
-        SSMTP_USER="copex"
-    fi
+    MAIL_USER="${MAIL_USER:-${SSMTP_USER:-copex}}"
+    MAIL_PASS="${MAIL_PASS:-${SSMTP_PASS:-xepoc}}"
+    MAIL_AUTH="${MAIL_AUTH:-${SSMTP_LOGIN_METHOD:-login}}"
+    MAIL_HOST="${MAIL_HOST:-mail}"
+    MAIL_PORT="${MAIL_PORT:-587}"
 
-    if [[ -z ${SSMTP_PASS:-} ]]; then
-        SSMTP_PASS="xepoc"
-    fi
+    AUTH_METHOD="${MAIL_AUTH,,}"
 
-    if [[ -z ${SSMTP_LOGIN_METHOD:-} ]]; then
-        SSMTP_LOGIN_METHOD="LOGIN"
-    fi
+    cat > /etc/msmtprc <<-MSMTP
+		defaults
+		tls            off
+		logfile        -
 
-    sed -i "s/hostname=.*/hostname=$DOMAIN/g" /etc/ssmtp/ssmtp.conf
-    echo "AuthUser=$SSMTP_USER" >> /etc/ssmtp/ssmtp.conf
-    echo "AuthPass=$SSMTP_PASS" >> /etc/ssmtp/ssmtp.conf
-    echo "AuthMethod=$SSMTP_LOGIN_METHOD" >> /etc/ssmtp/ssmtp.conf
-    echo "FromLineOverride=YES" >> /etc/ssmtp/ssmtp.conf
+		account        default
+		host           ${MAIL_HOST}
+		port           ${MAIL_PORT}
+		domain         ${DOMAIN}
+		auth           ${AUTH_METHOD}
+		user           ${MAIL_USER}
+		password       ${MAIL_PASS}
+		set_from_header on
+		MSMTP
+
+    chmod 600 /etc/msmtprc
 fi

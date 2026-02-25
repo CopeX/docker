@@ -11,7 +11,7 @@ RUN rm -rf /etc/nginx/conf.d/* \
     && export DEBIAN_FRONTEND=noninteractive \
     && echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/02apt-speedup \
     && apt-get update \
-    && apt-get -y install --no-install-recommends --no-install-suggests nginx mysql-client wget ssmtp net-tools unzip \
+    && apt-get -y install --no-install-recommends --no-install-suggests nginx mysql-client wget msmtp msmtp-mta net-tools unzip \
     && bash -euxo pipefail -c '\
       add_if_available(){ local p="$1"; if apt-cache policy "$p" | awk "/Candidate:/ {print \$2}" | grep -vq "(none)"; then PKGS+=("$p"); fi; }; \
       PKGS=(); \
