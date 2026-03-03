@@ -42,6 +42,13 @@ if [ "$ENABLE_BLACKFIRE" = "true" ]; then
     fi
 fi
 
-echo "root=postmaster" > /etc/ssmtp/ssmtp.conf
-echo "mailhub=mailcatcher:1025" >> /etc/ssmtp/ssmtp.conf
-echo "hostname=$DOMAIN" >> /etc/ssmtp/ssmtp.conf
+ cat > /etc/msmtprc <<-MSMTP
+                defaults
+                tls            off
+                logfile        -
+
+                account        default
+                host           mailcatcher
+                port           1025
+                hostname       ${DOMAIN}
+                MSMTP
