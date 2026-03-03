@@ -23,7 +23,7 @@ REPO="${REPO:-copex/nginx-php-fpm:dev-}"
 DOCKERFILE="${DOCKERFILE:-Dockerfile}"
 CONTEXT="${CONTEXT:-.}"
 
-ALL_VERSIONS=(7.4 8.0 8.1 8.2 8.3 8.4)
+ALL_VERSIONS=(7.4 8.0 8.1 8.2 8.3 8.4 8.5)
 
 NO_CACHE_ARG=""
 if [[ "${NO_CACHE:-0}" == "1" ]]; then
