@@ -9,6 +9,12 @@ if [ "$XDEBUG_MODE" = "off" ]; then
     rm -f /etc/php/$PHP_VERSION/cli/conf.d/20-xdebug.ini
 fi
 
+# Default PHP_IDE_CONFIG to www.magento.test if not set via docker-compose
+if [ -z "${PHP_IDE_CONFIG:-}" ]; then
+    export PHP_IDE_CONFIG="serverName=www.magento.test"
+    echo "serverName=www.magento.test" > /etc/container_environment/PHP_IDE_CONFIG
+fi
+
 # Create no xdebug for get.php, ....
 cp -r /etc/php/$PHP_VERSION /etc/php/$PHP_VERSION-noxdebug
 rm -f /etc/php/$PHP_VERSION-noxdebug/fpm/conf.d/20-xdebug.ini
